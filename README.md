@@ -55,6 +55,8 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `layers` | `true` | Filter tabs |
 | `grid` | `true` | Blueprint grid behind the plan |
 | `camera_refresh` | `10` | Seconds between camera preview refreshes |
+| `labels` | | Free text on the plan, e.g. floor names: `[{text: Basement, x: 1163, y: 18}]` |
+| `stack` | | Put a second floor under the first on narrow screens. `split_x`: everything right of this x is the second floor. `move: [dx, dy]`: how far to shift it. `below`: card width in px where stacking kicks in (default `700`). |
 
 ### Room
 

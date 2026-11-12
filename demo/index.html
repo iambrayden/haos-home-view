@@ -6,7 +6,7 @@
 <title>Home View Demo</title>
 <style>
   body { margin: 0; padding: 16px; background: #0b0c0e; color: #e6edf2; font-family: system-ui, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; }
+  main { max-width: 1200px; margin: 0 auto; }
   dialog { background: #1d2127; color: #e6edf2; border: 1px solid #333; border-radius: 12px; min-width: 280px; max-width: 90vw; }
   dialog img { width: 100%; border-radius: 8px; }
   dialog pre { font-size: 12px; white-space: pre-wrap; }
@@ -30,6 +30,7 @@ const st = (state, attributes = {}, min = 12) => ({ state, attributes, last_chan
 const states = {
   "binary_sensor.door_front_contact": st("off", { device_class: "door", friendly_name: "Front Door" }, 40),
   "binary_sensor.door_office_contact": st("off", { device_class: "door", friendly_name: "Office Door" }, 90),
+  "sensor.temp_serverrack_temperature": st("78.1", { device_class: "temperature", unit_of_measurement: "°F", friendly_name: "Server Rack Temp" }),
   "sensor.temp_office_temperature": st("72.6", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_office_humidity": st("38", { device_class: "humidity", unit_of_measurement: "%" }),
   "binary_sensor.door_bedroomsliding_contact": st("off", { device_class: "door", friendly_name: "Bedroom Sliding" }, 300),
@@ -41,7 +42,7 @@ const states = {
   "lock.front_door": st("locked", { friendly_name: "Front Door Lock" }),
   "camera.front_door": st("idle", { friendly_name: "Front Door Camera", entity_picture: "cam.svg?cam=front" }),
   "camera.backyard": st("idle", { friendly_name: "Backyard Camera", entity_picture: "cam.svg?cam=back" }),
-  "camera.living_room": st("streaming", { friendly_name: "Living Room", entity_picture: "cam.svg?cam=living" }),
+  "camera.living_room_high_resolution_channel": st("streaming", { friendly_name: "Living Room", entity_picture: "cam.svg?cam=living" }),
   "light.bedroom_1": st("off", { friendly_name: "Bedroom 1 Light" }),
   "light.bathroom": st("off", { friendly_name: "Bathroom Light" }),
   "light.office": st("on", { friendly_name: "Office Light", brightness: 180 }),

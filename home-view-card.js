@@ -1,4 +1,4 @@
-const VERSION = "0.1.3";
+const VERSION = "0.2.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -26,7 +26,7 @@ const ICON = {
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
 
-const DEFAULT_PLAN = {view_box:[55,25,696,785],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Bath",rect:[77,352,330,490]},{name:"Hall",rect:[330,47,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Bedroom 3",rect:[422,242,728,428]},{name:"Stairs",rect:[422,428,728,497]},{name:"Kitchen",rect:[77,490,355,650]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[77,787],[77,650],[355,650]],label_at:[590,600]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650]],half_walls:[[77,490,332,490],[77,650,355,650]],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,95,330,142]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,92,422,140]},{name:"Bedroom 3 Door",line:[422,263,422,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]}]};
+const DEFAULT_PLAN = {view_box:[55,-5,1460,815],stack:{split_x:780,move:[-760,830],below:700},labels:[{text:"Main Floor",x:402,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Bath",rect:[77,352,330,490]},{name:"Hall",rect:[330,47,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Bedroom 3",rect:[422,242,728,428]},{name:"Stairs",rect:[422,428,728,497]},{name:"Kitchen",rect:[77,490,355,650]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[77,787],[77,650],[355,650]],label_at:[590,600]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[[77,490,332,490],[77,650,355,650]],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,95,330,142]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,92,422,140]},{name:"Bedroom 3 Door",line:[422,263,422,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
 
 const OPEN_STATES = new Set(["on", "open", "opening", "closing", "unlocked", "unlocking", "jammed"]);
 const DEAD_STATES = new Set(["unavailable", "unknown"]);
@@ -159,6 +159,7 @@ ha-card {
   width: min(100%, calc(var(--hv-max-height, 78vh) * var(--ratio)));
   container-type: inline-size;
 }
+.plan.full { width: 100%; }
 svg.floor { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
 .room { fill: transparent; transition: fill 0.4s; }
@@ -187,6 +188,10 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none;
 }
 .room-label .meta:empty { display: none; }
+.floor-label {
+  pointer-events: none !important; white-space: nowrap; color: var(--hv-text);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+}
 .open-tag {
   pointer-events: none !important; white-space: nowrap; padding: 3px 7px; border-radius: 6px;
   background: var(--hv-open); color: #fff; font-size: 11px; font-weight: 600;
@@ -244,8 +249,10 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   .dev.preview .ico { display: flex; }
   .dev.preview img, .dev.preview .live, .dev.preview .name { display: none; }
   .room-label { font-size: 9px; }
+  .floor-label { font-size: 10px; }
   .room-label .meta { font-size: 11px; }
   .open-tag { font-size: 10px; padding: 2px 5px; }
+  .open-tag .tn { display: none; }
 }
 @keyframes blink { 50% { opacity: 0.4; } }
 @keyframes ping { from { opacity: 0.8; transform: scale(0.9); } to { opacity: 0; transform: scale(1.4); } }
@@ -293,6 +300,10 @@ class HomeViewCard extends HTMLElement {
   connectedCallback() {
     this._tick = setInterval(() => this._update(), 30000);
     this._camTick = setInterval(() => this._refreshCameras(), (this._config?.camera_refresh || 10) * 1000);
+    this._ro = new ResizeObserver(() => {
+      if (this._built && this._config?.stack && this._isStacked() !== this._stacked) this._build();
+    });
+    this._ro.observe(this);
     if (this._config?.rotate === "auto") {
       this._onResize = () => {
         const want = innerWidth > innerHeight ? 90 : 0;
@@ -305,6 +316,7 @@ class HomeViewCard extends HTMLElement {
   disconnectedCallback() {
     clearInterval(this._tick);
     clearInterval(this._camTick);
+    this._ro?.disconnect();
     if (this._onResize) removeEventListener("resize", this._onResize);
   }
 
@@ -319,12 +331,26 @@ class HomeViewCard extends HTMLElement {
     return [x1 - pad, y1 - pad, x2 - x1 + pad * 2, y2 - y1 + pad * 2];
   }
 
+  _isStacked() {
+    const st = this._config.stack;
+    return !!st && this.clientWidth > 0 && this.clientWidth < (st.below ?? 700);
+  }
+
   _build() {
     const cfg = this._config;
     const hass = this._hass;
     this._rotation = cfg.rotate === "auto" ? (innerWidth > innerHeight ? 90 : 0) : Number(cfg.rotate || 0);
-    const vb = cfg.view_box || this._autoViewBox();
-    const { fn, size } = transform(vb, this._rotation);
+    let vb = cfg.view_box || this._autoViewBox();
+    this._stacked = this._isStacked();
+    let shift = (x, y) => [x, y];
+    if (this._stacked) {
+      const { split_x, move: [mx, my] } = cfg.stack;
+      shift = (x, y) => (x >= split_x ? [x + mx, y + my] : [x, y]);
+      vb = [vb[0], vb[1], vb[2] + mx, vb[3] + my];
+    }
+    const t = transform(vb, this._rotation);
+    const fn = (x, y) => t.fn(...shift(x, y));
+    const size = t.size;
     const [W, H] = size;
     const pos = (x, y) => {
       const [u, v] = fn(x, y);
@@ -353,7 +379,7 @@ class HomeViewCard extends HTMLElement {
     this._tabs = h("div", { class: "tabs" });
     card.append(this._tabs);
 
-    const plan = h("div", { class: "plan", style: `--ratio:${W / H}` });
+    const plan = h("div", { class: `plan${this._stacked ? " full" : ""}`, style: `--ratio:${W / H}` });
     const svg = s("svg", { class: "floor", viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" });
     const defs = s("defs");
     const pattern = s("pattern", { id: "hv-grid", width: 24, height: 24, patternUnits: "userSpaceOnUse" });
@@ -383,6 +409,8 @@ class HomeViewCard extends HTMLElement {
       if (room.name || room.temperature || room.humidity) overlay.append(label);
       return { cfg: room, poly, meta };
     });
+
+    for (const l of cfg.labels || []) overlay.append(h("div", { class: "floor-label", style: pos(l.x, l.y) }, l.text));
 
     for (const w of cfg.walls || []) wallLayer.append(line(w, "wall-edge"));
     for (const w of cfg.walls || []) wallLayer.append(line(w, "wall"));
@@ -592,7 +620,7 @@ class HomeViewCard extends HTMLElement {
       o.title.textContent = st ? `${name}: ${state === "open" ? "Open" : state === "closed" ? "Closed" : "Unavailable"} · ${since(st.last_changed)}` : `${o.cfg.entity} not found`;
       o.tag.classList.toggle("hidden", state !== "open" || o.cfg.show_tag === false);
       if (state === "open") {
-        o.tag.textContent = `${name} · ${since(st.last_changed)}`;
+        o.tag.replaceChildren(h("span", { class: "tn" }, `${name} · `), since(st.last_changed));
         openNames.push(name);
       }
     }

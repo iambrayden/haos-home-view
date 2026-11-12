@@ -1,6 +1,18 @@
 type: custom:home-view-card
 title: Home
-view_box: [55, 25, 696, 785]
+view_box: [55, -5, 1460, 815]
+stack:
+  split_x: 780
+  move: [-760, 830]
+  below: 700
+
+labels:
+  - text: Main Floor
+    x: 402
+    y: 18
+  - text: Basement
+    x: 1163
+    y: 18
 
 rooms:
   - name: Bedroom 1
@@ -33,6 +45,10 @@ rooms:
     temperature: sensor.temp_livingrm_temperature
     humidity: sensor.temp_livingrm_humidity
     motion: binary_sensor.living_room_motion
+  - name: Server Room
+    rect: [837, 47, 1490, 494]
+  - name: Basement
+    rect: [837, 494, 1490, 787]
 
 walls:
   - [77, 47, 728, 47]
@@ -46,6 +62,11 @@ walls:
   - [422, 428, 728, 428]
   - [422, 497, 728, 497]
   - [355, 557, 355, 650]
+  - [837, 47, 1490, 47]
+  - [1490, 47, 1490, 787]
+  - [1490, 787, 837, 787]
+  - [837, 787, 837, 47]
+  - [837, 494, 1490, 494]
 
 half_walls:
   - [77, 490, 332, 490]
@@ -85,6 +106,8 @@ openings:
     type: door
     line: [657, 497, 710, 497]
     entity: binary_sensor.door_basement_contact
+  - name: Basement Door
+    line: [1096, 494, 1200, 494]
 
 devices:
   - entity: climate.thermostat
@@ -99,7 +122,7 @@ devices:
   - entity: camera.backyard
     x: 115
     y: 750
-  - entity: camera.living_room
+  - entity: camera.living_room_high_resolution_channel
     x: 600
     y: 680
     preview: true
@@ -130,3 +153,7 @@ devices:
   - entity: binary_sensor.kitchen_leak
     x: 112
     y: 618
+  - entity: sensor.temp_serverrack_temperature
+    name: Server Rack
+    x: 1440
+    y: 95
