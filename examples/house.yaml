@@ -22,8 +22,12 @@ rooms:
     vertical: true
   - name: Bath
     rect: [149, 352, 330, 490]
+  - name: Closet
+    rect: [330, 95, 422, 149]
+  - rect: [330, 47, 376, 95]
+  - rect: [376, 47, 422, 95]
   - name: Hall
-    rect: [330, 47, 422, 490]
+    rect: [330, 149, 422, 490]
     label_at: [376, 420]
     motion: binary_sensor.hallway1_motion
   - name: Office
@@ -32,7 +36,7 @@ rooms:
     humidity: sensor.temp_office_humidity
   - name: Weston's Room
     rect: [422, 242, 728, 428]
-    label_at: [575, 268]
+    label_at: [575, 256]
   - name: Closet
     rect: [422, 428, 508, 497]
   - name: Stairs
@@ -69,6 +73,9 @@ walls:
   - [77, 490, 330, 490]
   - [508, 428, 508, 497]
   - [149, 352, 149, 490]
+  - [330, 149, 422, 149]
+  - [330, 95, 422, 95]
+  - [376, 47, 376, 95]
   - [837, 47, 1490, 47]
   - [1490, 47, 1490, 787]
   - [1490, 787, 837, 787]
@@ -96,7 +103,13 @@ openings:
     type: window
     line: [575, 47, 675, 47]
   - name: Bedroom 1 Door
-    line: [330, 95, 330, 142]
+    line: [330, 164, 330, 221]
+  - name: Hall Closet Door
+    line: [350, 149, 402, 149]
+  - name: Closet Door
+    line: [336, 95, 370, 95]
+  - name: Closet Door
+    line: [382, 95, 416, 95]
   - name: Bedroom 1 Closet Door
     line: [90, 352, 136, 352]
   - name: Bath Door
