@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home View Demo</title>
+<style>
+  body { margin: 0; padding: 16px; background: #0b0c0e; color: #e6edf2; font-family: system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; }
+  dialog { background: #1d2127; color: #e6edf2; border: 1px solid #333; border-radius: 12px; min-width: 280px; max-width: 90vw; }
+  dialog img { width: 100%; border-radius: 8px; }
+  dialog pre { font-size: 12px; white-space: pre-wrap; }
+  dialog button { margin-top: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <home-view-card id="card"></home-view-card>
+</main>
+<dialog id="info"><h3></h3><div class="body"></div><form method="dialog"><button>Close</button></form></dialog>
+
+<script type="module">
+import yaml from "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.mjs";
+import "../home-view-card.js";
+
+const config = yaml.load(await (await fetch("../examples/house.yaml")).text());
+const ago = (min) => new Date(Date.now() - min * 60000).toISOString();
+const st = (state, attributes = {}, min = 12) => ({ state, attributes, last_changed: ago(min) });
+
+const states = {
+  "binary_sensor.front_door": st("off", { device_class: "door", friendly_name: "Front Door" }, 40),
+  "binary_sensor.patio_door": st("on", { device_class: "door", friendly_name: "Patio Door" }, 4),
+  "binary_sensor.bedroom_1_window": st("off", { device_class: "window", friendly_name: "Bedroom 1 Window" }),
+  "binary_sensor.bedroom_2_window": st("off", { device_class: "window", friendly_name: "Bedroom 2 Window" }),
+  "binary_sensor.hallway_motion": st("on", { device_class: "motion", friendly_name: "Hallway Motion" }, 1),
+  "binary_sensor.living_room_motion": st("off", { device_class: "motion", friendly_name: "Living Room Motion" }),
+  "binary_sensor.kitchen_leak": st("off", { device_class: "moisture", friendly_name: "Kitchen Leak" }),
+  "climate.thermostat": st("heat", { friendly_name: "Thermostat", current_temperature: 69, temperature: 71, hvac_action: "heating" }),
+  "lock.front_door": st("locked", { friendly_name: "Front Door Lock" }),
+  "camera.front_door": st("idle", { friendly_name: "Front Door Camera", entity_picture: "cam.svg?cam=front" }),
+  "camera.backyard": st("idle", { friendly_name: "Backyard Camera", entity_picture: "cam.svg?cam=back" }),
+  "camera.living_room": st("streaming", { friendly_name: "Living Room", entity_picture: "cam.svg?cam=living" }),
+  "light.bedroom_1": st("off", { friendly_name: "Bedroom 1 Light" }),
+  "light.bathroom": st("off", { friendly_name: "Bathroom Light" }),
+  "light.bedroom_2": st("on", { friendly_name: "Bedroom 2 Light", brightness: 180 }),
+  "light.bedroom_3": st("off", { friendly_name: "Bedroom 3 Light" }),
+  "light.kitchen": st("on", { friendly_name: "Kitchen Light", brightness: 255 }),
+  "light.living_room": st("on", { friendly_name: "Living Room Light", brightness: 140 }),
+  "sensor.bedroom_1_temperature": st("68.4", { device_class: "temperature", unit_of_measurement: "°F" }),
+  "sensor.bathroom_humidity": st("54", { device_class: "humidity", unit_of_measurement: "%" }),
+};
+
+const card = document.getElementById("card");
+const push = () => { card.hass = { states: { ...states }, callService, hassUrl: (p) => p }; };
+
+function callService(domain, service, data) {
+  const id = data.entity_id;
+  const cur = states[id];
+  if (service === "toggle" && cur) {
+    states[id] = { ...cur, state: cur.state === "on" ? "off" : "on", last_changed: new Date().toISOString() };
+    push();
+  }
+}
+
+card.setConfig(config);
+push();
+
+window.addEventListener("hass-more-info", (e) => {
+  const id = e.detail.entityId;
+  const s = states[id];
+  const dlg = document.getElementById("info");
+  dlg.querySelector("h3").textContent = s?.attributes.friendly_name || id;
+  const body = dlg.querySelector(".body");
+  body.innerHTML = "";
+  if (id.startsWith("camera.")) {
+    const img = document.createElement("img");
+    img.src = s.attributes.entity_picture;
+    body.append(img);
+  }
+  const pre = document.createElement("pre");
+  pre.textContent = JSON.stringify(s, null, 2);
+  body.append(pre);
+  dlg.showModal();
+});
+
+const flip = ["binary_sensor.front_door", "binary_sensor.living_room_motion", "binary_sensor.bedroom_2_window"];
+setInterval(() => {
+  const id = flip[Math.floor(Math.random() * flip.length)];
+  states[id] = { ...states[id], state: states[id].state === "on" ? "off" : "on", last_changed: new Date().toISOString() };
+  push();
+}, 6000);
+</script>
+</body>
+</html>

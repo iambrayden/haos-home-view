@@ -1,0 +1,125 @@
+type: custom:home-view-card
+title: Home
+view_box: [55, 25, 696, 785]
+
+rooms:
+  - name: Bedroom 1
+    rect: [77, 47, 330, 352]
+    lights: light.bedroom_1
+    temperature: sensor.bedroom_1_temperature
+  - name: Bath
+    rect: [77, 352, 330, 490]
+    lights: light.bathroom
+    humidity: sensor.bathroom_humidity
+  - name: Hall
+    rect: [330, 47, 422, 490]
+    label_at: [376, 420]
+    motion: binary_sensor.hallway_motion
+  - name: Bedroom 2
+    rect: [422, 47, 728, 242]
+    lights: light.bedroom_2
+  - name: Bedroom 3
+    rect: [422, 242, 728, 428]
+    lights: light.bedroom_3
+  - name: Closet
+    rect: [422, 428, 728, 497]
+  - name: Kitchen
+    rect: [77, 490, 355, 650]
+    lights: light.kitchen
+  - name: Living Room
+    points: [[355, 490], [422, 490], [422, 497], [728, 497], [728, 787], [77, 787], [77, 650], [355, 650]]
+    label_at: [590, 600]
+    lights: light.living_room
+    motion: binary_sensor.living_room_motion
+
+walls:
+  - [77, 47, 728, 47]
+  - [728, 47, 728, 787]
+  - [728, 787, 77, 787]
+  - [77, 787, 77, 47]
+  - [330, 47, 330, 490]
+  - [77, 352, 330, 352]
+  - [422, 47, 422, 497]
+  - [422, 242, 728, 242]
+  - [422, 428, 728, 428]
+  - [422, 497, 728, 497]
+  - [355, 557, 355, 650]
+
+half_walls:
+  - [77, 490, 332, 490]
+  - [77, 650, 355, 650]
+
+openings:
+  - name: Front Door
+    type: door
+    line: [450, 787, 527, 787]
+    entity: binary_sensor.front_door
+  - name: Patio Door
+    type: door
+    line: [170, 787, 305, 787]
+    entity: binary_sensor.patio_door
+  - name: Bedroom 1 Window
+    type: window
+    line: [152, 47, 250, 47]
+    entity: binary_sensor.bedroom_1_window
+  - name: Bedroom 2 Window
+    type: window
+    line: [575, 47, 675, 47]
+    entity: binary_sensor.bedroom_2_window
+  - name: Bedroom 1 Door
+    line: [330, 95, 330, 142]
+  - name: Bath Door
+    line: [330, 372, 330, 430]
+  - name: Bedroom 2 Door
+    line: [422, 92, 422, 140]
+  - name: Bedroom 3 Door
+    line: [422, 263, 422, 320]
+  - name: Closet Door
+    line: [447, 497, 495, 497]
+  - name: Closet Door
+    line: [657, 497, 710, 497]
+
+devices:
+  - entity: climate.thermostat
+    x: 376
+    y: 250
+  - entity: lock.front_door
+    x: 488
+    y: 742
+  - entity: camera.front_door
+    x: 690
+    y: 750
+  - entity: camera.backyard
+    x: 115
+    y: 750
+  - entity: camera.living_room
+    x: 600
+    y: 680
+    preview: true
+  - entity: binary_sensor.hallway_motion
+    x: 376
+    y: 130
+  - entity: binary_sensor.living_room_motion
+    x: 690
+    y: 535
+  - entity: light.bedroom_1
+    x: 203
+    y: 270
+  - entity: light.bathroom
+    x: 285
+    y: 421
+  - entity: light.bedroom_2
+    x: 575
+    y: 185
+  - entity: light.bedroom_3
+    x: 575
+    y: 375
+  - entity: light.kitchen
+    x: 215
+    y: 600
+  - entity: light.living_room
+    x: 430
+    y: 590
+  - entity: binary_sensor.kitchen_leak
+    x: 112
+    y: 618
