@@ -13,9 +13,11 @@ rooms:
     rect: [330, 47, 422, 490]
     label_at: [376, 420]
     motion: binary_sensor.hallway_motion
-  - name: Bedroom 2
+  - name: Office
     rect: [422, 47, 728, 242]
-    lights: light.bedroom_2
+    lights: light.office
+    temperature: sensor.temp_office_temperature
+    humidity: sensor.temp_office_humidity
   - name: Bedroom 3
     rect: [422, 242, 728, 428]
     lights: light.bedroom_3
@@ -63,15 +65,17 @@ openings:
   - name: Bedroom 1 Window
     type: window
     line: [152, 47, 250, 47]
-  - name: Bedroom 2 Window
+  - name: Office Window
     type: window
     line: [575, 47, 675, 47]
   - name: Bedroom 1 Door
     line: [330, 95, 330, 142]
   - name: Bath Door
     line: [330, 372, 330, 430]
-  - name: Bedroom 2 Door
+  - name: Office Door
+    type: door
     line: [422, 92, 422, 140]
+    entity: binary_sensor.door_office_contact
   - name: Bedroom 3 Door
     line: [422, 263, 422, 320]
   - name: Closet Door
@@ -110,7 +114,7 @@ devices:
   - entity: light.bathroom
     x: 285
     y: 421
-  - entity: light.bedroom_2
+  - entity: light.office
     x: 575
     y: 185
   - entity: light.bedroom_3
