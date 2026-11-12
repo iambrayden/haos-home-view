@@ -56,6 +56,7 @@ const states = {
   "binary_sensor.westons_room_person_detected": st("off", { device_class: "occupancy" }),
   "binary_sensor.westons_room_animal_detected": st("off", { device_class: "occupancy" }),
   "binary_sensor.rack_01_rear_motion": st("off", { device_class: "motion" }),
+  "sensor.temp_serverrack_humidity": st("29", { device_class: "humidity", unit_of_measurement: "%" }),
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
