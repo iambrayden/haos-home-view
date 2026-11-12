@@ -8,7 +8,7 @@ stack:
 
 labels:
   - text: Main Floor
-    x: 402
+    x: 575
     y: 18
   - text: Basement
     x: 1163
@@ -114,7 +114,7 @@ devices:
   - entity: camera.hallway_high_resolution_channel
     name: Hallway
     x: 376
-    y: 128
+    y: -40
     preview: true
   - entity: camera.westons_room_high_resolution_channel
     name: Weston's Room
@@ -123,7 +123,7 @@ devices:
       - binary_sensor.westons_room_person_detected
       - binary_sensor.westons_room_animal_detected
     x: 575
-    y: 362
+    y: 342
     preview: true
   - entity: camera.backyard_high_resolution_channel
     name: Back Yard
@@ -132,13 +132,13 @@ devices:
       - binary_sensor.backyard_person_detected
       - binary_sensor.backyard_vehicle_detected
       - binary_sensor.backyard_animal_detected
-    x: 203
+    x: 160
     y: -38
     preview: true
   - entity: camera.living_room_high_resolution_channel
     name: Living Room
-    x: 470
-    y: 690
+    x: 630
+    y: 710
     preview: true
   - entity: camera.driveway_high_resolution_channel_2
     name: Front Yard
@@ -147,7 +147,7 @@ devices:
       - binary_sensor.driveway_person_detected
       - binary_sensor.driveway_vehicle_detected
       - binary_sensor.driveway_animal_detected
-    x: 540
+    x: 160
     y: 874
     preview: true
   - entity: camera.rack_01_front_mainstream
