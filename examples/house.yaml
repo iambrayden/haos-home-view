@@ -150,7 +150,7 @@ devices:
     x: 540
     y: 874
     preview: true
-  - entity: camera.rack_01_rear_high_resolution_channel
+  - entity: camera.rack_01_front_mainstream
     name: Server Rack
     motion: binary_sensor.rack_01_rear_motion
     x: 1390
