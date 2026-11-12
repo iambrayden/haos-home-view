@@ -65,6 +65,7 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `name` | Label |
 | `rect` / `points` | Shape |
 | `label_at` | `[x, y]` for the label, defaults to the center |
+| `vertical` | Write the label top to bottom, for narrow rooms like closets |
 | `lights` | Light entity or list; room glows when any are on |
 | `motion` | Motion sensor or list; room tints when active |
 | `temperature` / `humidity` | Sensors shown under the name |

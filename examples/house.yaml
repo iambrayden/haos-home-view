@@ -17,8 +17,11 @@ labels:
 rooms:
   - name: Bedroom 1
     rect: [77, 47, 330, 352]
+  - name: Closet
+    rect: [77, 352, 149, 490]
+    vertical: true
   - name: Bath
-    rect: [77, 352, 330, 490]
+    rect: [149, 352, 330, 490]
   - name: Hall
     rect: [330, 47, 422, 490]
     label_at: [376, 420]
@@ -65,6 +68,7 @@ walls:
   - [355, 557, 355, 650]
   - [77, 490, 330, 490]
   - [508, 428, 508, 497]
+  - [149, 352, 149, 490]
   - [837, 47, 1490, 47]
   - [1490, 47, 1490, 787]
   - [1490, 787, 837, 787]
@@ -93,6 +97,8 @@ openings:
     line: [575, 47, 675, 47]
   - name: Bedroom 1 Door
     line: [330, 95, 330, 142]
+  - name: Bedroom 1 Closet Door
+    line: [90, 352, 136, 352]
   - name: Bath Door
     line: [330, 372, 330, 430]
   - name: Office Door

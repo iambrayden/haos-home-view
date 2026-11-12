@@ -1,4 +1,4 @@
-const VERSION = "0.3.0";
+const VERSION = "0.3.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -26,7 +26,7 @@ const ICON = {
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
 
-const DEFAULT_PLAN = {view_box:[55,-115,1460,1060],stack:{split_x:780,move:[-760,920],below:700},labels:[{text:"Main Floor",x:575,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Bath",rect:[77,352,330,490]},{name:"Hall",rect:[330,47,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Weston's Room",rect:[422,242,728,428],label_at:[575,268]},{name:"Closet",rect:[422,428,508,497]},{name:"Stairs",rect:[508,428,728,497]},{name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590]},{name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,95,330,142]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,164,422,221]},{name:"Weston's Room Door",line:[422,263,422,320]},{name:"Weston's Room Window",type:"window",line:[728,263,728,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
+const DEFAULT_PLAN = {view_box:[55,-115,1460,1060],stack:{split_x:780,move:[-760,920],below:700},labels:[{text:"Main Floor",x:575,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Closet",rect:[77,352,149,490],vertical:true},{name:"Bath",rect:[149,352,330,490]},{name:"Hall",rect:[330,47,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Weston's Room",rect:[422,242,728,428],label_at:[575,268]},{name:"Closet",rect:[422,428,508,497]},{name:"Stairs",rect:[508,428,728,497]},{name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590]},{name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,95,330,142]},{name:"Bedroom 1 Closet Door",line:[90,352,136,352]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,164,422,221]},{name:"Weston's Room Door",line:[422,263,422,320]},{name:"Weston's Room Window",type:"window",line:[728,263,728,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
 
 const OPEN_STATES = new Set(["on", "open", "opening", "closing", "unlocked", "unlocking", "jammed"]);
 const DEAD_STATES = new Set(["unavailable", "unknown"]);
@@ -195,6 +195,7 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   pointer-events: none !important; text-align: center; white-space: nowrap;
   color: var(--hv-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
 }
+.room-label.vertical { writing-mode: vertical-rl; transform: translate(-50%, -50%) rotate(180deg); }
 .room-label .meta {
   display: block; margin-top: 2px; color: var(--hv-text);
   font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none;
@@ -428,7 +429,7 @@ class HomeViewCard extends HTMLElement {
       const [x1, y1, x2, y2] = bounds(pts);
       const [lx, ly] = room.label_at || [(x1 + x2) / 2, (y1 + y2) / 2];
       const meta = h("span", { class: "meta" });
-      const label = h("div", { class: "room-label", style: pos(lx, ly) }, room.name || "", meta);
+      const label = h("div", { class: `room-label${room.vertical ? " vertical" : ""}`, style: pos(lx, ly) }, room.name || "", meta);
       if (room.name || room.temperature || room.humidity) overlay.append(label);
       return { cfg: room, poly, meta };
     });
