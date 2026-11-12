@@ -90,7 +90,7 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `name` | Overrides the friendly name |
 | `icon` | Any `mdi:` icon to override the default |
 | `layer` | Force a filter tab: `doors`, `climate`, `cameras`, `lights`, `motion`, `sensors` |
-| `preview` | Cameras only: show a live snapshot instead of an icon |
+| `preview` | Cameras only: show a live snapshot instead of an icon. Size scales with the card; override with `--hv-preview-width`. |
 | `show_name` | Name under this marker |
 | `show_value` | Set `false` to hide the temperature/value text |
 | `show_brightness` | Lights only: show brightness % when on |

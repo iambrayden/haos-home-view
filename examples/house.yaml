@@ -1,9 +1,9 @@
 type: custom:home-view-card
 title: Home
-view_box: [55, -5, 1460, 815]
+view_box: [55, -115, 1460, 1060]
 stack:
   split_x: 780
-  move: [-760, 830]
+  move: [-760, 920]
   below: 700
 
 labels:
@@ -37,7 +37,7 @@ rooms:
     label_at: [216, 530]
   - name: Living Room
     points: [[355, 490], [422, 490], [422, 497], [728, 497], [728, 787], [355, 787]]
-    label_at: [590, 600]
+    label_at: [620, 590]
     temperature: sensor.temp_livingrm_temperature
     humidity: sensor.temp_livingrm_humidity
     motion: binary_sensor.living_room_motion
@@ -112,12 +112,12 @@ devices:
     x: 376
     y: 250
   - entity: lock.front_door
-    x: 460
-    y: 600
+    x: 420
+    y: 560
   - entity: camera.hallway_high_resolution_channel
     name: Hallway
     x: 376
-    y: 115
+    y: 128
     preview: true
   - entity: camera.westons_room_high_resolution_channel
     name: Weston's Room
@@ -126,18 +126,18 @@ devices:
     preview: true
   - entity: camera.back_yard_high_resolution_channel
     name: Back Yard
-    x: 265
-    y: 720
+    x: 203
+    y: -38
     preview: true
   - entity: camera.living_room_high_resolution_channel
     name: Living Room
-    x: 430
-    y: 720
+    x: 470
+    y: 690
     preview: true
   - entity: camera.front_yard_high_resolution_channel
     name: Front Yard
-    x: 640
-    y: 720
+    x: 540
+    y: 874
     preview: true
   - entity: camera.server_rack_high_resolution_channel
     name: Server Rack
