@@ -61,7 +61,26 @@ const states = {
 };
 
 const card = document.getElementById("card");
-const push = () => { card.hass = { states: { ...states }, callService, hassUrl: (p) => p }; };
+const push = () => { card.hass = { states: { ...states }, callService, callApi, hassUrl: (p) => p }; };
+
+async function callApi(method, path) {
+  const ids = decodeURIComponent(path.split("filter_entity_id=")[1].split("&")[0]).split(",");
+  const at = (min) => new Date(Date.now() - min * 60000).toISOString();
+  const script = {
+    "binary_sensor.door_front_contact": [[300, "on"], [298, "off"], [95, "on"], [94, "off"]],
+    "binary_sensor.door_office_contact": [[200, "on"], [190, "off"]],
+    "binary_sensor.door_basement_contact": [[4, "on"]],
+    "binary_sensor.driveway_person_detected": [[96, "on"], [95, "off"], [3, "on"]],
+    "binary_sensor.driveway_vehicle_detected": [[2, "on"]],
+    "binary_sensor.westons_room_baby_cry_detected": [[1500, "on"], [1497, "off"], [12, "on"]],
+    "binary_sensor.hallway1_motion": [[60, "on"], [59, "off"], [1, "on"]],
+    "binary_sensor.backyard_animal_detected": [[1700, "on"], [1699, "off"]],
+  };
+  return ids.filter((id) => script[id]).map((id) => [
+    { entity_id: id, state: "off", last_changed: at(1800) },
+    ...script[id].map(([m, s]) => ({ state: s, last_changed: at(m) })),
+  ]);
+}
 
 function callService(domain, service, data) {
   const id = data.entity_id;

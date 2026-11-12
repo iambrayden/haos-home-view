@@ -106,10 +106,10 @@ openings:
     line: [330, 164, 330, 221]
   - name: Hall Closet Door
     line: [350, 149, 402, 149]
-  - name: Closet Door
-    line: [336, 95, 370, 95]
-  - name: Closet Door
-    line: [382, 95, 416, 95]
+  - name: Bedroom 1 Closet Door
+    line: [330, 55, 330, 87]
+  - name: Office Closet Door
+    line: [422, 55, 422, 87]
   - name: Bedroom 1 Closet Door
     line: [90, 352, 136, 352]
   - name: Bath Door

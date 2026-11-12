@@ -1,4 +1,4 @@
-const VERSION = "0.3.1";
+const VERSION = "0.4.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -26,7 +26,7 @@ const ICON = {
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
 
-const DEFAULT_PLAN = {view_box:[55,-115,1460,1060],stack:{split_x:780,move:[-760,920],below:700},labels:[{text:"Main Floor",x:575,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Closet",rect:[77,352,149,490],vertical:true},{name:"Bath",rect:[149,352,330,490]},{name:"Closet",rect:[330,95,422,149]},{rect:[330,47,376,95]},{rect:[376,47,422,95]},{name:"Hall",rect:[330,149,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Weston's Room",rect:[422,242,728,428],label_at:[575,256]},{name:"Closet",rect:[422,428,508,497]},{name:"Stairs",rect:[508,428,728,497]},{name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590]},{name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,164,330,221]},{name:"Hall Closet Door",line:[350,149,402,149]},{name:"Closet Door",line:[336,95,370,95]},{name:"Closet Door",line:[382,95,416,95]},{name:"Bedroom 1 Closet Door",line:[90,352,136,352]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,164,422,221]},{name:"Weston's Room Door",line:[422,263,422,320]},{name:"Weston's Room Window",type:"window",line:[728,263,728,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
+const DEFAULT_PLAN = {view_box:[55,-115,1460,1060],stack:{split_x:780,move:[-760,920],below:700},labels:[{text:"Main Floor",x:575,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Closet",rect:[77,352,149,490],vertical:true},{name:"Bath",rect:[149,352,330,490]},{name:"Closet",rect:[330,95,422,149]},{rect:[330,47,376,95]},{rect:[376,47,422,95]},{name:"Hall",rect:[330,149,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Weston's Room",rect:[422,242,728,428],label_at:[575,256]},{name:"Closet",rect:[422,428,508,497]},{name:"Stairs",rect:[508,428,728,497]},{name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590]},{name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,164,330,221]},{name:"Hall Closet Door",line:[350,149,402,149]},{name:"Bedroom 1 Closet Door",line:[330,55,330,87]},{name:"Office Closet Door",line:[422,55,422,87]},{name:"Bedroom 1 Closet Door",line:[90,352,136,352]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,164,422,221]},{name:"Weston's Room Door",line:[422,263,422,320]},{name:"Weston's Room Window",type:"window",line:[728,263,728,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
 
 const OPEN_STATES = new Set(["on", "open", "opening", "closing", "unlocked", "unlocking", "jammed"]);
 const DEAD_STATES = new Set(["unavailable", "unknown"]);
@@ -134,6 +134,7 @@ const STYLE = `
 }
 ha-card {
   display: block;
+  container: hv-card / inline-size;
   padding: 12px 12px 16px;
   background: var(--hv-bg);
   color: var(--hv-text);
@@ -165,6 +166,35 @@ ha-card {
   font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; flex: none;
 }
 .tab.on { background: var(--hv-accent); color: #fff; }
+.body { display: flex; flex-direction: column; gap: 14px; }
+.plan-wrap { min-width: 0; }
+.log {
+  display: flex; flex-direction: column; box-sizing: border-box; max-height: 340px; padding: 10px 6px 6px;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+}
+.log h3 { margin: 0 8px 6px; color: var(--hv-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.log ul { list-style: none; margin: 0; padding: 0; overflow-y: auto; scrollbar-width: thin; }
+.log .day { padding: 10px 8px 4px; color: var(--hv-muted); font-size: 11px; font-weight: 600; }
+.log .day:first-child { padding-top: 2px; }
+.log .item {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 7px 8px; border: 0; border-radius: 8px;
+  background: none; color: var(--hv-text); font: inherit; text-align: left; cursor: pointer;
+}
+.log .item:hover { background: rgba(255,255,255,0.05); }
+.log .dot { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.06); color: var(--hv-muted); }
+.log .dot svg { width: 16px; height: 16px; fill: currentColor; }
+.log .open .dot { color: var(--hv-open); background: rgba(255,90,95,0.14); }
+.log .ok .dot { color: var(--hv-closed); background: rgba(62,207,142,0.12); }
+.log .cool .dot { color: var(--hv-cool); background: rgba(90,180,255,0.12); }
+.log .alert .dot { color: #fff; background: var(--hv-open); }
+.log .txt { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
+.log .when { flex: none; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
+.log .empty { padding: 8px; color: var(--hv-muted); font-size: 13px; }
+@container hv-card (min-width: 860px) {
+  .body { flex-direction: row; align-items: flex-start; }
+  .plan-wrap { flex: 1 1 auto; }
+  .log { flex: none; width: var(--hv-log-width, 290px); max-height: var(--hv-max-height, 78vh); }
+}
 .plan {
   position: relative; margin: 0 auto;
   aspect-ratio: var(--ratio);
@@ -298,6 +328,9 @@ class HomeViewCard extends HTMLElement {
 
   setConfig(config) {
     if (!config) throw new Error("Invalid configuration");
+    this._events = [];
+    this._seen = new Map();
+    this._historyLoaded = false;
     this._config = config.walls || config.rooms ? config : { ...DEFAULT_PLAN, ...config };
     this._built = false;
     if (this._hass) this._build();
@@ -370,7 +403,9 @@ class HomeViewCard extends HTMLElement {
     if (this._stacked) {
       const { split_x, move: [mx, my] } = cfg.stack;
       shift = (x, y) => (x >= split_x ? [x + mx, y + my] : [x, y]);
-      vb = [vb[0], vb[1], vb[2] + mx, vb[3] + my];
+      const moved = (cfg.walls || []).filter((w) => w[0] >= split_x && w[2] >= split_x).flatMap((w) => [w[1], w[3]]);
+      const bottom = Math.max(vb[1] + vb[3], ...moved.map((y) => y + my + 24));
+      vb = [vb[0], vb[1], vb[2] + mx, bottom - vb[1]];
     }
     const t = transform(vb, this._rotation);
     const fn = (x, y) => t.fn(...shift(x, y));
@@ -482,7 +517,16 @@ class HomeViewCard extends HTMLElement {
     });
 
     plan.append(svg, overlay);
-    card.append(plan);
+    const body = h("div", { class: "body" }, h("div", { class: "plan-wrap" }, plan));
+    this._watch = this._watchList();
+    this._log = null;
+    if (cfg.log !== false && this._watch.size) {
+      this._logList = h("ul");
+      this._log = h("aside", { class: "log" }, h("h3", {}, cfg.log_title || "Activity"), this._logList);
+      body.append(this._log);
+      this._logKey = "";
+    }
+    card.append(body);
     root.append(card);
     this._built = true;
     if (hass) {
@@ -490,6 +534,145 @@ class HomeViewCard extends HTMLElement {
       this._update();
       this._refreshCameras();
     }
+  }
+
+  _watchList() {
+    const cfg = this._config;
+    const m = new Map();
+    for (const o of cfg.openings || []) {
+      if (o.entity) m.set(o.entity, { type: o.type === "window" ? "window" : "door", name: o.name });
+    }
+    for (const r of cfg.rooms || []) {
+      for (const e of [].concat(r.motion || [])) m.set(e, { type: "motion", name: r.name, where: "in" });
+    }
+    for (const d of cfg.devices || []) {
+      const domain = d.entity.split(".")[0];
+      if (domain === "camera") {
+        const name = d.name || this._hass?.states[d.entity]?.attributes.friendly_name || d.entity;
+        for (const e of [].concat(d.motion || [])) m.set(e, { type: "motion", name, where: "at", camera: d.entity });
+        for (const e of [].concat(d.detections || [])) m.set(e, { type: "detect", name, camera: d.entity });
+      } else if (domain === "binary_sensor" && !m.has(d.entity)) {
+        const dc = this._hass?.states[d.entity]?.attributes.device_class;
+        if (OPENING_CLASSES.has(dc)) m.set(d.entity, { type: dc === "window" ? "window" : "door", name: d.name });
+        else if (MOTION_CLASSES.has(dc)) m.set(d.entity, { type: "motion", name: d.name, where: "at" });
+      }
+    }
+    return m;
+  }
+
+  _describe(id, state) {
+    const w = this._watch.get(id);
+    if (!w || DEAD_STATES.has(state)) return null;
+    const on = state === "on" || state === "open";
+    const name = w.name || this._hass.states[id]?.attributes.friendly_name || id;
+    if (w.type === "door" || w.type === "window") {
+      const open = w.type === "window" ? ICON.windowOpen : ICON.doorOpen;
+      const shut = w.type === "window" ? ICON.window : ICON.door;
+      return on ? { text: `${name} opened`, tone: "open", icon: open } : { text: `${name} closed`, tone: "ok", icon: shut };
+    }
+    if (!on) return null;
+    if (w.type === "motion") return { text: `Motion ${w.where || "at"} ${name}`, tone: "cool", icon: ICON.motion, target: w.camera };
+    const m = id.match(/baby_cry|person|vehicle|animal|package|face|smoke|glass_break|motion/);
+    const label = m ? DETECT_LABELS[m[0]] : this._hass.states[id]?.attributes.friendly_name || "Detection";
+    const text = m?.[0] === "baby_cry" ? `Baby crying in ${name}` : `${label} at ${name}`;
+    return { text, tone: "alert", icon: m?.[0] === "baby_cry" ? ICON.speaker : ICON.cctv, target: w.camera };
+  }
+
+  _pushEvent(id, state, when) {
+    if (!this._describe(id, state)) return false;
+    if (this._events.some((e) => e.id === id && e.when === when)) return false;
+    this._events.push({ id, state, when });
+    return true;
+  }
+
+  _trackEvents() {
+    if (!this._watch?.size) return;
+    let changed = false;
+    for (const id of this._watch.keys()) {
+      const st = this._hass.states[id];
+      if (!st) continue;
+      const prev = this._seen.get(id);
+      if (prev && prev.lc !== st.last_changed && prev.state !== st.state) {
+        changed = this._pushEvent(id, st.state, Date.parse(st.last_changed)) || changed;
+      }
+      this._seen.set(id, { lc: st.last_changed, state: st.state });
+    }
+    if (changed) this._trimEvents();
+    if (!this._historyLoaded && this._log) {
+      this._historyLoaded = true;
+      this._loadHistory();
+    }
+  }
+
+  _trimEvents() {
+    this._events.sort((a, b) => b.when - a.when);
+    this._events.length = Math.min(this._events.length, this._config.log_max || 60);
+  }
+
+  async _loadHistory() {
+    const hass = this._hass;
+    if (!hass.callApi) return;
+    const hours = this._config.log_hours || 24;
+    const start = new Date(Date.now() - hours * 3600000).toISOString();
+    const ids = [...this._watch.keys()].filter((id) => hass.states[id]);
+    if (!ids.length) return;
+    try {
+      const data = await hass.callApi(
+        "GET",
+        `history/period/${start}?filter_entity_id=${ids.join(",")}&minimal_response&no_attributes`
+      );
+      for (const list of data || []) {
+        const id = list[0]?.entity_id;
+        let prev = list[0]?.state;
+        for (const s of list.slice(1)) {
+          if (s.state !== prev) this._pushEvent(id, s.state, Date.parse(s.last_changed));
+          prev = s.state;
+        }
+      }
+      this._trimEvents();
+      this._renderLog();
+    } catch (err) {
+      console.warn("home-view-card: could not load history", err);
+    }
+  }
+
+  _renderLog() {
+    if (!this._log) return;
+    const now = new Date();
+    const key = `${this._events.length}:${this._events[0]?.when}:${Math.floor(now / 60000)}`;
+    if (key === this._logKey) return;
+    this._logKey = key;
+    const dayName = (d) => {
+      const days = Math.round((new Date(now).setHours(0, 0, 0, 0) - new Date(d).setHours(0, 0, 0, 0)) / 86400000);
+      if (days === 0) return "Today";
+      if (days === 1) return "Yesterday";
+      return d.toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" });
+    };
+    const when = (ms) => {
+      const min = Math.floor((now - ms) / 60000);
+      if (min < 1) return "just now";
+      if (min < 60) return `${min}m ago`;
+      return new Date(ms).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    };
+    const items = [];
+    let lastDay = "";
+    for (const e of this._events) {
+      const info = this._describe(e.id, e.state);
+      if (!info) continue;
+      const day = dayName(new Date(e.when));
+      if (day !== lastDay) {
+        items.push(h("li", { class: "day" }, day));
+        lastDay = day;
+      }
+      const dot = h("span", { class: "dot" });
+      dot.innerHTML = iconSvg(info.icon);
+      const btn = h("button", { class: `item ${info.tone}`, title: new Date(e.when).toLocaleString() }, dot,
+        h("span", { class: "txt" }, info.text), h("span", { class: "when" }, when(e.when)));
+      btn.addEventListener("click", () => this._moreInfo(info.target || e.id));
+      items.push(h("li", {}, btn));
+    }
+    if (!items.length) items.push(h("li", { class: "empty" }, "Nothing yet. Door, motion and camera events will show up here."));
+    this._logList.replaceChildren(...items);
   }
 
   _bindPress(node, onTap, onHold) {
@@ -682,6 +865,8 @@ class HomeViewCard extends HTMLElement {
     }
 
     this._renderChips({ openNames, watched, locks, unlocked, lightsOn, motion, climate });
+    this._trackEvents();
+    this._renderLog();
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }

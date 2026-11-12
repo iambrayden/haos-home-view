@@ -7,6 +7,7 @@ A Lovelace card that draws your house as a blueprint and puts your devices on it
 - Rooms glow when their lights are on and tint blue when their motion sensor fires.
 - A status row up top (open doors, locks, thermostat, lights on, motion) and filter tabs (Doors, Climate, Cameras, Lights, Motion, Sensors).
 - Camera markers can show a live snapshot that refreshes every 10 seconds.
+- An activity feed in plain words: "Front Door opened", "Person at Front Yard", "Baby crying in Weston's Room". Tap an entry to open that door or camera.
 - No build step, no dependencies. One JS file.
 
 ![screenshot](docs/screenshot.png)
@@ -55,6 +56,10 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `layers` | `true` | Filter tabs |
 | `grid` | `true` | Blueprint grid behind the plan |
 | `camera_refresh` | `10` | Seconds between camera preview refreshes |
+| `log` | `true` | Activity feed of door, motion and camera events. Sits to the right of the plan on wide screens and below it on narrow ones. |
+| `log_title` | `Activity` | Heading for the feed |
+| `log_hours` | `24` | How far back to load history when the card opens |
+| `log_max` | `60` | Most entries to keep |
 | `labels` | | Free text on the plan, e.g. floor names: `[{text: Basement, x: 1163, y: 18}]` |
 | `stack` | | Put a second floor under the first on narrow screens. `split_x`: everything right of this x is the second floor. `move: [dx, dy]`: how far to shift it. `below`: card width in px where stacking kicks in (default `700`). |
 
