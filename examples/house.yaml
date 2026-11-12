@@ -62,9 +62,10 @@ openings:
   - name: Side Door
     type: door
     line: [728, 545, 728, 620]
-  - name: Bedroom 1 Window
-    type: window
+  - name: Bedroom Sliding
+    type: door
     line: [152, 47, 250, 47]
+    entity: binary_sensor.door_bedroomsliding_contact
   - name: Office Window
     type: window
     line: [575, 47, 675, 47]
