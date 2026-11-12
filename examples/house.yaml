@@ -111,9 +111,6 @@ devices:
   - entity: climate.thermostat
     x: 376
     y: 250
-  - entity: lock.front_door
-    x: 420
-    y: 560
   - entity: camera.hallway_high_resolution_channel
     name: Hallway
     x: 376
@@ -121,11 +118,20 @@ devices:
     preview: true
   - entity: camera.westons_room_high_resolution_channel
     name: Weston's Room
+    detections:
+      - binary_sensor.westons_room_baby_cry_detected
+      - binary_sensor.westons_room_person_detected
+      - binary_sensor.westons_room_animal_detected
     x: 575
     y: 362
     preview: true
-  - entity: camera.back_yard_high_resolution_channel
+  - entity: camera.backyard_high_resolution_channel
     name: Back Yard
+    motion: binary_sensor.backyard_motion
+    detections:
+      - binary_sensor.backyard_person_detected
+      - binary_sensor.backyard_vehicle_detected
+      - binary_sensor.backyard_animal_detected
     x: 203
     y: -38
     preview: true
@@ -134,8 +140,13 @@ devices:
     x: 470
     y: 690
     preview: true
-  - entity: camera.front_yard_high_resolution_channel
+  - entity: camera.driveway_high_resolution_channel_2
     name: Front Yard
+    motion: binary_sensor.driveway_motion_2
+    detections:
+      - binary_sensor.driveway_person_detected
+      - binary_sensor.driveway_vehicle_detected
+      - binary_sensor.driveway_animal_detected
     x: 540
     y: 874
     preview: true
@@ -150,9 +161,6 @@ devices:
   - entity: binary_sensor.living_room_motion
     x: 610
     y: 535
-  - entity: binary_sensor.kitchen_leak
-    x: 112
-    y: 570
   - entity: sensor.temp_serverrack_temperature
     name: Server Rack
     x: 1440

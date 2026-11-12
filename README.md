@@ -91,6 +91,8 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `icon` | Any `mdi:` icon to override the default |
 | `layer` | Force a filter tab: `doors`, `climate`, `cameras`, `lights`, `motion`, `sensors` |
 | `preview` | Cameras only: show a live snapshot instead of an icon. Size scales with the card; override with `--hv-preview-width`. |
+| `motion` | Cameras only: a motion sensor. The preview gets a red outline and a label while it's on. |
+| `detections` | Cameras only: list of detection sensors (person, vehicle, animal, package, baby cry, ...). Shown as a label like "Person · Vehicle" on the preview. |
 | `show_name` | Name under this marker |
 | `show_value` | Set `false` to hide the temperature/value text |
 | `show_brightness` | Lights only: show brightness % when on |

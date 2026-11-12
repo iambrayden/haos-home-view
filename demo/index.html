@@ -37,15 +37,24 @@ const states = {
   "binary_sensor.door_basement_contact": st("on", { device_class: "door", friendly_name: "Basement Door" }, 4),
   "binary_sensor.hallway1_motion": st("on", { device_class: "motion", friendly_name: "Hallway Motion" }, 1),
   "binary_sensor.living_room_motion": st("off", { device_class: "motion", friendly_name: "Living Room Motion" }),
-  "binary_sensor.kitchen_leak": st("off", { device_class: "moisture", friendly_name: "Kitchen Leak" }),
   "climate.thermostat": st("heat", { friendly_name: "Thermostat", current_temperature: 69, temperature: 71, hvac_action: "heating" }),
-  "lock.front_door": st("locked", { friendly_name: "Front Door Lock" }),
   "camera.hallway_high_resolution_channel": st("streaming", { friendly_name: "Hallway", entity_picture: "cam.svg?cam=hallway" }),
   "camera.westons_room_high_resolution_channel": st("streaming", { friendly_name: "Weston's Room", entity_picture: "cam.svg?cam=westons_room" }),
-  "camera.back_yard_high_resolution_channel": st("streaming", { friendly_name: "Back Yard", entity_picture: "cam.svg?cam=back_yard" }),
+  "camera.backyard_high_resolution_channel": st("streaming", { friendly_name: "Back Yard", entity_picture: "cam.svg?cam=back_yard" }),
   "camera.living_room_high_resolution_channel": st("streaming", { friendly_name: "Living Room", entity_picture: "cam.svg?cam=living_room" }),
-  "camera.front_yard_high_resolution_channel": st("streaming", { friendly_name: "Front Yard", entity_picture: "cam.svg?cam=front_yard" }),
+  "camera.driveway_high_resolution_channel_2": st("streaming", { friendly_name: "Front Yard", entity_picture: "cam.svg?cam=front_yard" }),
   "camera.server_rack_high_resolution_channel": st("streaming", { friendly_name: "Server Rack", entity_picture: "cam.svg?cam=server_rack" }),
+  "binary_sensor.backyard_motion": st("off", { device_class: "motion" }),
+  "binary_sensor.backyard_person_detected": st("off", { device_class: "occupancy" }),
+  "binary_sensor.backyard_vehicle_detected": st("off", { device_class: "occupancy" }),
+  "binary_sensor.backyard_animal_detected": st("off", { device_class: "occupancy" }),
+  "binary_sensor.driveway_motion_2": st("on", { device_class: "motion" }),
+  "binary_sensor.driveway_person_detected": st("on", { device_class: "occupancy" }),
+  "binary_sensor.driveway_vehicle_detected": st("on", { device_class: "occupancy" }),
+  "binary_sensor.driveway_animal_detected": st("off", { device_class: "occupancy" }),
+  "binary_sensor.westons_room_baby_cry_detected": st("on", { device_class: "sound" }),
+  "binary_sensor.westons_room_person_detected": st("off", { device_class: "occupancy" }),
+  "binary_sensor.westons_room_animal_detected": st("off", { device_class: "occupancy" }),
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
@@ -83,7 +92,7 @@ window.addEventListener("hass-more-info", (e) => {
   dlg.showModal();
 });
 
-const flip = ["binary_sensor.door_front_contact", "binary_sensor.living_room_motion"];
+const flip = ["binary_sensor.door_front_contact", "binary_sensor.living_room_motion", "binary_sensor.backyard_animal_detected"];
 setInterval(() => {
   const id = flip[Math.floor(Math.random() * flip.length)];
   states[id] = { ...states[id], state: states[id].state === "on" ? "off" : "on", last_changed: new Date().toISOString() };

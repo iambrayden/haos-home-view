@@ -1,4 +1,4 @@
-const VERSION = "0.2.2";
+const VERSION = "0.3.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -43,6 +43,18 @@ const LAYER_NAMES = {
   lights: "Lights",
   motion: "Motion",
   sensors: "Sensors",
+};
+
+const DETECT_LABELS = {
+  baby_cry: "Baby crying",
+  person: "Person",
+  vehicle: "Vehicle",
+  animal: "Animal",
+  package: "Package",
+  face: "Face",
+  smoke: "Smoke alarm",
+  glass_break: "Glass break",
+  motion: "Motion",
 };
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -239,6 +251,17 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; letter-spacing: 0.04em;
 }
 .dev.preview .live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--hv-open); }
+.dev.preview .badge {
+  position: absolute; top: 5px; left: 5px; display: none; max-width: calc(100% - 20px); padding: 2px 5px; border-radius: 4px;
+  background: var(--hv-open); color: #fff; font-size: 10px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dev.preview.detect .live { display: none; }
+.dev.detect { color: var(--hv-open); border-color: var(--hv-open); box-shadow: 0 0 0 1px var(--hv-open), 0 0 18px rgba(255,90,95,0.45); }
+.dev.preview.detect .badge { display: block; }
+.dev.detect:not(.preview)::after, .dev.preview.detect .ico::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 22px;
+  border: 2px solid var(--hv-open); animation: ping 1.6s ease-out infinite; pointer-events: none;
+}
 .dev.preview .name { position: static; transform: none; margin: 0; padding: 5px 6px; text-shadow: none; text-align: left; width: 100%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; }
 .hidden { display: none !important; }
 @container (max-width: 520px) {
@@ -247,7 +270,7 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   .dev.active::after { inset: -4px; }
   .dev.preview { flex-direction: row; width: auto; height: 28px; padding: 0 5px; border-radius: 14px; color: var(--hv-text); }
   .dev.preview .ico { display: flex; }
-  .dev.preview img, .dev.preview .live, .dev.preview .name { display: none; }
+  .dev.preview img, .dev.preview .live, .dev.preview .name, .dev.preview .badge { display: none !important; }
   .room-label { font-size: 9px; }
   .floor-label { font-size: 10px; }
   .room-label .meta { font-size: 11px; }
@@ -446,7 +469,8 @@ class HomeViewCard extends HTMLElement {
         el.classList.add("preview");
         dev.img = h("img", { alt: "", loading: "lazy" });
         ico.innerHTML = iconSvg(ICON.cctv);
-        el.append(ico, dev.img, h("span", { class: "live" }, "LIVE"), name);
+        dev.badge = h("span", { class: "badge" });
+        el.append(ico, dev.img, h("span", { class: "live" }, "LIVE"), dev.badge, name);
       } else {
         el.append(ico, val);
         if (d.show_name ?? cfg.show_names) el.append(name);
@@ -506,6 +530,17 @@ class HomeViewCard extends HTMLElement {
     if (domain === "sensor") return { kind: "value", layer: dc === "temperature" || dc === "humidity" ? "climate" : "sensors" };
     if (domain === "media_player") return { kind: "media", layer: "sensors" };
     return { kind: "generic", layer: "sensors" };
+  }
+
+  _detections(cfg) {
+    const ids = [].concat(cfg.motion || [], cfg.detections || []);
+    const label = (id) => {
+      const m = id.match(/baby_cry|person|vehicle|animal|package|face|smoke|glass_break|motion/);
+      if (m) return DETECT_LABELS[m[0]];
+      return this._hass.states[id]?.attributes.friendly_name || id;
+    };
+    const hits = [...new Set(ids.filter((id) => this._hass.states[id]?.state === "on").map(label))];
+    return hits.length > 1 ? hits.filter((x) => x !== "Motion") : hits;
   }
 
   _defaultTap(dev) {
@@ -641,7 +676,7 @@ class HomeViewCard extends HTMLElement {
         if (result.state === "open") unlocked++;
       }
       if (result.kind === "toggle" && result.state === "on") lightsOn++;
-      if (result.kind === "motion" && result.state === "active") motion++;
+      if ((result.kind === "motion" || result.kind === "camera") && result.state === "active") motion++;
       if (result.kind === "climate" && !climate) climate = hass.states[d.cfg.entity];
     }
 
@@ -683,11 +718,18 @@ class HomeViewCard extends HTMLElement {
         title = `${name}: ${val || "?"} now${target ? `, set to ${target}` : ""} (${st.state}${a.hvac_action ? `, ${a.hvac_action}` : ""})`;
         break;
       }
-      case "camera":
+      case "camera": {
         cls = "cam";
         icon = ICON.cctv;
-        title = `${name}: ${st.state}`;
+        const hits = this._detections(d.cfg);
+        if (hits.length) {
+          cls += " detect";
+          state = "active";
+        }
+        if (d.badge) d.badge.textContent = hits.join(" · ");
+        title = `${name}: ${hits.length ? hits.join(", ") : st.state}`;
         break;
+      }
       case "toggle":
         cls = st.state === "on" ? "on" : "";
         if (domain === "fan") cls += " fan";
