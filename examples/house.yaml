@@ -22,7 +22,7 @@ rooms:
   - name: Hall
     rect: [330, 47, 422, 490]
     label_at: [376, 420]
-    motion: binary_sensor.hallway_motion
+    motion: binary_sensor.hallway1_motion
   - name: Office
     rect: [422, 47, 728, 242]
     temperature: sensor.temp_office_temperature
@@ -144,7 +144,7 @@ devices:
     x: 1390
     y: 210
     preview: true
-  - entity: binary_sensor.hallway_motion
+  - entity: binary_sensor.hallway1_motion
     x: 376
     y: 330
   - entity: binary_sensor.living_room_motion
