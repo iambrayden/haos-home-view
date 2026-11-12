@@ -1,4 +1,4 @@
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -25,6 +25,8 @@ const ICON = {
   speaker: "M12,12A3,3 0 0,0 9,15A3,3 0 0,0 12,18A3,3 0 0,0 15,15A3,3 0 0,0 12,12M12,20A5,5 0 0,1 7,15A5,5 0 0,1 12,10A5,5 0 0,1 17,15A5,5 0 0,1 12,20M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8C10.89,8 10,7.1 10,6C10,4.89 10.89,4 12,4M17,2H7C5.89,2 5,2.89 5,4V20A2,2 0 0,0 7,22H17A2,2 0 0,0 19,20V4C19,2.89 18.1,2 17,2Z",
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
+
+const DEFAULT_PLAN = {view_box:[55,25,696,785],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Bath",rect:[77,352,330,490]},{name:"Hall",rect:[330,47,422,490],label_at:[376,420]},{name:"Bedroom 2",rect:[422,47,728,242]},{name:"Bedroom 3",rect:[422,242,728,428]},{name:"Closet",rect:[422,428,728,497]},{name:"Kitchen",rect:[77,490,355,650]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[77,787],[77,650],[355,650]],label_at:[590,600]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650]],half_walls:[[77,490,332,490],[77,650,355,650]],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Bedroom 1 Window",type:"window",line:[152,47,250,47]},{name:"Bedroom 2 Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,95,330,142]},{name:"Bath Door",line:[330,372,330,430]},{name:"Bedroom 2 Door",line:[422,92,422,140]},{name:"Bedroom 3 Door",line:[422,263,422,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Closet Door",line:[657,497,710,497]}]};
 
 const OPEN_STATES = new Set(["on", "open", "opening", "closing", "unlocked", "unlocking", "jammed"]);
 const DEAD_STATES = new Set(["unavailable", "unknown"]);
@@ -259,11 +261,13 @@ class HomeViewCard extends HTMLElement {
     this._built = false;
   }
 
+  static getStubConfig() {
+    return { title: "Home" };
+  }
+
   setConfig(config) {
-    if (!config || (!config.walls && !config.rooms)) {
-      throw new Error("home-view-card needs at least `walls` or `rooms`");
-    }
-    this._config = config;
+    if (!config) throw new Error("Invalid configuration");
+    this._config = config.walls || config.rooms ? config : { ...DEFAULT_PLAN, ...config };
     this._built = false;
     if (this._hass) this._build();
   }
