@@ -28,10 +28,8 @@ const ago = (min) => new Date(Date.now() - min * 60000).toISOString();
 const st = (state, attributes = {}, min = 12) => ({ state, attributes, last_changed: ago(min) });
 
 const states = {
-  "binary_sensor.front_door": st("off", { device_class: "door", friendly_name: "Front Door" }, 40),
-  "binary_sensor.patio_door": st("on", { device_class: "door", friendly_name: "Patio Door" }, 4),
-  "binary_sensor.bedroom_1_window": st("off", { device_class: "window", friendly_name: "Bedroom 1 Window" }),
-  "binary_sensor.bedroom_2_window": st("off", { device_class: "window", friendly_name: "Bedroom 2 Window" }),
+  "binary_sensor.door_front_contact": st("off", { device_class: "door", friendly_name: "Front Door" }, 40),
+  "binary_sensor.door_basement_contact": st("on", { device_class: "door", friendly_name: "Basement Door" }, 4),
   "binary_sensor.hallway_motion": st("on", { device_class: "motion", friendly_name: "Hallway Motion" }, 1),
   "binary_sensor.living_room_motion": st("off", { device_class: "motion", friendly_name: "Living Room Motion" }),
   "binary_sensor.kitchen_leak": st("off", { device_class: "moisture", friendly_name: "Kitchen Leak" }),
@@ -46,8 +44,8 @@ const states = {
   "light.bedroom_3": st("off", { friendly_name: "Bedroom 3 Light" }),
   "light.kitchen": st("on", { friendly_name: "Kitchen Light", brightness: 255 }),
   "light.living_room": st("on", { friendly_name: "Living Room Light", brightness: 140 }),
-  "sensor.bedroom_1_temperature": st("68.4", { device_class: "temperature", unit_of_measurement: "°F" }),
-  "sensor.bathroom_humidity": st("54", { device_class: "humidity", unit_of_measurement: "%" }),
+  "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
+  "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
 
 const card = document.getElementById("card");
@@ -83,7 +81,7 @@ window.addEventListener("hass-more-info", (e) => {
   dlg.showModal();
 });
 
-const flip = ["binary_sensor.front_door", "binary_sensor.living_room_motion", "binary_sensor.bedroom_2_window"];
+const flip = ["binary_sensor.door_front_contact", "binary_sensor.living_room_motion"];
 setInterval(() => {
   const id = flip[Math.floor(Math.random() * flip.length)];
   states[id] = { ...states[id], state: states[id].state === "on" ? "off" : "on", last_changed: new Date().toISOString() };

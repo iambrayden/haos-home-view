@@ -6,11 +6,9 @@ rooms:
   - name: Bedroom 1
     rect: [77, 47, 330, 352]
     lights: light.bedroom_1
-    temperature: sensor.bedroom_1_temperature
   - name: Bath
     rect: [77, 352, 330, 490]
     lights: light.bathroom
-    humidity: sensor.bathroom_humidity
   - name: Hall
     rect: [330, 47, 422, 490]
     label_at: [376, 420]
@@ -21,7 +19,7 @@ rooms:
   - name: Bedroom 3
     rect: [422, 242, 728, 428]
     lights: light.bedroom_3
-  - name: Closet
+  - name: Stairs
     rect: [422, 428, 728, 497]
   - name: Kitchen
     rect: [77, 490, 355, 650]
@@ -30,6 +28,8 @@ rooms:
     points: [[355, 490], [422, 490], [422, 497], [728, 497], [728, 787], [77, 787], [77, 650], [355, 650]]
     label_at: [590, 600]
     lights: light.living_room
+    temperature: sensor.temp_livingrm_temperature
+    humidity: sensor.temp_livingrm_humidity
     motion: binary_sensor.living_room_motion
 
 walls:
@@ -53,19 +53,19 @@ openings:
   - name: Front Door
     type: door
     line: [450, 787, 527, 787]
-    entity: binary_sensor.front_door
+    entity: binary_sensor.door_front_contact
   - name: Patio Door
     type: door
     line: [170, 787, 305, 787]
-    entity: binary_sensor.patio_door
+  - name: Side Door
+    type: door
+    line: [728, 545, 728, 620]
   - name: Bedroom 1 Window
     type: window
     line: [152, 47, 250, 47]
-    entity: binary_sensor.bedroom_1_window
   - name: Bedroom 2 Window
     type: window
     line: [575, 47, 675, 47]
-    entity: binary_sensor.bedroom_2_window
   - name: Bedroom 1 Door
     line: [330, 95, 330, 142]
   - name: Bath Door
@@ -76,8 +76,10 @@ openings:
     line: [422, 263, 422, 320]
   - name: Closet Door
     line: [447, 497, 495, 497]
-  - name: Closet Door
+  - name: Basement Door
+    type: door
     line: [657, 497, 710, 497]
+    entity: binary_sensor.door_basement_contact
 
 devices:
   - entity: climate.thermostat
@@ -100,7 +102,7 @@ devices:
     x: 376
     y: 130
   - entity: binary_sensor.living_room_motion
-    x: 690
+    x: 610
     y: 535
   - entity: light.bedroom_1
     x: 203
