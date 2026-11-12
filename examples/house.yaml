@@ -17,34 +17,33 @@ labels:
 rooms:
   - name: Bedroom 1
     rect: [77, 47, 330, 352]
-    lights: light.bedroom_1
   - name: Bath
     rect: [77, 352, 330, 490]
-    lights: light.bathroom
   - name: Hall
     rect: [330, 47, 422, 490]
     label_at: [376, 420]
     motion: binary_sensor.hallway_motion
   - name: Office
     rect: [422, 47, 728, 242]
-    lights: light.office
     temperature: sensor.temp_office_temperature
     humidity: sensor.temp_office_humidity
-  - name: Bedroom 3
+  - name: Weston's Room
     rect: [422, 242, 728, 428]
-    lights: light.bedroom_3
+    label_at: [575, 268]
   - name: Stairs
     rect: [422, 428, 728, 497]
   - name: Kitchen
     rect: [77, 490, 355, 650]
-    lights: light.kitchen
+    label_at: [216, 530]
   - name: Living Room
-    points: [[355, 490], [422, 490], [422, 497], [728, 497], [728, 787], [77, 787], [77, 650], [355, 650]]
+    points: [[355, 490], [422, 490], [422, 497], [728, 497], [728, 787], [355, 787]]
     label_at: [590, 600]
-    lights: light.living_room
     temperature: sensor.temp_livingrm_temperature
     humidity: sensor.temp_livingrm_humidity
     motion: binary_sensor.living_room_motion
+  - name: Dining Room
+    rect: [77, 650, 355, 787]
+    label_at: [216, 628]
   - name: Server Room
     rect: [837, 47, 1490, 494]
   - name: Basement
@@ -70,7 +69,6 @@ walls:
 
 half_walls:
   - [77, 490, 332, 490]
-  - [77, 650, 355, 650]
 
 openings:
   - name: Front Door
@@ -98,7 +96,7 @@ openings:
     type: door
     line: [422, 92, 422, 140]
     entity: binary_sensor.door_office_contact
-  - name: Bedroom 3 Door
+  - name: Weston's Room Door
     line: [422, 263, 422, 320]
   - name: Closet Door
     line: [447, 497, 495, 497]
@@ -114,45 +112,47 @@ devices:
     x: 376
     y: 250
   - entity: lock.front_door
-    x: 488
-    y: 742
-  - entity: camera.front_door
-    x: 690
-    y: 750
-  - entity: camera.backyard
-    x: 115
-    y: 750
+    x: 460
+    y: 600
+  - entity: camera.hallway_high_resolution_channel
+    name: Hallway
+    x: 376
+    y: 115
+    preview: true
+  - entity: camera.westons_room_high_resolution_channel
+    name: Weston's Room
+    x: 575
+    y: 362
+    preview: true
+  - entity: camera.back_yard_high_resolution_channel
+    name: Back Yard
+    x: 265
+    y: 720
+    preview: true
   - entity: camera.living_room_high_resolution_channel
-    x: 600
-    y: 680
+    name: Living Room
+    x: 430
+    y: 720
+    preview: true
+  - entity: camera.front_yard_high_resolution_channel
+    name: Front Yard
+    x: 640
+    y: 720
+    preview: true
+  - entity: camera.server_rack_high_resolution_channel
+    name: Server Rack
+    x: 1390
+    y: 210
     preview: true
   - entity: binary_sensor.hallway_motion
     x: 376
-    y: 130
+    y: 330
   - entity: binary_sensor.living_room_motion
     x: 610
     y: 535
-  - entity: light.bedroom_1
-    x: 203
-    y: 270
-  - entity: light.bathroom
-    x: 285
-    y: 421
-  - entity: light.office
-    x: 575
-    y: 185
-  - entity: light.bedroom_3
-    x: 575
-    y: 375
-  - entity: light.kitchen
-    x: 215
-    y: 600
-  - entity: light.living_room
-    x: 430
-    y: 590
   - entity: binary_sensor.kitchen_leak
     x: 112
-    y: 618
+    y: 570
   - entity: sensor.temp_serverrack_temperature
     name: Server Rack
     x: 1440
