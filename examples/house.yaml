@@ -114,6 +114,7 @@ openings:
     type: door
     line: [450, 787, 527, 787]
     entity: binary_sensor.door_front_contact
+    tag_offset: -24
   - name: Patio Door
     type: door
     line: [170, 787, 305, 787]

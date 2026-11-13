@@ -1,4 +1,4 @@
-const VERSION = "0.10.6";
+const VERSION = "0.10.7";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -71,7 +71,7 @@ const DEFAULT_CONFIG = {
   walls: [[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],
   half_walls: [],
   openings: [
-    {name:"Front Door",type:"door",line:[450,787,527,787],entity:"binary_sensor.door_front_contact"},
+    {name:"Front Door",type:"door",line:[450,787,527,787],entity:"binary_sensor.door_front_contact",tag_offset:-24},
     {name:"Patio Door",type:"door",line:[170,787,305,787]},
     {name:"Side Door",type:"door",line:[728,545,728,620]},
     {name:"Bedroom Sliding",type:"door",line:[152,47,250,47],entity:"binary_sensor.door_bedroomsliding_contact"},
@@ -592,6 +592,7 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
   font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
 }
 .open-tag {
+  z-index: 5;
   pointer-events: none !important; white-space: nowrap; padding: 3px 7px; border-radius: 6px;
   background: var(--hv-open); color: #fff; font-size: 11px; font-weight: 600;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
