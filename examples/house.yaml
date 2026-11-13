@@ -39,6 +39,7 @@ server:
   - name: SRV01
     cpu: sensor.srv01_cpu_usage
     memory: sensor.srv01_memory_usage
+    disk: sensor.srv01_disk_usage
   - name: Jellyfin
     cpu: sensor.jellyfin_cpu_usage
     memory: sensor.jellyfin_memory_usage
@@ -63,7 +64,7 @@ stats:
         name: Pending
         warn_above: 0
       - entity: sensor.seerr_processing_requests
-        name: Active
+        name: Processing
       - entity: sensor.seerr_open_issues
         name: Issues
         bad_above: 0

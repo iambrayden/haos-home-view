@@ -1,4 +1,4 @@
-const VERSION = "0.11.5";
+const VERSION = "0.11.6";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -51,14 +51,14 @@ const DEFAULT_CONFIG = {
   media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:[{entity:"media_player.bedroom_tv_3",app:"Jellyfin"}]}],
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
   server: [
-    {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage"},
+    {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage",disk:"sensor.srv01_disk_usage"},
     {name:"Jellyfin",cpu:"sensor.jellyfin_cpu_usage",memory:"sensor.jellyfin_memory_usage",disk:"sensor.jellyfin_disk_usage"},
     {name:"Sonarr",cpu:"sensor.tv_herrell_us_cpu_usage",memory:"sensor.tv_herrell_us_memory_usage",disk:"sensor.tv_herrell_us_disk_usage"},
     {name:"Radarr",cpu:"sensor.movies_herrell_us_cpu_usage",memory:"sensor.movies_herrell_us_memory_usage",disk:"sensor.movies_herrell_us_disk_usage"},
     {name:"Immich",cpu:"sensor.photos_herrell_us_cpu_usage",memory:"sensor.photos_herrell_us_memory_usage",disk:"sensor.photos_herrell_us_disk_usage"},
   ],
   stats: [
-    {name:"Overseerr",tiles:[{entity:"sensor.seerr_pending_requests",name:"Pending",warn_above:0},{entity:"sensor.seerr_processing_requests",name:"Active"},{entity:"sensor.seerr_open_issues",name:"Issues",bad_above:0}]},
+    {name:"Overseerr",tiles:[{entity:"sensor.seerr_pending_requests",name:"Pending",warn_above:0},{entity:"sensor.seerr_processing_requests",name:"Processing"},{entity:"sensor.seerr_open_issues",name:"Issues",bad_above:0}]},
   ],
   network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}]},
   rooms: [
@@ -394,12 +394,12 @@ ha-card {
 .sys-net { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .sys-tile {
   --lv: var(--hv-text);
-  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 6px 8px; border: 0; border-radius: 8px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 6px 6px 6px 7px; border: 0; border-radius: 8px;
   background: rgba(255,255,255,0.04); color: var(--hv-text); font: inherit; text-align: left; cursor: pointer; min-width: 0;
 }
 .sys-tile.ok { --lv: var(--hv-closed); }
 .sys-tile:hover { background: rgba(255,255,255,0.08); }
-.sys-tile .k { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hv-muted); font-size: 10px; }
+.sys-tile .k { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hv-muted); font-size: 10px; letter-spacing: -0.01em; }
 .sys-tile .v { color: var(--lv); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sys-tile.dead { opacity: 0.5; }
 .plan-wrap { min-width: 0; }
