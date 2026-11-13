@@ -35,6 +35,23 @@ climate:
   name: Thermostat
   humidity: sensor.living_room_humidity
 
+server:
+  name: SRV01
+  cpu: sensor.srv01_cpu_usage
+  memory: sensor.srv01_memory_usage
+
+network:
+  latency:
+    - entity: sensor.udm_pro_cloudflare_wan_latency
+      name: Cloudflare
+    - entity: sensor.udm_pro_google_wan_latency
+      name: Google
+    - entity: sensor.udm_pro_microsoft_wan_latency
+      name: Microsoft
+  clients: sensor.udm_pro_clients
+  temperature: sensor.udm_pro_temperature
+  temperature_name: UDM Pro
+
 rooms:
   - name: Bedroom 1
     rect: [77, 47, 330, 352]

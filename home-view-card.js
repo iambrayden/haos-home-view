@@ -1,4 +1,4 @@
-const VERSION = "0.10.8";
+const VERSION = "0.11.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -50,6 +50,8 @@ const DEFAULT_CONFIG = {
   weather: "weather.forecast_home",
   media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:[{entity:"media_player.bedroom_tv_3",app:"Jellyfin"}]}],
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
+  server: {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage"},
+  network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}],clients:"sensor.udm_pro_clients",temperature:"sensor.udm_pro_temperature",temperature_name:"UDM Pro"},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
     {name:"Closet",rect:[77,352,149,490],vertical:true},
@@ -348,9 +350,37 @@ ha-card {
 }
 .tab.on { background: var(--hv-accent); color: #fff; }
 .body { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "main" "side" "log"; gap: 14px; align-items: start; }
-.main { grid-area: main; min-width: 0; }
+.main { grid-area: main; min-width: 0; container: hv-main / inline-size; }
 .body > .side { grid-area: side; }
 .body > .log { grid-area: log; }
+.stage { display: flex; flex-direction: column; gap: 14px; }
+.stage > .plan-wrap { flex: 1 1 auto; min-width: 0; }
+@container hv-card (min-width: 1240px) {
+  .stage { flex-direction: row; align-items: center; }
+  .stage > .sys { flex: 0 0 var(--hv-sys-width, 240px); box-sizing: border-box; }
+}
+.sys { padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); }
+.sys-h { color: var(--hv-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.sys-sub { margin: 10px 0 4px; color: var(--hv-text); font-size: 12px; font-weight: 600; }
+.sys-row { --lv: var(--hv-closed); display: grid; grid-template-columns: 56px 1fr 40px; align-items: center; gap: 8px; margin: 5px 0; font-size: 12px; cursor: pointer; }
+.sys-row.warn, .sys-tile.warn { --lv: #ffb547; }
+.sys-row.bad, .sys-tile.bad { --lv: var(--hv-open); }
+.sys-row.dead { --lv: var(--hv-muted); opacity: 0.6; }
+.sys-k { color: var(--hv-muted); }
+.sys-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.sys-bar span { display: block; height: 100%; width: 0; border-radius: 3px; background: var(--lv); transition: width 0.6s, background 0.3s; }
+.sys-val { text-align: right; color: var(--lv); font-weight: 600; font-variant-numeric: tabular-nums; }
+.sys-net { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.sys-tile {
+  --lv: var(--hv-text);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 6px 8px; border: 0; border-radius: 8px;
+  background: rgba(255,255,255,0.04); color: var(--hv-text); font: inherit; text-align: left; cursor: pointer; min-width: 0;
+}
+.sys-tile.ok { --lv: var(--hv-closed); }
+.sys-tile:hover { background: rgba(255,255,255,0.08); }
+.sys-tile .k { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hv-muted); font-size: 10px; }
+.sys-tile .v { color: var(--lv); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sys-tile.dead { opacity: 0.5; }
 .plan-wrap { min-width: 0; }
 .log {
   display: flex; flex-direction: column; box-sizing: border-box; max-height: 340px; padding: 10px 6px 6px;
@@ -525,8 +555,14 @@ ha-card {
   .body > .log { max-height: var(--hv-log-height, 460px); }
 }
 @container hv-card (min-width: 1240px) {
-  .body { grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px); grid-template-areas: "main log side"; grid-template-rows: auto; }
-  .body > .log, .body > .side { height: var(--hv-fit-height, calc(100vh - 96px)); max-height: none; box-sizing: border-box; }
+  .body {
+    grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px);
+    grid-template-areas: "main log side"; grid-template-rows: minmax(0, 1fr);
+    height: var(--hv-fit-height, calc(100vh - 96px)); align-items: stretch;
+  }
+  .main { align-self: start; }
+  .body > .log { height: auto; max-height: none; min-height: 0; box-sizing: border-box; }
+  .body > .side { height: auto; min-height: 0; box-sizing: border-box; }
   .body > .side { overflow-y: auto; scrollbar-width: thin; padding-right: 2px; }
   .body > .side > * { flex: 1 0 auto; }
   .body > .side > .gl, .body > .side > .wx, .body > .side > .th { display: flex; flex-direction: column; justify-content: center; }
@@ -881,7 +917,8 @@ class HomeViewCard extends HTMLElement {
     });
 
     plan.append(svg, overlay);
-    main.append(h("div", { class: "plan-wrap" }, plan));
+    const stage = h("div", { class: "stage" }, h("div", { class: "plan-wrap" }, plan));
+    main.append(stage);
     const body = h("div", { class: "body" }, main);
     const side = h("div", { class: "side" });
     this._watch = this._watchList();
@@ -901,6 +938,8 @@ class HomeViewCard extends HTMLElement {
       body.append(this._log);
       this._logKey = "";
     }
+    this._sys = cfg.server || cfg.network ? this._buildSys() : null;
+    if (this._sys) stage.append(this._sys.el);
     if (side.childElementCount) body.append(side);
     card.append(body);
     root.append(card);
@@ -1151,6 +1190,94 @@ class HomeViewCard extends HTMLElement {
         h("span", { class: "wx-dp" }, rain ? `${Math.round(rain)}%` : ""));
     }));
     w.days.classList.toggle("hidden", !fc.length);
+  }
+
+  _buildSys() {
+    const cfg = this._config;
+    const el = h("section", { class: "sys" }, h("div", { class: "sys-h" }, cfg.system_title || "Server & Network"));
+    const rows = [];
+    const tiles = [];
+    for (const srv of [].concat(cfg.server || [])) {
+      el.append(h("div", { class: "sys-sub" }, srv.name || "Server"));
+      for (const [key, label] of [["cpu", "CPU"], ["memory", "Memory"], ["disk", "Disk"], ["temperature", "Temp"]]) {
+        if (!srv[key]) continue;
+        const fill = h("span");
+        const val = h("span", { class: "sys-val" });
+        const row = h("div", { class: "sys-row" }, h("span", { class: "sys-k" }, label), h("div", { class: "sys-bar" }, fill), val);
+        row.addEventListener("click", () => this._moreInfo(srv[key]));
+        el.append(row);
+        rows.push({ entity: srv[key], key, row, fill, val });
+      }
+    }
+    const net = cfg.network;
+    if (net) {
+      el.append(h("div", { class: "sys-sub" }, net.name || "Network"));
+      const grid = h("div", { class: "sys-net" });
+      const add = (entity, label, kind) => {
+        if (!entity) return;
+        const v = h("span", { class: "v" });
+        const tile = h("button", { class: "sys-tile" }, h("span", { class: "k" }, label), v);
+        tile.addEventListener("click", () => this._moreInfo(entity));
+        grid.append(tile);
+        tiles.push({ entity, kind, tile, v });
+      };
+      for (const l of [].concat(net.latency || [])) {
+        const x = typeof l === "string" ? { entity: l } : l;
+        add(x.entity, x.name || (x.entity.match(/(cloudflare|google|microsoft|quad9|opendns)/i)?.[1] || "Latency").replace(/^./, (c) => c.toUpperCase()), "latency");
+      }
+      add(net.clients, "Clients", "count");
+      add(net.temperature, net.temperature_name || "Router", "temp");
+      el.append(grid);
+    }
+    return { el, rows, tiles };
+  }
+
+  _renderSys() {
+    const s = this._sys;
+    if (!s) return;
+    const num = (id) => {
+      const st = this._hass.states[id];
+      const v = st ? parseFloat(st.state) : NaN;
+      return { st, v };
+    };
+    for (const r of s.rows) {
+      const { st, v } = num(r.entity);
+      if (Number.isNaN(v)) {
+        r.val.textContent = st ? "--" : "?";
+        r.fill.style.width = "0%";
+        r.row.className = "sys-row dead";
+        r.row.title = st ? `${r.entity}: ${st.state}` : `${r.entity} not found`;
+        continue;
+      }
+      const isTemp = r.key === "temperature";
+      const pct = isTemp ? Math.min(100, (v / 90) * 100) : Math.min(100, v);
+      const level = isTemp ? (v >= 80 ? "bad" : v >= 70 ? "warn" : "ok") : v >= 85 ? "bad" : v >= 60 ? "warn" : "ok";
+      r.row.className = `sys-row ${level}`;
+      r.fill.style.width = `${pct}%`;
+      r.val.textContent = isTemp ? `${Math.round(v)}°` : `${Math.round(v)}%`;
+      r.row.title = `${st.attributes.friendly_name || r.entity}: ${st.state}${st.attributes.unit_of_measurement || ""}`;
+    }
+    for (const t of s.tiles) {
+      const { st, v } = num(t.entity);
+      if (Number.isNaN(v)) {
+        t.v.textContent = st ? "--" : "?";
+        t.tile.className = "sys-tile dead";
+        t.tile.title = st ? `${t.entity}: ${st.state}` : `${t.entity} not found`;
+        continue;
+      }
+      let level = "";
+      let text = String(Math.round(v));
+      if (t.kind === "latency") {
+        level = v >= 100 ? "bad" : v >= 50 ? "warn" : "ok";
+        text = `${Math.round(v)} ms`;
+      } else if (t.kind === "temp") {
+        level = v >= 80 ? "bad" : v >= 70 ? "warn" : "";
+        text = `${Math.round(v)}°`;
+      }
+      t.tile.className = `sys-tile ${level}`;
+      t.v.textContent = text;
+      t.tile.title = `${st.attributes.friendly_name || t.entity}: ${st.state}${st.attributes.unit_of_measurement ? " " + st.attributes.unit_of_measurement : ""}`;
+    }
   }
 
   _buildThermo(cfg) {
@@ -1728,6 +1855,7 @@ class HomeViewCard extends HTMLElement {
     this._renderGlucose();
     this._renderWeather();
     for (const th of this._thermos || []) this._renderThermo(th);
+    this._renderSys();
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }
