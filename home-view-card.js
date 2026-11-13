@@ -1,4 +1,4 @@
-const VERSION = "0.7.1";
+const VERSION = "0.8.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -139,6 +139,39 @@ const WEATHER_LABEL = {
   rainy: "Rain", snowy: "Snow", "snowy-rainy": "Sleet", sunny: "Sunny", windy: "Windy", "windy-variant": "Windy",
 };
 
+const APP_NAMES = {
+  "com.plexapp.android": "Plex",
+  "com.netflix.ninja": "Netflix",
+  "com.netflix.mediaclient": "Netflix",
+  "com.google.android.youtube.tv": "YouTube",
+  "com.google.android.youtube.tvkids": "YouTube Kids",
+  "com.amazon.amazonvideo.livingroom": "Prime Video",
+  "com.disney.disneyplus": "Disney+",
+  "com.hulu.livingroomplus": "Hulu",
+  "com.spotify.tv.android": "Spotify",
+  "com.hbo.hbonow": "Max",
+  "com.wbd.stream": "Max",
+  "com.apple.atve.androidtv.appletv": "Apple TV",
+  "com.peacocktv.peacockandroid": "Peacock",
+  "com.cbs.ott": "Paramount+",
+  "com.google.android.tvlauncher": "Home",
+  "com.google.android.apps.tv.launcherx": "Home",
+  "tv.twitch.android.app": "Twitch",
+  "com.sling": "Sling",
+  "com.google.android.youtube.tvunplugged": "YouTube TV",
+  "org.jellyfin.androidtv": "Jellyfin",
+  "org.xbmc.kodi": "Kodi",
+};
+
+function appName(v) {
+  if (!v) return v;
+  if (APP_NAMES[v]) return APP_NAMES[v];
+  if (!/^[a-z0-9_]+(\.[a-z0-9_]+)+$/i.test(v)) return v;
+  const skip = new Set(["com", "org", "tv", "net", "android", "app", "androidtv", "atv", "google", "apps"]);
+  const part = v.split(".").find((p) => !skip.has(p.toLowerCase())) || v.split(".").pop();
+  return part.charAt(0).toUpperCase() + part.slice(1);
+}
+
 const DETECT_LABELS = {
   baby_cry: "Baby crying",
   person: "Person",
@@ -254,7 +287,7 @@ ha-card {
   display: flex; gap: 2px; width: fit-content; max-width: 100%; box-sizing: border-box; overflow-x: auto; scrollbar-width: none;
   margin: 0; padding: 3px; border-radius: 10px; background: rgba(255,255,255,0.05);
 }
-.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; margin-bottom: 12px; }
 .toolbar .tabs.hidden + .chips { margin-left: 0; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
@@ -262,7 +295,10 @@ ha-card {
   font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; flex: none;
 }
 .tab.on { background: var(--hv-accent); color: #fff; }
-.body { display: flex; flex-direction: column; gap: 14px; }
+.body { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "main" "side" "log"; gap: 14px; align-items: start; }
+.main { grid-area: main; min-width: 0; }
+.body > .side { grid-area: side; }
+.body > .log { grid-area: log; }
 .plan-wrap { min-width: 0; }
 .log {
   display: flex; flex-direction: column; box-sizing: border-box; max-height: 340px; padding: 10px 6px 6px;
@@ -385,10 +421,12 @@ ha-card {
 .np.idle .ctrl button:not(.pp) { opacity: 0.4; }
 .np.missing { opacity: 0.6; border-style: dashed; }
 @container hv-card (min-width: 860px) {
-  .body { flex-direction: row; align-items: flex-start; }
-  .plan-wrap { flex: 1 1 auto; }
-  .side { flex: none; width: var(--hv-log-width, 300px); }
-  .side .log { max-height: var(--hv-log-height, 460px); }
+  .body { grid-template-columns: minmax(0, 1fr) var(--hv-side-width, 300px); grid-template-areas: "main side" "main log"; grid-template-rows: auto 1fr; }
+  .body > .log { max-height: var(--hv-log-height, 460px); }
+}
+@container hv-card (min-width: 1240px) {
+  .body { grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px); grid-template-areas: "main log side"; grid-template-rows: auto; }
+  .body > .log { max-height: var(--hv-log-height, 86vh); }
 }
 .plan {
   position: relative; margin: 0;
@@ -632,10 +670,11 @@ class HomeViewCard extends HTMLElement {
       if (chip?.dataset.entity) this._moreInfo(chip.dataset.entity);
       else if (chip) this._setLayer(chip.dataset.layer);
     });
-    if (cfg.title) card.append(head);
+    const main = h("div", { class: "main" });
+    if (cfg.title) main.append(head);
 
     this._tabs = h("div", { class: "tabs" });
-    card.append(h("div", { class: "toolbar" }, this._tabs, this._chips));
+    main.append(h("div", { class: "toolbar" }, this._tabs, this._chips));
 
     const plan = h("div", { class: `plan${this._stacked ? " full" : ""}`, style: `--ratio:${W / H}` });
     const svg = s("svg", { class: "floor", viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" });
@@ -716,7 +755,8 @@ class HomeViewCard extends HTMLElement {
     });
 
     plan.append(svg, overlay);
-    const body = h("div", { class: "body" }, h("div", { class: "plan-wrap" }, plan));
+    main.append(h("div", { class: "plan-wrap" }, plan));
+    const body = h("div", { class: "body" }, main);
     const side = h("div", { class: "side" });
     this._watch = this._watchList();
     this._log = null;
@@ -730,7 +770,7 @@ class HomeViewCard extends HTMLElement {
     if (cfg.log !== false && this._watch.size) {
       this._logList = h("ul");
       this._log = h("aside", { class: "log" }, h("h3", {}, cfg.log_title || "Activity"), this._logList);
-      side.append(this._log);
+      body.append(this._log);
       this._logKey = "";
     }
     if (side.childElementCount) body.append(side);
@@ -764,9 +804,14 @@ class HomeViewCard extends HTMLElement {
     const low = c.low ?? (mmol ? 3.9 : 70);
     const high = c.high ?? (mmol ? 10 : 180);
     const urgent = c.urgent_low ?? (mmol ? 3.1 : 55);
-    const v = parseFloat(st.state);
+    let v = parseFloat(st.state);
+    let lastKnown = false;
+    if (Number.isNaN(v) && this._glPoints?.length) {
+      v = this._glPoints[this._glPoints.length - 1][1];
+      lastKnown = true;
+    }
     const seen = Date.parse(st.last_reported || st.last_updated || st.last_changed);
-    const stale = Number.isNaN(v) || Date.now() - seen > (c.stale_minutes ?? 15) * 60000;
+    const stale = lastKnown || Number.isNaN(v) || Date.now() - seen > (c.stale_minutes ?? 15) * 60000;
     const trendState = this._hass.states[c.trend]?.state || "";
     const ARROWS = {
       rising_quickly: "⇈", rising: "↑", rising_slightly: "↗", steady: "→",
@@ -788,7 +833,7 @@ class HomeViewCard extends HTMLElement {
       label = "High";
     }
     return {
-      entity: c.entity, name: c.name || "Glucose", unit, mmol, low, high, value: v, seen, stale, range, label,
+      entity: c.entity, name: c.name || "Glucose", unit, mmol, low, high, value: v, seen, stale, range, label, lastKnown,
       text: Number.isNaN(v) ? "--" : mmol ? v.toFixed(1) : String(Math.round(v)),
       arrow: stale ? "" : ARROWS[trendState] || "",
       trend: trendState.replace(/_/g, " "),
@@ -854,11 +899,12 @@ class HomeViewCard extends HTMLElement {
     const st = this._hass.states[info.entity];
     const lc = Date.parse(st.last_changed);
     const last = this._glPoints[this._glPoints.length - 1];
-    if (!Number.isNaN(info.value) && (!last || last[0] < lc)) this._glPoints.push([lc, info.value]);
+    if (!info.lastKnown && !Number.isNaN(info.value) && (!last || last[0] < lc)) this._glPoints.push([lc, info.value]);
 
     g.el.className = `gl ${info.range}`;
     g.name.textContent = info.name;
-    const mins = Math.floor((Date.now() - info.seen) / 60000);
+    const seenAt = info.lastKnown ? this._glPoints[this._glPoints.length - 1][0] : info.seen;
+    const mins = Math.floor((Date.now() - seenAt) / 60000);
     g.age.textContent = mins < 1 ? "just now" : mins < 60 ? `${mins}m ago` : `${Math.floor(mins / 60)}h ago`;
     g.val.textContent = info.text;
     g.unit.textContent = info.unit;
@@ -1038,13 +1084,16 @@ class HomeViewCard extends HTMLElement {
     const spotify = /spotify/i.test(m.entity) || /spotify/i.test(a.source || "");
     m.el.className = `np ${active ? st.state : off ? "off" : "idle"}${spotify ? " spotify" : ""}${canPower ? " power" : ""}`;
     const name = m.cfg.name || a.friendly_name;
+    const app = appName(a.app_name);
+    const source = appName(a.source);
     m.title.textContent = off
       ? "Off"
       : active
-        ? a.media_title || a.app_name || a.source || "Playing"
-        : a.app_name || (canPower ? "On" : "Nothing playing");
+        ? a.media_title || app || source || "Playing"
+        : app || (canPower ? "On" : "Nothing playing");
     m.artist.textContent = active ? [a.media_series_title || a.media_artist, a.media_album_name].filter(Boolean).join(" · ") : "";
-    m.src.textContent = [name, !off && a.source && a.source !== m.title.textContent ? a.source : null].filter(Boolean).join(" · ");
+    const via = !off && (source || app);
+    m.src.textContent = [name, via && via !== m.title.textContent ? via : null].filter(Boolean).join(" · ");
     const pic = active && a.entity_picture ? (this._hass.hassUrl ? this._hass.hassUrl(a.entity_picture) : a.entity_picture) : null;
     if (pic !== m.pic) {
       m.pic = pic;

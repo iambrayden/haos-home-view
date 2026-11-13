@@ -6,7 +6,7 @@
 <title>Home View Demo</title>
 <style>
   body { margin: 0; padding: 16px; background: #0b0c0e; color: #e6edf2; font-family: system-ui, sans-serif; }
-  main { max-width: 1200px; margin: 0 auto; }
+  main { max-width: 1800px; margin: 0 auto; }
   dialog { background: #1d2127; color: #e6edf2; border: 1px solid #333; border-radius: 12px; min-width: 280px; max-width: 90vw; }
   dialog img { width: 100%; border-radius: 8px; }
   dialog pre { font-size: 12px; white-space: pre-wrap; }
@@ -62,7 +62,7 @@ const states = {
   "sensor.dexcom_glucose_trend": st("rising_slightly"),
   "weather.forecast_home": st("partlycloudy", { friendly_name: "Home", temperature: 64, humidity: 52, wind_speed: 9, wind_speed_unit: "mph", temperature_unit: "°F" }),
   "sun.sun": st("above_horizon"),
-  "media_player.bedroom_tv_2": st("playing", { friendly_name: "Bedroom TV", source: "Netflix", app_name: "Netflix", media_title: "The Great British Baking Show", media_series_title: "Season 5", supported_features: 152463, volume_level: 0.2 }),
+  "media_player.bedroom_tv_2": st("playing", { friendly_name: "Bedroom TV", source: "com.plexapp.android", app_name: "com.plexapp.android", media_title: "The Great British Baking Show", media_series_title: "Season 5", supported_features: 152463, volume_level: 0.2 }),
   "sensor.living_room_temperature": st("69.4", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.living_room_humidity": st("44", { device_class: "humidity", unit_of_measurement: "%" }),
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
