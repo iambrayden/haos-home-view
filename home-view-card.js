@@ -1,4 +1,4 @@
-const VERSION = "0.11.2";
+const VERSION = "0.11.3";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -56,6 +56,9 @@ const DEFAULT_CONFIG = {
     {name:"Sonarr",cpu:"sensor.tv_herrell_us_cpu_usage",memory:"sensor.tv_herrell_us_memory_usage"},
     {name:"Radarr",cpu:"sensor.movies_herrell_us_cpu_usage",memory:"sensor.movies_herrell_us_memory_usage"},
     {name:"Immich",cpu:"sensor.photos_herrell_us_cpu_usage",memory:"sensor.photos_herrell_us_memory_usage",disk:"sensor.photos_herrell_us_disk_usage"},
+  ],
+  stats: [
+    {name:"Overseerr",tiles:[{entity:"sensor.seerr_pending_requests",name:"Pending",warn_above:0},{entity:"sensor.seerr_processing_requests",name:"Active"},{entity:"sensor.seerr_open_issues",name:"Issues",bad_above:0}]},
   ],
   network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}],clients:"sensor.udm_pro_clients",temperature:"sensor.udm_pro_temperature",temperature_name:"UDM Pro"},
   rooms: [
@@ -1236,18 +1239,32 @@ class HomeViewCard extends HTMLElement {
       }
       el.append(h("div", { class: "sys-sub" }, cfg.servers_title || "Servers"), table);
     }
+    let grid;
+    const add = (entity, label, kind, extra = {}) => {
+      if (!entity) return;
+      const v = h("span", { class: "v" });
+      const tile = h("button", { class: "sys-tile" }, h("span", { class: "k" }, label), v);
+      tile.addEventListener("click", () => this._moreInfo(entity));
+      grid.append(tile);
+      tiles.push({ entity, kind, tile, v, ...extra });
+    };
+    for (const group of [].concat(cfg.stats || [])) {
+      el.append(h("div", { class: "sys-sub" }, group.name || "Stats"));
+      grid = h("div", { class: "sys-net" });
+      for (const x of [].concat(group.tiles || [])) {
+        const tcfg = typeof x === "string" ? { entity: x } : x;
+        add(tcfg.entity, tcfg.name || this._hass?.states[tcfg.entity]?.attributes.friendly_name || tcfg.entity, "count", {
+          warnAbove: tcfg.warn_above,
+          badAbove: tcfg.bad_above,
+          unit: tcfg.unit,
+        });
+      }
+      el.append(grid);
+    }
     const net = cfg.network;
     if (net) {
       el.append(h("div", { class: "sys-sub" }, net.name || "Network"));
-      const grid = h("div", { class: "sys-net" });
-      const add = (entity, label, kind) => {
-        if (!entity) return;
-        const v = h("span", { class: "v" });
-        const tile = h("button", { class: "sys-tile" }, h("span", { class: "k" }, label), v);
-        tile.addEventListener("click", () => this._moreInfo(entity));
-        grid.append(tile);
-        tiles.push({ entity, kind, tile, v });
-      };
+      grid = h("div", { class: "sys-net" });
       for (const l of [].concat(net.latency || [])) {
         const x = typeof l === "string" ? { entity: l } : l;
         add(x.entity, x.name || (x.entity.match(/(cloudflare|google|microsoft|quad9|opendns)/i)?.[1] || "Latency").replace(/^./, (c) => c.toUpperCase()), "latency");
@@ -1297,6 +1314,9 @@ class HomeViewCard extends HTMLElement {
       if (t.kind === "latency") {
         level = v >= 100 ? "bad" : v >= 50 ? "warn" : "ok";
         text = `${Math.round(v)} ms`;
+      } else if (t.kind === "count") {
+        level = t.badAbove != null && v > t.badAbove ? "bad" : t.warnAbove != null && v > t.warnAbove ? "warn" : t.badAbove != null || t.warnAbove != null ? "ok" : "";
+        text = `${Math.round(v)}${t.unit ? ` ${t.unit}` : ""}`;
       } else if (t.kind === "temp") {
         level = v >= 80 ? "bad" : v >= 70 ? "warn" : "";
         text = `${Math.round(v)}°`;

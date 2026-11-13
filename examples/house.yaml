@@ -53,6 +53,18 @@ server:
     memory: sensor.photos_herrell_us_memory_usage
     disk: sensor.photos_herrell_us_disk_usage
 
+stats:
+  - name: Overseerr
+    tiles:
+      - entity: sensor.seerr_pending_requests
+        name: Pending
+        warn_above: 0
+      - entity: sensor.seerr_processing_requests
+        name: Active
+      - entity: sensor.seerr_open_issues
+        name: Issues
+        bad_above: 0
+
 network:
   latency:
     - entity: sensor.udm_pro_cloudflare_wan_latency

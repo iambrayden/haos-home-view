@@ -67,6 +67,7 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `climate` | | One or more thermostats as a panel: current temperature and humidity, heating/cooling status, − / + target controls and mode buttons. Use `{entity, name, humidity}` to set a humidity sensor. |
 | `server` | | A server (or list) as bars: `{name, cpu, memory, disk, temperature}`. Green under 60%, amber under 85%, red above. |
 | `network` | | Network tiles: `{latency: [entity or {entity, name}], clients, temperature, temperature_name}`. Latency turns amber at 50 ms and red at 100 ms. On wide screens this box sits beside the map. |
+| `stats` | | Extra tile groups for the server box, e.g. Overseerr: `[{name, tiles: [{entity, name, warn_above, bad_above}]}]`. A tile turns amber above `warn_above` and red above `bad_above`. |
 | `weather` | | A `weather` entity shown with current conditions and a daily forecast |
 | `forecast_days` | `5` | Days in the forecast row |
 | `log` | `true` | Activity feed of door, motion and camera events. Sits to the right of the plan on wide screens and below it on narrow ones. |
