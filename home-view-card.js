@@ -1,4 +1,4 @@
-const VERSION = "0.9.2";
+const VERSION = "0.9.3";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -521,7 +521,29 @@ ha-card {
 }
 @container hv-card (min-width: 1240px) {
   .body { grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px); grid-template-areas: "main log side"; grid-template-rows: auto; }
-  .body > .log { max-height: var(--hv-log-height, 86vh); }
+  .body > .log, .body > .side { max-height: var(--hv-fit-height, calc(100vh - 96px)); }
+  .body > .side { overflow-y: auto; scrollbar-width: thin; padding-right: 2px; }
+  .plan { width: min(100%, calc(var(--hv-max-height, calc(100vh - 200px)) * var(--ratio))); }
+  .side { gap: 10px; }
+  .gl, .wx, .th { padding: 10px 12px; }
+  .gl-val { font-size: 34px; }
+  .gl-main { margin: 2px 0 4px; }
+  .gl-spark { height: 40px; }
+  .wx-ico svg { width: 34px; height: 34px; }
+  .wx-temp { font-size: 24px; }
+  .wx-days { margin-top: 8px; padding-top: 8px; }
+  .wx-dico svg { width: 18px; height: 18px; }
+  .np { grid-template-columns: 48px minmax(0, 1fr); gap: 8px 10px; padding: 10px 12px; }
+  .np .art { width: 48px; height: 48px; }
+  .np .t { font-size: 13px; }
+  .np .ctrl button { width: 32px; height: 32px; }
+  .np .ctrl svg { width: 20px; height: 20px; }
+  .np .ctrl .pp { width: 36px; height: 36px; }
+  .th-cur { font-size: 30px; }
+  .th-row { margin: 6px 0 8px; }
+  .th-ctl button { width: 28px; height: 28px; }
+  .th-set { font-size: 18px; }
+  .th-modes button { padding: 5px 4px; }
 }
 .plan {
   position: relative; margin: 0;
