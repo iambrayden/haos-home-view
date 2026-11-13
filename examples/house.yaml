@@ -27,7 +27,8 @@ media:
   - entity: media_player.bedroom_tv_2
     name: Bedroom TV
     sources:
-      - media_player.bedroom_tv_3
+      - entity: media_player.bedroom_tv_3
+        app: Jellyfin
 
 climate:
   entity: climate.living_room

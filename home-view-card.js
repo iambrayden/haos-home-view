@@ -1,4 +1,4 @@
-const VERSION = "0.9.0";
+const VERSION = "0.9.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -48,7 +48,7 @@ const DEFAULT_CONFIG = {
   ],
   glucose: {entity:"sensor.dexcom_glucose_value",trend:"sensor.dexcom_glucose_trend",low:70,high:180},
   weather: "weather.forecast_home",
-  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:["media_player.bedroom_tv_3"]}],
+  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:[{entity:"media_player.bedroom_tv_3",app:"Jellyfin"}]}],
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
@@ -1300,7 +1300,8 @@ class HomeViewCard extends HTMLElement {
     }
     const a = st.attributes;
     const linked = [].concat(m.cfg.sources || [])
-      .map((id) => [id, this._hass.states[id]])
+      .map((x) => (typeof x === "string" ? { entity: x } : x))
+      .map((x) => [x.entity, this._hass.states[x.entity], x.app])
       .find(([, s]) => s && (s.state === "playing" || s.state === "paused"));
     m.target = linked ? linked[0] : null;
     const play = linked ? linked[1] : st;
@@ -1315,7 +1316,7 @@ class HomeViewCard extends HTMLElement {
     const source = appName(a.source);
     const looksLikeApp = (v) => v && (APP_LOGOS[appKey(appName(v))] || /^[a-z0-9_]+(\.[a-z0-9_]+)+$/i.test(v));
     const hay = linked ? [linked[0], linked[1].attributes.friendly_name, linked[1].attributes.app_name, linked[1].attributes.source].join(" ") : "";
-    const linkedBrand = linked && (/plex/i.test(hay) ? "Plex" : /jellyfin/i.test(hay) ? "Jellyfin" : /emby/i.test(hay) ? "Emby" : null);
+    const linkedBrand = linked && (linked[2] || (/plex/i.test(hay) ? "Plex" : /jellyfin/i.test(hay) ? "Jellyfin" : /emby/i.test(hay) ? "Emby" : null));
     const brand = spotify ? "Spotify" : linkedBrand || app || (looksLikeApp(a.source) ? source : null);
     const episode = pa.media_series_title
       ? [pa.media_season != null ? `S${pa.media_season}` : null, pa.media_episode != null ? `E${pa.media_episode}` : null, pa.media_title].filter(Boolean).join(" · ")
