@@ -1,4 +1,4 @@
-const VERSION = "0.9.3";
+const VERSION = "0.10.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -40,8 +40,8 @@ const ICON = {
 
 const DEFAULT_CONFIG = {
   title: "Home",
-  view_box: [55,-115,1460,1060],
-  stack: {split_x:780,move:[-760,920],below:700},
+  view_box: [-170,0,1680,805],
+  stack: {split_x:780,move:[-760,830],below:700},
   labels: [
     {text:"Main Floor",x:575,y:18},
     {text:"Basement",x:1163,y:18},
@@ -59,7 +59,7 @@ const DEFAULT_CONFIG = {
     {rect:[376,47,422,95]},
     {name:"Hall",rect:[330,149,422,490],label_at:[376,420],motion:"binary_sensor.hallway1_motion",temperature:"sensor.living_room_temperature",humidity:"sensor.living_room_humidity"},
     {name:"Office",rect:[422,47,728,242],temperature:"sensor.temp_office_temperature",humidity:"sensor.temp_office_humidity"},
-    {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,264]},
+    {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,254]},
     {name:"Closet",rect:[422,428,508,497]},
     {name:"Stairs",rect:[508,428,728,497]},
     {name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},
@@ -91,11 +91,11 @@ const DEFAULT_CONFIG = {
   ],
   devices: [
     {entity:"climate.living_room",name:"Thermostat",x:376,y:250},
-    {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:376,y:-40,preview:true},
+    {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:-62,y:400,preview:true},
     {entity:"camera.westons_room_high_resolution_channel",name:"Weston's Room",detections:["binary_sensor.westons_room_baby_cry_detected","binary_sensor.westons_room_person_detected","binary_sensor.westons_room_animal_detected"],x:575,y:342,preview:true},
-    {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:160,y:-38,preview:true},
+    {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:-62,y:120,preview:true},
     {entity:"camera.living_room_high_resolution_channel",name:"Living Room",x:630,y:710,preview:true},
-    {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:160,y:874,preview:true},
+    {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:-62,y:680,preview:true},
     {entity:"camera.rack_01_front_mainstream",name:"Server Rack",motion:"binary_sensor.rack_01_rear_motion",x:1390,y:210,preview:true},
   ],
 };
@@ -317,6 +317,12 @@ ha-card {
   font-family: var(--paper-font-body1_-_font-family, Roboto, system-ui, sans-serif);
 }
 .head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; }
+.top-pad { display: none; }
+@container hv-card (min-width: 860px) {
+  .top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .top .head, .top .toolbar { margin: 0; }
+  .top-pad { display: block; }
+}
 .title { font-size: 18px; font-weight: 600; margin-right: auto; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
@@ -523,7 +529,7 @@ ha-card {
   .body { grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px); grid-template-areas: "main log side"; grid-template-rows: auto; }
   .body > .log, .body > .side { max-height: var(--hv-fit-height, calc(100vh - 96px)); }
   .body > .side { overflow-y: auto; scrollbar-width: thin; padding-right: 2px; }
-  .plan { width: min(100%, calc(var(--hv-max-height, calc(100vh - 200px)) * var(--ratio))); }
+  .plan { width: min(100%, calc(var(--hv-max-height, calc(100vh - 150px)) * var(--ratio))); }
   .side { gap: 10px; }
   .gl, .wx, .th { padding: 10px 12px; }
   .gl-val { font-size: 34px; }
@@ -789,10 +795,8 @@ class HomeViewCard extends HTMLElement {
       else if (chip) this._setLayer(chip.dataset.layer);
     });
     const main = h("div", { class: "main" });
-    if (cfg.title) main.append(head);
-
     this._tabs = h("div", { class: "tabs" });
-    main.append(h("div", { class: "toolbar" }, this._tabs, this._chips));
+    main.append(h("div", { class: "top" }, cfg.title ? head : h("div"), h("div", { class: "toolbar" }, this._tabs, this._chips), h("div", { class: "top-pad" })));
 
     const plan = h("div", { class: `plan${this._stacked ? " full" : ""}`, style: `--ratio:${W / H}` });
     const svg = s("svg", { class: "floor", viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" });

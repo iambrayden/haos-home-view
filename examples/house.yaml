@@ -1,9 +1,9 @@
 type: custom:home-view-card
 title: Home
-view_box: [55, -115, 1460, 1060]
+view_box: [-170, 0, 1680, 805]
 stack:
   split_x: 780
-  move: [-760, 920]
+  move: [-760, 830]
   below: 700
 
 labels:
@@ -59,7 +59,7 @@ rooms:
     humidity: sensor.temp_office_humidity
   - name: Weston's Room
     rect: [422, 242, 728, 428]
-    label_at: [575, 264]
+    label_at: [575, 254]
   - name: Closet
     rect: [422, 428, 508, 497]
   - name: Stairs
@@ -164,8 +164,8 @@ devices:
     y: 250
   - entity: camera.hallway_high_resolution_channel
     name: Hallway
-    x: 376
-    y: -40
+    x: -62
+    y: 400
     preview: true
   - entity: camera.westons_room_high_resolution_channel
     name: Weston's Room
@@ -183,8 +183,8 @@ devices:
       - binary_sensor.backyard_person_detected
       - binary_sensor.backyard_vehicle_detected
       - binary_sensor.backyard_animal_detected
-    x: 160
-    y: -38
+    x: -62
+    y: 120
     preview: true
   - entity: camera.living_room_high_resolution_channel
     name: Living Room
@@ -198,8 +198,8 @@ devices:
       - binary_sensor.driveway_person_detected
       - binary_sensor.driveway_vehicle_detected
       - binary_sensor.driveway_animal_detected
-    x: 160
-    y: 874
+    x: -62
+    y: 680
     preview: true
   - entity: camera.rack_01_front_mainstream
     name: Server Rack
