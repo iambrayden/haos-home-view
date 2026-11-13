@@ -29,7 +29,13 @@ A Lovelace card that draws your house as a blueprint and puts your devices on it
 
 ## Setup
 
-Add a card in YAML mode and paste [`examples/house.yaml`](examples/house.yaml). Then change the entity IDs to yours. Any entity that doesn't exist shows as a dashed marker so it's easy to spot.
+The card has the house in [`examples/house.yaml`](examples/house.yaml) built in. A card with only this line uses it, so every HACS update brings the latest layout and devices with it:
+
+```yaml
+type: custom:home-view-card
+```
+
+Any key you add overrides the built-in one, for example `title: Upstairs` or your own `devices:` list. To draw a different house, give the card its own `walls` and `rooms` and the built-in config is ignored entirely. Any entity that doesn't exist shows as a dashed marker so it's easy to spot.
 
 The plan works best in a **Panel** view or as a full-width card in a **Sections** view.
 
@@ -57,7 +63,9 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `grid` | `true` | Blueprint grid behind the plan |
 | `camera_refresh` | `10` | Seconds between camera preview refreshes |
 | `glucose` | | A CGM reading (e.g. Dexcom). Either the value sensor, or `{entity, trend, low, high, urgent_low, hours, stale_minutes}`. Shows the number, trend arrow, a range-colored status and a graph of the last few hours, plus a chip next to the tabs. |
-| `media` | | A `media_player` (e.g. Spotify) to show as a Now Playing panel with art, progress, previous/play/next and volume |
+| `media` | | One or more `media_player`s (Spotify, a TV, ...) shown as Now Playing panels with art, progress, previous/play/next and volume. Players that can turn on and off get a power button. Use `{entity, name}` to rename one. |
+| `weather` | | A `weather` entity shown with current conditions and a daily forecast |
+| `forecast_days` | `5` | Days in the forecast row |
 | `log` | `true` | Activity feed of door, motion and camera events. Sits to the right of the plan on wide screens and below it on narrow ones. |
 | `log_title` | `Activity` | Heading for the feed |
 | `log_hours` | `24` | How far back to load history when the card opens |

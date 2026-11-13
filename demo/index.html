@@ -60,12 +60,20 @@ const states = {
   "media_player.spotify": { state: "playing", last_changed: ago(3), attributes: { friendly_name: "Spotify", source: "Living Room Speaker", media_title: "Midnight City", media_artist: "M83", media_album_name: "Hurry Up, We're Dreaming", entity_picture: "album.svg", media_duration: 243, media_position: 61, media_position_updated_at: new Date().toISOString(), volume_level: 0.42 } },
   "sensor.dexcom_glucose_value": { state: "142", last_changed: ago(2), last_updated: ago(2), attributes: { unit_of_measurement: "mg/dL", friendly_name: "Glucose" } },
   "sensor.dexcom_glucose_trend": st("rising_slightly"),
+  "weather.forecast_home": st("partlycloudy", { friendly_name: "Home", temperature: 64, humidity: 52, wind_speed: 9, wind_speed_unit: "mph", temperature_unit: "°F" }),
+  "sun.sun": st("above_horizon"),
+  "media_player.bedroom_tv_2": st("playing", { friendly_name: "Bedroom TV", source: "Netflix", app_name: "Netflix", media_title: "The Great British Baking Show", media_series_title: "Season 5", supported_features: 152463, volume_level: 0.2 }),
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
 
 const card = document.getElementById("card");
-const push = () => { card.hass = { states: { ...states }, callService, callApi, hassUrl: (p) => p }; };
+const forecast = ["partlycloudy", "rainy", "pouring", "cloudy", "sunny", "sunny", "lightning-rainy"].map((condition, i) => {
+  const d = new Date(); d.setDate(d.getDate() + i); d.setHours(12, 0, 0, 0);
+  return { datetime: d.toISOString(), condition, temperature: 66 - i * 2 + (i % 3) * 4, templow: 48 - i + (i % 2) * 3, precipitation_probability: [10, 70, 90, 30, 0, 0, 60][i] };
+});
+const connection = { subscribeMessage: async (cb) => { setTimeout(() => cb({ type: "daily", forecast }), 50); return () => {}; } };
+const push = () => { card.hass = { states: { ...states }, callService, callApi, connection, hassUrl: (p) => p }; };
 
 async function callApi(method, path) {
   const ids = decodeURIComponent(path.split("filter_entity_id=")[1].split("&")[0]).split(",");
@@ -93,6 +101,7 @@ function callService(domain, service, data) {
   if (domain === "media_player" && cur) {
     const a = { ...cur.attributes };
     let state = cur.state;
+    if (service === "toggle") state = state === "off" ? "on" : "off";
     if (service === "media_play_pause") {
       if (state === "playing") a.media_position += (Date.now() - Date.parse(a.media_position_updated_at)) / 1000;
       state = state === "playing" ? "paused" : "playing";

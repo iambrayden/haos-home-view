@@ -20,7 +20,12 @@ glucose:
   low: 70
   high: 180
 
-media: media_player.spotify
+weather: weather.forecast_home
+
+media:
+  - media_player.spotify
+  - entity: media_player.bedroom_tv_2
+    name: Bedroom TV
 
 rooms:
   - name: Bedroom 1

@@ -1,4 +1,4 @@
-const VERSION = "0.6.0";
+const VERSION = "0.7.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -28,11 +28,73 @@ const ICON = {
   next: "M16,18H18V6H16M6,18L14.5,12L6,6V18Z",
   prev: "M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z",
   volume: "M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z",
+  tv: "M21,17H3V5H21M21,3H3A2,2 0 0,0 1,5V17A2,2 0 0,0 3,19H8V21H16V19H21A2,2 0 0,0 23,17V5A2,2 0 0,0 21,3Z",
   music: "M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z",
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
 
-const DEFAULT_PLAN = {view_box:[55,-115,1460,1060],stack:{split_x:780,move:[-760,920],below:700},labels:[{text:"Main Floor",x:575,y:18},{text:"Basement",x:1163,y:18}],rooms:[{name:"Bedroom 1",rect:[77,47,330,352]},{name:"Closet",rect:[77,352,149,490],vertical:true},{name:"Bath",rect:[149,352,330,490]},{name:"Closet",rect:[330,95,422,149]},{rect:[330,47,376,95]},{rect:[376,47,422,95]},{name:"Hall",rect:[330,149,422,490],label_at:[376,420]},{name:"Office",rect:[422,47,728,242]},{name:"Weston's Room",rect:[422,242,728,428],label_at:[575,256]},{name:"Closet",rect:[422,428,508,497]},{name:"Stairs",rect:[508,428,728,497]},{name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},{name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590]},{name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},{name:"Server Room",rect:[837,47,1490,494]},{name:"Basement",rect:[837,494,1490,787]}],walls:[[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],half_walls:[],openings:[{name:"Front Door",type:"door",line:[450,787,527,787]},{name:"Patio Door",type:"door",line:[170,787,305,787]},{name:"Side Door",type:"door",line:[728,545,728,620]},{name:"Bedroom Sliding",type:"door",line:[152,47,250,47]},{name:"Office Window",type:"window",line:[575,47,675,47]},{name:"Bedroom 1 Door",line:[330,164,330,221]},{name:"Hall Closet Door",line:[350,149,402,149]},{name:"Bedroom 1 Closet Door",line:[330,55,330,87]},{name:"Office Closet Door",line:[422,55,422,87]},{name:"Bedroom 1 Closet Door",line:[90,352,136,352]},{name:"Bath Door",line:[330,372,330,430]},{name:"Office Door",type:"door",line:[422,164,422,221]},{name:"Weston's Room Door",line:[422,263,422,320]},{name:"Weston's Room Window",type:"window",line:[728,263,728,320]},{name:"Closet Door",line:[447,497,495,497]},{name:"Basement Door",type:"door",line:[657,497,710,497]},{name:"Basement Door",line:[1096,494,1200,494]}]};
+const DEFAULT_CONFIG = {
+  title: "Home",
+  view_box: [55,-115,1460,1060],
+  stack: {split_x:780,move:[-760,920],below:700},
+  labels: [
+    {text:"Main Floor",x:575,y:18},
+    {text:"Basement",x:1163,y:18},
+  ],
+  glucose: {entity:"sensor.dexcom_glucose_value",trend:"sensor.dexcom_glucose_trend",low:70,high:180},
+  weather: "weather.forecast_home",
+  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV"}],
+  rooms: [
+    {name:"Bedroom 1",rect:[77,47,330,352]},
+    {name:"Closet",rect:[77,352,149,490],vertical:true},
+    {name:"Bath",rect:[149,352,330,490]},
+    {name:"Closet",rect:[330,95,422,149]},
+    {rect:[330,47,376,95]},
+    {rect:[376,47,422,95]},
+    {name:"Hall",rect:[330,149,422,490],label_at:[376,420],motion:"binary_sensor.hallway1_motion"},
+    {name:"Office",rect:[422,47,728,242],temperature:"sensor.temp_office_temperature",humidity:"sensor.temp_office_humidity"},
+    {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,264]},
+    {name:"Closet",rect:[422,428,508,497]},
+    {name:"Stairs",rect:[508,428,728,497]},
+    {name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},
+    {name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590],temperature:"sensor.temp_livingrm_temperature",humidity:"sensor.temp_livingrm_humidity",motion:"binary_sensor.living_room_motion"},
+    {name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},
+    {name:"Server Room",rect:[837,47,1490,494],temperature:"sensor.temp_serverrack_temperature",humidity:"sensor.temp_serverrack_humidity"},
+    {name:"Basement",rect:[837,494,1490,787]},
+  ],
+  walls: [[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],
+  half_walls: [],
+  openings: [
+    {name:"Front Door",type:"door",line:[450,787,527,787],entity:"binary_sensor.door_front_contact"},
+    {name:"Patio Door",type:"door",line:[170,787,305,787]},
+    {name:"Side Door",type:"door",line:[728,545,728,620]},
+    {name:"Bedroom Sliding",type:"door",line:[152,47,250,47],entity:"binary_sensor.door_bedroomsliding_contact"},
+    {name:"Office Window",type:"window",line:[575,47,675,47]},
+    {name:"Bedroom 1 Door",line:[330,164,330,221]},
+    {name:"Hall Closet Door",line:[350,149,402,149]},
+    {name:"Bedroom 1 Closet Door",line:[330,55,330,87]},
+    {name:"Office Closet Door",line:[422,55,422,87]},
+    {name:"Bedroom 1 Closet Door",line:[90,352,136,352]},
+    {name:"Bath Door",line:[330,372,330,430]},
+    {name:"Office Door",type:"door",line:[422,164,422,221],entity:"binary_sensor.door_office_contact"},
+    {name:"Weston's Room Door",line:[422,263,422,320]},
+    {name:"Weston's Room Window",type:"window",line:[728,263,728,320]},
+    {name:"Closet Door",line:[447,497,495,497]},
+    {name:"Basement Door",type:"door",line:[657,497,710,497],entity:"binary_sensor.door_basement_contact"},
+    {name:"Basement Door",line:[1096,494,1200,494]},
+  ],
+  devices: [
+    {entity:"climate.thermostat",x:376,y:250},
+    {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:376,y:-40,preview:true},
+    {entity:"camera.westons_room_high_resolution_channel",name:"Weston's Room",detections:["binary_sensor.westons_room_baby_cry_detected","binary_sensor.westons_room_person_detected","binary_sensor.westons_room_animal_detected"],x:575,y:342,preview:true},
+    {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:160,y:-38,preview:true},
+    {entity:"camera.living_room_high_resolution_channel",name:"Living Room",x:630,y:710,preview:true},
+    {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:160,y:874,preview:true},
+    {entity:"camera.rack_01_front_mainstream",name:"Server Rack",motion:"binary_sensor.rack_01_rear_motion",x:1390,y:210,preview:true},
+    {entity:"binary_sensor.hallway1_motion",x:376,y:330},
+    {entity:"binary_sensor.living_room_motion",x:610,y:535},
+  ],
+};
 
 const OPEN_STATES = new Set(["on", "open", "opening", "closing", "unlocked", "unlocking", "jammed"]);
 const DEAD_STATES = new Set(["unavailable", "unknown"]);
@@ -49,6 +111,32 @@ const LAYER_NAMES = {
   lights: "Lights",
   motion: "Motion",
   sensors: "Sensors",
+};
+
+const WEATHER_ICON = {
+  "sunny": "M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M3.36,17L5.12,13.23C5.26,14 5.53,14.78 5.95,15.5C6.37,16.24 6.91,16.86 7.5,17.37L3.36,17M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7M20.64,17L16.5,17.36C17.09,16.85 17.62,16.22 18.04,15.5C18.46,14.77 18.73,14 18.87,13.21L20.64,17M12,22L9.59,18.56C10.33,18.83 11.14,19 12,19C12.82,19 13.63,18.83 14.37,18.56L12,22Z",
+  "clear-night": "M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z",
+  "cloudy": "M6,19A5,5 0 0,1 1,14A5,5 0 0,1 6,9C7,6.65 9.3,5 12,5C15.43,5 18.24,7.66 18.5,11.03L19,11A4,4 0 0,1 23,15A4,4 0 0,1 19,19H6M19,13H17V12A5,5 0 0,0 12,7C9.5,7 7.45,8.82 7.06,11.19C6.73,11.07 6.37,11 6,11A3,3 0 0,0 3,14A3,3 0 0,0 6,17H19A2,2 0 0,0 21,15A2,2 0 0,0 19,13Z",
+  "partlycloudy": "M12.74,5.47C15.1,6.5 16.35,9.03 15.92,11.46C17.19,12.56 18,14.19 18,16V16.17C18.31,16.06 18.65,16 19,16A3,3 0 0,1 22,19A3,3 0 0,1 19,22H6A4,4 0 0,1 2,18A4,4 0 0,1 6,14H6.27C5,12.45 4.6,10.24 5.5,8.26C6.72,5.5 9.97,4.24 12.74,5.47M11.93,7.3C10.16,6.5 8.09,7.31 7.31,9.07C6.85,10.09 6.93,11.22 7.41,12.13C8.5,10.83 10.16,10 12,10C12.7,10 13.38,10.12 14,10.34C13.94,9.06 13.18,7.86 11.93,7.3M13.55,3.64C13,3.4 12.45,3.23 11.88,3.12L14.37,1.82L15.27,4.71C14.76,4.29 14.19,3.93 13.55,3.64M6.09,4.44C5.6,4.79 5.17,5.19 4.8,5.63L4.91,2.82L7.87,3.5C7.25,3.71 6.65,4.03 6.09,4.44M18,9.71C17.91,9.12 17.78,8.55 17.59,8L19.97,9.5L17.92,11.73C18.03,11.08 18.05,10.4 18,9.71M3.04,11.3C3.11,11.9 3.24,12.47 3.43,13L1.06,11.5L3.1,9.28C3,9.93 2.97,10.61 3.04,11.3M19,18H16V16A4,4 0 0,0 12,12A4,4 0 0,0 8,16H6A2,2 0 0,0 4,18A2,2 0 0,0 6,20H19A1,1 0 0,0 20,19A1,1 0 0,0 19,18Z",
+  "partlycloudy-night": "M22,10.28C21.74,10.3 21.5,10.31 21.26,10.31C19.32,10.31 17.39,9.57 15.91,8.09C14.25,6.44 13.5,4.19 13.72,2C13.77,1.53 13.22,1 12.71,1C12.57,1 12.44,1.04 12.32,1.12C12,1.36 11.66,1.64 11.36,1.94C9.05,4.24 8.55,7.66 9.84,10.46C8.31,11.11 7.13,12.43 6.69,14.06L6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22H19A3,3 0 0,0 22,19A3,3 0 0,0 19,16C18.42,16 17.88,16.16 17.42,16.45L17.5,15.5C17.5,15.28 17.5,15.05 17.46,14.83C19.14,14.67 20.77,13.94 22.06,12.64C22.38,12.34 22.64,12 22.88,11.68C23.27,11.13 22.65,10.28 22.04,10.28M19,18A1,1 0 0,1 20,19A1,1 0 0,1 19,20H6A2,2 0 0,1 4,18A2,2 0 0,1 6,16H8.5V15.5C8.5,13.94 9.53,12.64 10.94,12.18C11.1,12.13 11.26,12.09 11.43,12.06C11.61,12.03 11.8,12 12,12C12.23,12 12.45,12.03 12.66,12.07C12.73,12.08 12.8,12.1 12.87,12.13C13,12.16 13.15,12.2 13.28,12.25C13.36,12.28 13.44,12.32 13.5,12.36C13.63,12.41 13.74,12.47 13.84,12.54C13.92,12.59 14,12.64 14.07,12.7C14.17,12.77 14.25,12.84 14.34,12.92C14.41,13 14.5,13.05 14.55,13.12C14.63,13.2 14.69,13.29 14.76,13.37C14.82,13.45 14.89,13.53 14.94,13.62C15,13.71 15.04,13.8 15.09,13.9C15.14,14 15.2,14.08 15.24,14.18C15.41,14.59 15.5,15.03 15.5,15.5V18M16.83,12.86C15.9,11.16 14.08,10 12,10H11.87C11.41,9.19 11.14,8.26 11.14,7.29C11.14,6.31 11.39,5.37 11.86,4.55C12.21,6.41 13.12,8.14 14.5,9.5C15.86,10.88 17.58,11.79 19.45,12.14C18.66,12.6 17.76,12.84 16.83,12.86Z",
+  "rainy": "M6,14.03A1,1 0 0,1 7,15.03C7,15.58 6.55,16.03 6,16.03C3.24,16.03 1,13.79 1,11.03C1,8.27 3.24,6.03 6,6.03C7,3.68 9.3,2.03 12,2.03C15.43,2.03 18.24,4.69 18.5,8.06L19,8.03A4,4 0 0,1 23,12.03C23,14.23 21.21,16.03 19,16.03H18C17.45,16.03 17,15.58 17,15.03C17,14.47 17.45,14.03 18,14.03H19A2,2 0 0,0 21,12.03A2,2 0 0,0 19,10.03H17V9.03C17,6.27 14.76,4.03 12,4.03C9.5,4.03 7.45,5.84 7.06,8.21C6.73,8.09 6.37,8.03 6,8.03A3,3 0 0,0 3,11.03A3,3 0 0,0 6,14.03M12,14.15C12.18,14.39 12.37,14.66 12.56,14.94C13,15.56 14,17.03 14,18C14,19.11 13.1,20 12,20A2,2 0 0,1 10,18C10,17.03 11,15.56 11.44,14.94C11.63,14.66 11.82,14.4 12,14.15M12,11.03L11.5,11.59C11.5,11.59 10.65,12.55 9.79,13.81C8.93,15.06 8,16.56 8,18A4,4 0 0,0 12,22A4,4 0 0,0 16,18C16,16.56 15.07,15.06 14.21,13.81C13.35,12.55 12.5,11.59 12.5,11.59",
+  "pouring": "M9,12C9.53,12.14 9.85,12.69 9.71,13.22L8.41,18.05C8.27,18.59 7.72,18.9 7.19,18.76C6.65,18.62 6.34,18.07 6.5,17.54L7.78,12.71C7.92,12.17 8.47,11.86 9,12M13,12C13.53,12.14 13.85,12.69 13.71,13.22L11.64,20.95C11.5,21.5 10.95,21.8 10.41,21.66C9.88,21.5 9.56,20.97 9.7,20.43L11.78,12.71C11.92,12.17 12.47,11.86 13,12M17,12C17.53,12.14 17.85,12.69 17.71,13.22L16.41,18.05C16.27,18.59 15.72,18.9 15.19,18.76C14.65,18.62 14.34,18.07 14.5,17.54L15.78,12.71C15.92,12.17 16.47,11.86 17,12M17,10V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,12.11 3.6,13.08 4.5,13.6V13.59C5,13.87 5.14,14.5 4.87,14.96C4.59,15.43 4,15.6 3.5,15.32V15.33C2,14.47 1,12.85 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12C23,13.5 22.2,14.77 21,15.46V15.46C20.5,15.73 19.91,15.57 19.63,15.09C19.36,14.61 19.5,14 20,13.72V13.73C20.6,13.39 21,12.74 21,12A2,2 0 0,0 19,10H17Z",
+  "snowy": "M6,14A1,1 0 0,1 7,15A1,1 0 0,1 6,16A5,5 0 0,1 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16H18A1,1 0 0,1 17,15A1,1 0 0,1 18,14H19A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11A3,3 0 0,0 6,14M7.88,18.07L10.07,17.5L8.46,15.88C8.07,15.5 8.07,14.86 8.46,14.46C8.85,14.07 9.5,14.07 9.88,14.46L11.5,16.07L12.07,13.88C12.21,13.34 12.76,13.03 13.29,13.17C13.83,13.31 14.14,13.86 14,14.4L13.41,16.59L15.6,16C16.14,15.86 16.69,16.17 16.83,16.71C16.97,17.24 16.66,17.79 16.12,17.93L13.93,18.5L15.54,20.12C15.93,20.5 15.93,21.15 15.54,21.54C15.15,21.93 14.5,21.93 14.12,21.54L12.5,19.93L11.93,22.12C11.79,22.66 11.24,22.97 10.71,22.83C10.17,22.69 9.86,22.14 10,21.6L10.59,19.41L8.4,20C7.86,20.14 7.31,19.83 7.17,19.29C7.03,18.76 7.34,18.21 7.88,18.07Z",
+  "snowy-rainy": "M18.5,18.67C18.5,19.96 17.5,21 16.25,21C15,21 14,19.96 14,18.67C14,17.12 16.25,14.5 16.25,14.5C16.25,14.5 18.5,17.12 18.5,18.67M4,17.36C3.86,16.82 4.18,16.25 4.73,16.11L7,15.5L5.33,13.86C4.93,13.46 4.93,12.81 5.33,12.4C5.73,12 6.4,12 6.79,12.4L8.45,14.05L9.04,11.8C9.18,11.24 9.75,10.92 10.29,11.07C10.85,11.21 11.17,11.78 11,12.33L10.42,14.58L12.67,14C13.22,13.83 13.79,14.15 13.93,14.71C14.08,15.25 13.76,15.82 13.2,15.96L10.95,16.55L12.6,18.21C13,18.6 13,19.27 12.6,19.67C12.2,20.07 11.54,20.07 11.15,19.67L9.5,18L8.89,20.27C8.75,20.83 8.18,21.14 7.64,21C7.08,20.86 6.77,20.29 6.91,19.74L7.5,17.5L5.26,18.09C4.71,18.23 4.14,17.92 4,17.36M1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16A1,1 0 0,1 18,15A1,1 0 0,1 19,14A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,11.85 3.35,12.61 3.91,13.16C4.27,13.55 4.26,14.16 3.88,14.54C3.5,14.93 2.85,14.93 2.47,14.54C1.56,13.63 1,12.38 1,11Z",
+  "lightning": "M6,16A5,5 0 0,1 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16H18A1,1 0 0,1 17,15A1,1 0 0,1 18,14H19A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11A3,3 0 0,0 6,14H7A1,1 0 0,1 8,15A1,1 0 0,1 7,16H6M12,11H15L13,15H15L11.25,22L12,17H9.5L12,11Z",
+  "lightning-rainy": "M4.5,13.59C5,13.87 5.14,14.5 4.87,14.96C4.59,15.44 4,15.6 3.5,15.33V15.33C2,14.47 1,12.85 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16A1,1 0 0,1 18,15A1,1 0 0,1 19,14A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11C3,12.11 3.6,13.08 4.5,13.6V13.59M9.5,11H12.5L10.5,15H12.5L8.75,22L9.5,17H7L9.5,11M17.5,18.67C17.5,19.96 16.5,21 15.25,21C14,21 13,19.96 13,18.67C13,17.12 15.25,14.5 15.25,14.5C15.25,14.5 17.5,17.12 17.5,18.67Z",
+  "fog": "M3,15H13A1,1 0 0,1 14,16A1,1 0 0,1 13,17H3A1,1 0 0,1 2,16A1,1 0 0,1 3,15M16,15H21A1,1 0 0,1 22,16A1,1 0 0,1 21,17H16A1,1 0 0,1 15,16A1,1 0 0,1 16,15M1,12A5,5 0 0,1 6,7C7,4.65 9.3,3 12,3C15.43,3 18.24,5.66 18.5,9.03L19,9C21.19,9 22.97,10.76 23,13H21A2,2 0 0,0 19,11H17V10A5,5 0 0,0 12,5C9.5,5 7.45,6.82 7.06,9.19C6.73,9.07 6.37,9 6,9A3,3 0 0,0 3,12C3,12.35 3.06,12.69 3.17,13H1.1L1,12M3,19H5A1,1 0 0,1 6,20A1,1 0 0,1 5,21H3A1,1 0 0,1 2,20A1,1 0 0,1 3,19M8,19H21A1,1 0 0,1 22,20A1,1 0 0,1 21,21H8A1,1 0 0,1 7,20A1,1 0 0,1 8,19Z",
+  "windy": "M4,10A1,1 0 0,1 3,9A1,1 0 0,1 4,8H12A2,2 0 0,0 14,6A2,2 0 0,0 12,4C11.45,4 10.95,4.22 10.59,4.59C10.2,5 9.56,5 9.17,4.59C8.78,4.2 8.78,3.56 9.17,3.17C9.9,2.45 10.9,2 12,2A4,4 0 0,1 16,6A4,4 0 0,1 12,10H4M19,12A1,1 0 0,0 20,11A1,1 0 0,0 19,10C18.72,10 18.47,10.11 18.29,10.29C17.9,10.68 17.27,10.68 16.88,10.29C16.5,9.9 16.5,9.27 16.88,8.88C17.42,8.34 18.17,8 19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14H5A1,1 0 0,1 4,13A1,1 0 0,1 5,12H19M18,18H4A1,1 0 0,1 3,17A1,1 0 0,1 4,16H18A3,3 0 0,1 21,19A3,3 0 0,1 18,22C17.17,22 16.42,21.66 15.88,21.12C15.5,20.73 15.5,20.1 15.88,19.71C16.27,19.32 16.9,19.32 17.29,19.71C17.47,19.89 17.72,20 18,20A1,1 0 0,0 19,19A1,1 0 0,0 18,18Z",
+  "windy-variant": "M6,6L6.69,6.06C7.32,3.72 9.46,2 12,2A5.5,5.5 0 0,1 17.5,7.5L17.42,8.45C17.88,8.16 18.42,8 19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14H6A4,4 0 0,1 2,10A4,4 0 0,1 6,6M6,8A2,2 0 0,0 4,10A2,2 0 0,0 6,12H19A1,1 0 0,0 20,11A1,1 0 0,0 19,10H15.5V7.5A3.5,3.5 0 0,0 12,4A3.5,3.5 0 0,0 8.5,7.5V8H6M18,18H4A1,1 0 0,1 3,17A1,1 0 0,1 4,16H18A3,3 0 0,1 21,19A3,3 0 0,1 18,22C17.17,22 16.42,21.66 15.88,21.12C15.5,20.73 15.5,20.1 15.88,19.71C16.27,19.32 16.9,19.32 17.29,19.71C17.47,19.89 17.72,20 18,20A1,1 0 0,0 19,19A1,1 0 0,0 18,18Z",
+  "hail": "M6,14A1,1 0 0,1 7,15A1,1 0 0,1 6,16A5,5 0 0,1 1,11A5,5 0 0,1 6,6C7,3.65 9.3,2 12,2C15.43,2 18.24,4.66 18.5,8.03L19,8A4,4 0 0,1 23,12A4,4 0 0,1 19,16H18A1,1 0 0,1 17,15A1,1 0 0,1 18,14H19A2,2 0 0,0 21,12A2,2 0 0,0 19,10H17V9A5,5 0 0,0 12,4C9.5,4 7.45,5.82 7.06,8.19C6.73,8.07 6.37,8 6,8A3,3 0 0,0 3,11A3,3 0 0,0 6,14M10,18A2,2 0 0,1 12,20A2,2 0 0,1 10,22A2,2 0 0,1 8,20A2,2 0 0,1 10,18M14.5,16A1.5,1.5 0 0,1 16,17.5A1.5,1.5 0 0,1 14.5,19A1.5,1.5 0 0,1 13,17.5A1.5,1.5 0 0,1 14.5,16M10.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,15A1.5,1.5 0 0,1 9,13.5A1.5,1.5 0 0,1 10.5,12Z",
+  "exceptional": "M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z",
+  "humidity": "M12,3.25C12,3.25 6,10 6,14C6,17.32 8.69,20 12,20A6,6 0 0,0 18,14C18,10 12,3.25 12,3.25M14.47,9.97L15.53,11.03L9.53,17.03L8.47,15.97M9.75,10A1.25,1.25 0 0,1 11,11.25A1.25,1.25 0 0,1 9.75,12.5A1.25,1.25 0 0,1 8.5,11.25A1.25,1.25 0 0,1 9.75,10M14.25,14.5A1.25,1.25 0 0,1 15.5,15.75A1.25,1.25 0 0,1 14.25,17A1.25,1.25 0 0,1 13,15.75A1.25,1.25 0 0,1 14.25,14.5Z",
+};
+
+const WEATHER_LABEL = {
+  "clear-night": "Clear", cloudy: "Cloudy", exceptional: "Severe weather", fog: "Fog", hail: "Hail",
+  lightning: "Lightning", "lightning-rainy": "Thunderstorms", partlycloudy: "Partly cloudy", pouring: "Heavy rain",
+  rainy: "Rain", snowy: "Snow", "snowy-rainy": "Sleet", sunny: "Sunny", windy: "Windy", "windy-variant": "Windy",
 };
 
 const DETECT_LABELS = {
@@ -199,6 +287,36 @@ ha-card {
 .log .when { flex: none; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
 .log .empty { padding: 8px; color: var(--hv-muted); font-size: 13px; }
 .side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.wx {
+  --wx: var(--hv-muted);
+  padding: 12px 14px; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+}
+.c-sunny { --wx: #ffc35a; }
+.c-clear-night { --wx: #c7d2fe; }
+.c-partlycloudy { --wx: #ffd98a; }
+.c-rainy, .c-pouring, .c-snowy-rainy { --wx: #5ab4ff; }
+.c-snowy, .c-hail { --wx: #e6edf2; }
+.c-lightning, .c-lightning-rainy, .c-exceptional { --wx: #ffb547; }
+.c-cloudy, .c-fog, .c-windy, .c-windy-variant { --wx: #a9b4bf; }
+.wx-now { display: flex; align-items: center; gap: 12px; }
+.wx-ico { display: flex; color: var(--wx); }
+.wx-ico svg { width: 40px; height: 40px; fill: currentColor; }
+.wx-main { display: flex; flex-direction: column; min-width: 0; }
+.wx-temp { font-size: 28px; font-weight: 700; line-height: 1; }
+.wx-cond { margin-top: 3px; color: var(--hv-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wx-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; margin-left: auto; text-align: right; }
+.wx-hilo { font-size: 13px; font-weight: 600; white-space: pre; }
+.wx-extra { color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
+.wx-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 4px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+.wx-day { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 12px; }
+.wx-dn { color: var(--hv-muted); font-size: 11px; }
+.wx-dico { display: flex; color: var(--wx); }
+.wx-dico svg { width: 22px; height: 22px; fill: currentColor; }
+.wx-dh { font-weight: 600; }
+.wx-dl { color: var(--hv-muted); }
+.wx-dp { min-height: 13px; color: #5ab4ff; font-size: 10px; }
+.wx.missing { opacity: 0.6; border-style: dashed; }
 .gl {
   --gl: var(--hv-closed);
   padding: 12px 14px 10px; border-radius: 10px; cursor: pointer;
@@ -242,7 +360,12 @@ ha-card {
 .np .t, .np .a, .np .src { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .np .t { font-size: 14px; font-weight: 600; }
 .np .a { margin-top: 2px; color: var(--hv-muted); font-size: 12px; }
-.np .src { margin-top: 3px; color: #1db954; font-size: 11px; }
+.np .src { margin-top: 3px; color: var(--hv-muted); font-size: 11px; }
+.np.spotify .src { color: #1db954; }
+.np .ctrl .pw { display: none; color: var(--hv-muted); }
+.np.power .ctrl .pw { display: grid; }
+.np.on .ctrl .pw, .np.playing .ctrl .pw, .np.paused .ctrl .pw, .np.idle .ctrl .pw { color: var(--hv-closed); }
+.np.off .prog, .np.off .ctrl button:not(.pw), .np.off .vol { display: none; }
 .np .prog { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; color: var(--hv-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
 .np .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; }
 .np .bar span { display: block; height: 100%; width: 0; background: var(--hv-text); transition: width 1s linear; }
@@ -264,8 +387,8 @@ ha-card {
 @container hv-card (min-width: 860px) {
   .body { flex-direction: row; align-items: flex-start; }
   .plan-wrap { flex: 1 1 auto; }
-  .side { flex: none; width: var(--hv-log-width, 290px); max-height: var(--hv-max-height, 78vh); }
-  .side .log { flex: 1 1 auto; min-height: 0; max-height: none; }
+  .side { flex: none; width: var(--hv-log-width, 300px); }
+  .side .log { max-height: var(--hv-log-height, 460px); }
 }
 .plan {
   position: relative; margin: 0;
@@ -404,7 +527,7 @@ class HomeViewCard extends HTMLElement {
     this._seen = new Map();
     this._historyLoaded = false;
     this._glPoints = null;
-    this._config = config.walls || config.rooms ? config : { ...DEFAULT_PLAN, ...config };
+    this._config = config.walls || config.rooms ? config : { ...DEFAULT_CONFIG, ...config };
     this._built = false;
     if (this._hass) this._build();
   }
@@ -429,7 +552,7 @@ class HomeViewCard extends HTMLElement {
 
   connectedCallback() {
     this._tick = setInterval(() => this._update(), 30000);
-    this._mediaTick = setInterval(() => this._renderProgress(), 1000);
+    this._mediaTick = setInterval(() => (this._medias || []).forEach((m) => this._renderProgress(m)), 1000);
     this._camTick = setInterval(() => this._refreshCameras(), (this._config?.camera_refresh || 10) * 1000);
     this._ro = new ResizeObserver(() => {
       if (this._built && this._config?.stack && this._isStacked() !== this._stacked) this._build();
@@ -449,6 +572,7 @@ class HomeViewCard extends HTMLElement {
     clearInterval(this._camTick);
     clearInterval(this._mediaTick);
     this._ro?.disconnect();
+    this._unsubWeather();
     if (this._onResize) removeEventListener("resize", this._onResize);
   }
 
@@ -598,8 +722,11 @@ class HomeViewCard extends HTMLElement {
     this._log = null;
     this._glucose = cfg.glucose ? this._buildGlucose() : null;
     if (this._glucose) side.append(this._glucose.el);
-    this._media = cfg.media ? this._buildMedia(cfg.media) : null;
-    if (this._media) side.append(this._media.el);
+    this._unsubWeather();
+    this._weather = cfg.weather ? this._buildWeather(cfg.weather) : null;
+    if (this._weather) side.append(this._weather.el);
+    this._medias = [].concat(cfg.media || []).map((m) => this._buildMedia(typeof m === "string" ? { entity: m } : m));
+    for (const m of this._medias) side.append(m.el);
     if (cfg.log !== false && this._watch.size) {
       this._logList = h("ul");
       this._log = h("aside", { class: "log" }, h("h3", {}, cfg.log_title || "Activity"), this._logList);
@@ -761,7 +888,99 @@ class HomeViewCard extends HTMLElement {
     }
   }
 
-  _buildMedia(entity) {
+  _buildWeather(entity) {
+    const ico = h("span", { class: "wx-ico" });
+    const temp = h("span", { class: "wx-temp" });
+    const cond = h("span", { class: "wx-cond" });
+    const hilo = h("span", { class: "wx-hilo" });
+    const extra = h("span", { class: "wx-extra" });
+    const days = h("div", { class: "wx-days" });
+    const el = h("section", { class: "wx" },
+      h("div", { class: "wx-now" }, ico,
+        h("div", { class: "wx-main" }, temp, cond),
+        h("div", { class: "wx-right" }, hilo, extra)),
+      days);
+    el.addEventListener("click", () => this._moreInfo(entity));
+    return { entity, el, ico, temp, cond, hilo, extra, days, key: "" };
+  }
+
+  _unsubWeather() {
+    if (this._wxUnsub) {
+      this._wxUnsub.then((f) => f()).catch(() => {});
+      this._wxUnsub = null;
+    }
+  }
+
+  _subscribeWeather() {
+    const w = this._weather;
+    const conn = this._hass.connection;
+    if (this._wxUnsub || !conn?.subscribeMessage) return;
+    const type = this._config.forecast_type || "daily";
+    this._wxUnsub = conn.subscribeMessage(
+      (ev) => {
+        this._forecast = ev.forecast || [];
+        w.key = "";
+        this._renderWeather();
+      },
+      { type: "weather/subscribe_forecast", forecast_type: type, entity_id: w.entity }
+    );
+    this._wxUnsub.catch((err) => console.warn("home-view-card: forecast unavailable", err));
+  }
+
+  _wxIcon(condition) {
+    const night = this._hass.states["sun.sun"]?.state === "below_horizon";
+    if (condition === "partlycloudy" && night) return WEATHER_ICON["partlycloudy-night"];
+    if (condition === "sunny" && night) return WEATHER_ICON["clear-night"];
+    return WEATHER_ICON[condition] || WEATHER_ICON.cloudy;
+  }
+
+  _renderWeather() {
+    const w = this._weather;
+    if (!w) return;
+    const st = this._hass.states[w.entity];
+    if (!st) {
+      w.el.className = "wx missing";
+      w.temp.textContent = "--";
+      w.cond.textContent = `${w.entity} not found`;
+      return;
+    }
+    this._subscribeWeather();
+    const a = st.attributes;
+    const fc = this._forecast || a.forecast || [];
+    const key = `${st.state}:${a.temperature}:${a.humidity}:${a.wind_speed}:${fc.length}:${fc[0]?.datetime}:${new Date().getDate()}`;
+    if (key === w.key) return;
+    w.key = key;
+    w.el.className = `wx c-${st.state}`;
+    w.ico.innerHTML = iconSvg(this._wxIcon(st.state));
+    w.temp.textContent = a.temperature != null ? `${Math.round(a.temperature)}°` : "--";
+    w.cond.textContent = WEATHER_LABEL[st.state] || st.state;
+    const today = fc[0];
+    w.hilo.textContent = today && today.temperature != null
+      ? `H ${Math.round(today.temperature)}°${today.templow != null ? `  L ${Math.round(today.templow)}°` : ""}`
+      : "";
+    const bits = [];
+    if (a.humidity != null) bits.push(`${Math.round(a.humidity)}% hum`);
+    if (a.wind_speed != null) bits.push(`${Math.round(a.wind_speed)} ${a.wind_speed_unit || ""}`.trim());
+    w.extra.textContent = bits.join(" · ");
+    const n = this._config.forecast_days || 5;
+    const todayStr = new Date().toDateString();
+    w.days.replaceChildren(...fc.slice(0, n).map((d) => {
+      const date = new Date(d.datetime);
+      const name = date.toDateString() === todayStr ? "Today" : date.toLocaleDateString([], { weekday: "short" });
+      const ic = h("span", { class: `wx-dico c-${d.condition}` });
+      ic.innerHTML = iconSvg(WEATHER_ICON[d.condition] || WEATHER_ICON.cloudy);
+      const rain = d.precipitation_probability;
+      return h("div", { class: "wx-day", title: WEATHER_LABEL[d.condition] || d.condition || "" },
+        h("span", { class: "wx-dn" }, name), ic,
+        h("span", { class: "wx-dh" }, d.temperature != null ? `${Math.round(d.temperature)}°` : ""),
+        h("span", { class: "wx-dl" }, d.templow != null ? `${Math.round(d.templow)}°` : ""),
+        h("span", { class: "wx-dp" }, rain ? `${Math.round(rain)}%` : ""));
+    }));
+    w.days.classList.toggle("hidden", !fc.length);
+  }
+
+  _buildMedia(cfg) {
+    const entity = cfg.entity;
     const art = h("div", { class: "art" });
     const title = h("div", { class: "t" });
     const artist = h("div", { class: "a" });
@@ -776,30 +995,34 @@ class HomeViewCard extends HTMLElement {
       b.innerHTML = iconSvg(icon);
       return b;
     };
+    const power = btn("pw", ICON.power, "Power");
     const prev = btn("", ICON.prev, "Previous");
     const pp = btn("pp", ICON.play, "Play/Pause");
     const next = btn("", ICON.next, "Next");
     const vol = h("input", { type: "range", min: 0, max: 100, step: 1, "aria-label": "Volume" });
     const volIcon = h("span", { class: "vi" });
     volIcon.innerHTML = iconSvg(ICON.volume);
-    const ctrl = h("div", { class: "ctrl" }, prev, pp, next, h("div", { class: "vol" }, volIcon, vol));
+    const ctrl = h("div", { class: "ctrl" }, power, prev, pp, next, h("div", { class: "vol" }, volIcon, vol));
     const el = h("section", { class: "np" }, art, meta, prog, ctrl);
     const call = (service, data = {}) => {
       this._fire("haptic", "light");
       this._hass.callService("media_player", service, { entity_id: entity, ...data });
     };
+    power.addEventListener("click", () => call("toggle"));
     prev.addEventListener("click", () => call("media_previous_track"));
     pp.addEventListener("click", () => call("media_play_pause"));
     next.addEventListener("click", () => call("media_next_track"));
     vol.addEventListener("change", () => call("volume_set", { volume_level: Number(vol.value) / 100 }));
     art.addEventListener("click", () => this._moreInfo(entity));
     meta.addEventListener("click", () => this._moreInfo(entity));
-    return { entity, el, art, title, artist, src, fill, pos, dur, pp, vol, pic: null };
+    return { cfg, entity, el, art, title, artist, src, fill, pos, dur, pp, power, vol, pic: undefined };
   }
 
   _renderMedia() {
-    const m = this._media;
-    if (!m) return;
+    for (const m of this._medias || []) this._renderOneMedia(m);
+  }
+
+  _renderOneMedia(m) {
     const st = this._hass.states[m.entity];
     if (!st) {
       m.el.className = "np missing";
@@ -810,23 +1033,30 @@ class HomeViewCard extends HTMLElement {
     }
     const a = st.attributes;
     const active = st.state === "playing" || st.state === "paused";
-    m.el.className = `np ${active ? st.state : "idle"}`;
-    m.title.textContent = active ? a.media_title || "Unknown track" : "Nothing playing";
-    m.artist.textContent = active ? [a.media_artist, a.media_album_name].filter(Boolean).join(" · ") : "";
-    m.src.textContent = [a.friendly_name, a.source].filter(Boolean).join(" · ");
+    const off = st.state === "off" || st.state === "standby" || DEAD_STATES.has(st.state);
+    const canPower = ((a.supported_features || 0) & (128 | 256)) !== 0;
+    const spotify = /spotify/i.test(m.entity) || /spotify/i.test(a.source || "");
+    m.el.className = `np ${active ? st.state : off ? "off" : "idle"}${spotify ? " spotify" : ""}${canPower ? " power" : ""}`;
+    const name = m.cfg.name || a.friendly_name;
+    m.title.textContent = off
+      ? "Off"
+      : active
+        ? a.media_title || a.app_name || a.source || "Playing"
+        : a.app_name || (canPower ? "On" : "Nothing playing");
+    m.artist.textContent = active ? [a.media_series_title || a.media_artist, a.media_album_name].filter(Boolean).join(" · ") : "";
+    m.src.textContent = [name, !off && a.source && a.source !== m.title.textContent ? a.source : null].filter(Boolean).join(" · ");
     const pic = active && a.entity_picture ? (this._hass.hassUrl ? this._hass.hassUrl(a.entity_picture) : a.entity_picture) : null;
     if (pic !== m.pic) {
       m.pic = pic;
       m.art.style.backgroundImage = pic ? `url("${pic}")` : "";
-      m.art.innerHTML = pic ? "" : iconSvg(ICON.music);
+      m.art.innerHTML = pic ? "" : iconSvg(spotify || !canPower ? ICON.music : ICON.tv);
     }
     m.pp.innerHTML = iconSvg(st.state === "playing" ? ICON.pause : ICON.play);
     if (this.shadowRoot.activeElement !== m.vol && a.volume_level != null) m.vol.value = Math.round(a.volume_level * 100);
-    this._renderProgress();
+    this._renderProgress(m);
   }
 
-  _renderProgress() {
-    const m = this._media;
+  _renderProgress(m) {
     const st = m && this._hass?.states[m.entity];
     if (!st) return;
     const a = st.attributes;
@@ -1179,6 +1409,7 @@ class HomeViewCard extends HTMLElement {
     this._renderLog();
     this._renderMedia();
     this._renderGlucose();
+    this._renderWeather();
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }
