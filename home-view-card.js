@@ -1,4 +1,4 @@
-const VERSION = "0.5.0";
+const VERSION = "0.6.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -199,6 +199,36 @@ ha-card {
 .log .when { flex: none; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
 .log .empty { padding: 8px; color: var(--hv-muted); font-size: 13px; }
 .side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.gl {
+  --gl: var(--hv-closed);
+  padding: 12px 14px 10px; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+}
+.gl.high { --gl: #ffb547; }
+.gl.low, .gl.urgent { --gl: var(--hv-open); border-color: rgba(255,90,95,0.45); background: rgba(255,90,95,0.08); }
+.gl.urgent { animation: glpulse 1.4s ease-in-out infinite; }
+.gl.stale { --gl: var(--hv-muted); }
+.gl-top { display: flex; justify-content: space-between; color: var(--hv-muted); font-size: 11px; }
+.gl-name { font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.gl-main { display: flex; align-items: center; gap: 10px; margin: 4px 0 6px; }
+.gl-val { color: var(--gl); font-size: 40px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.gl-side { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.gl-side > span:first-child { display: flex; align-items: baseline; gap: 6px; color: var(--hv-muted); font-size: 12px; }
+.gl-arrow { color: var(--gl); font-size: 22px; font-weight: 700; line-height: 1; }
+.gl-arrow:empty { display: none; }
+.gl-status { color: var(--gl); font-size: 12px; font-weight: 600; text-transform: capitalize; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gl-spark { display: block; width: 100%; height: 56px; overflow: visible; }
+.gl-band { fill: rgba(62,207,142,0.08); }
+.gl-lim { stroke: rgba(255,255,255,0.12); stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.gl-line { fill: none; stroke: var(--gl); stroke-width: 2px; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.gl-dot { fill: var(--gl); }
+.gl-axis { display: flex; justify-content: space-between; margin-top: 2px; color: var(--hv-muted); font-size: 10px; }
+.chip.gl-chip { font-weight: 600; font-variant-numeric: tabular-nums; }
+.chip.gl-chip.in { color: var(--hv-closed); }
+.chip.gl-chip.high { color: #ffb547; }
+.chip.gl-chip.low, .chip.gl-chip.urgent { color: #fff; background: var(--hv-open); border-color: var(--hv-open); }
+.chip.gl-chip.stale { color: var(--hv-muted); }
+@keyframes glpulse { 50% { box-shadow: 0 0 0 4px rgba(255,90,95,0.25); } }
 .np {
   display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 10px 12px; padding: 12px;
   border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
@@ -373,6 +403,7 @@ class HomeViewCard extends HTMLElement {
     this._events = [];
     this._seen = new Map();
     this._historyLoaded = false;
+    this._glPoints = null;
     this._config = config.walls || config.rooms ? config : { ...DEFAULT_PLAN, ...config };
     this._built = false;
     if (this._hass) this._build();
@@ -474,7 +505,8 @@ class HomeViewCard extends HTMLElement {
     this._chips = h("div", { class: "chips" });
     this._chips.addEventListener("click", (e) => {
       const chip = e.target.closest(".chip");
-      if (chip) this._setLayer(chip.dataset.layer);
+      if (chip?.dataset.entity) this._moreInfo(chip.dataset.entity);
+      else if (chip) this._setLayer(chip.dataset.layer);
     });
     if (cfg.title) card.append(head);
 
@@ -564,6 +596,8 @@ class HomeViewCard extends HTMLElement {
     const side = h("div", { class: "side" });
     this._watch = this._watchList();
     this._log = null;
+    this._glucose = cfg.glucose ? this._buildGlucose() : null;
+    if (this._glucose) side.append(this._glucose.el);
     this._media = cfg.media ? this._buildMedia(cfg.media) : null;
     if (this._media) side.append(this._media.el);
     if (cfg.log !== false && this._watch.size) {
@@ -580,6 +614,150 @@ class HomeViewCard extends HTMLElement {
       this._renderTabs();
       this._update();
       this._refreshCameras();
+    }
+  }
+
+  _glucoseCfg() {
+    const g = this._config.glucose;
+    if (!g) return null;
+    const c = typeof g === "string" ? { entity: g } : { ...g };
+    if (!c.trend) {
+      const guess = c.entity.replace(/_value$/, "_trend");
+      if (guess !== c.entity) c.trend = guess;
+    }
+    return c;
+  }
+
+  _glucoseInfo() {
+    const c = this._glucoseCfg();
+    const st = c && this._hass?.states[c.entity];
+    if (!st) return null;
+    const unit = st.attributes.unit_of_measurement || "mg/dL";
+    const mmol = /mmol/i.test(unit);
+    const low = c.low ?? (mmol ? 3.9 : 70);
+    const high = c.high ?? (mmol ? 10 : 180);
+    const urgent = c.urgent_low ?? (mmol ? 3.1 : 55);
+    const v = parseFloat(st.state);
+    const seen = Date.parse(st.last_reported || st.last_updated || st.last_changed);
+    const stale = Number.isNaN(v) || Date.now() - seen > (c.stale_minutes ?? 15) * 60000;
+    const trendState = this._hass.states[c.trend]?.state || "";
+    const ARROWS = {
+      rising_quickly: "⇈", rising: "↑", rising_slightly: "↗", steady: "→",
+      falling_slightly: "↘", falling: "↓", falling_quickly: "⇊",
+    };
+    let range = "in";
+    let label = "In range";
+    if (stale) {
+      range = "stale";
+      label = "No recent data";
+    } else if (v <= urgent) {
+      range = "urgent";
+      label = "Urgent low";
+    } else if (v < low) {
+      range = "low";
+      label = "Low";
+    } else if (v > high) {
+      range = "high";
+      label = "High";
+    }
+    return {
+      entity: c.entity, name: c.name || "Glucose", unit, mmol, low, high, value: v, seen, stale, range, label,
+      text: Number.isNaN(v) ? "--" : mmol ? v.toFixed(1) : String(Math.round(v)),
+      arrow: stale ? "" : ARROWS[trendState] || "",
+      trend: trendState.replace(/_/g, " "),
+    };
+  }
+
+  _buildGlucose() {
+    const name = h("span", { class: "gl-name" });
+    const age = h("span", { class: "gl-age" });
+    const val = h("span", { class: "gl-val" });
+    const unit = h("span", { class: "gl-unit" });
+    const arrow = h("span", { class: "gl-arrow" });
+    const status = h("span", { class: "gl-status" });
+    const spark = s("svg", { class: "gl-spark", viewBox: "0 0 300 64", preserveAspectRatio: "none" });
+    const band = s("rect", { class: "gl-band", x: 0, width: 300 });
+    const lineLow = s("line", { class: "gl-lim", x1: 0, x2: 300 });
+    const lineHigh = s("line", { class: "gl-lim", x1: 0, x2: 300 });
+    const path = s("polyline", { class: "gl-line" });
+    const dot = s("circle", { class: "gl-dot", r: 3.5 });
+    spark.append(band, lineLow, lineHigh, path, dot);
+    const hours = this._glucoseCfg().hours || 3;
+    const el = h("section", { class: "gl" },
+      h("div", { class: "gl-top" }, name, age),
+      h("div", { class: "gl-main" }, val, h("span", { class: "gl-side" }, h("span", {}, arrow, unit), status)),
+      spark,
+      h("div", { class: "gl-axis" }, h("span", {}, `${hours}h ago`), h("span", {}, "now")));
+    el.addEventListener("click", () => this._moreInfo(this._glucoseCfg().entity));
+    return { el, name, age, val, unit, arrow, status, band, lineLow, lineHigh, path, dot, hours };
+  }
+
+  async _loadGlucoseHistory() {
+    const c = this._glucoseCfg();
+    const g = this._glucose;
+    if (!this._hass.callApi) return;
+    const start = new Date(Date.now() - g.hours * 3600000).toISOString();
+    try {
+      const data = await this._hass.callApi("GET", `history/period/${start}?filter_entity_id=${c.entity}&minimal_response&no_attributes`);
+      const pts = (data?.[0] || [])
+        .map((x) => [Date.parse(x.last_changed), parseFloat(x.state)])
+        .filter(([, v]) => !Number.isNaN(v));
+      this._glPoints = [...pts, ...(this._glPoints || [])].sort((a, b) => a[0] - b[0]);
+      this._renderGlucose();
+    } catch (err) {
+      console.warn("home-view-card: could not load glucose history", err);
+    }
+  }
+
+  _renderGlucose() {
+    const g = this._glucose;
+    if (!g) return;
+    const info = this._glucoseInfo();
+    if (!info) {
+      g.el.className = "gl stale";
+      g.name.textContent = "Glucose";
+      g.val.textContent = "--";
+      g.status.textContent = `${this._glucoseCfg().entity} not found`;
+      return;
+    }
+    if (this._glPoints === null) {
+      this._glPoints = [];
+      this._loadGlucoseHistory();
+    }
+    const st = this._hass.states[info.entity];
+    const lc = Date.parse(st.last_changed);
+    const last = this._glPoints[this._glPoints.length - 1];
+    if (!Number.isNaN(info.value) && (!last || last[0] < lc)) this._glPoints.push([lc, info.value]);
+
+    g.el.className = `gl ${info.range}`;
+    g.name.textContent = info.name;
+    const mins = Math.floor((Date.now() - info.seen) / 60000);
+    g.age.textContent = mins < 1 ? "just now" : mins < 60 ? `${mins}m ago` : `${Math.floor(mins / 60)}h ago`;
+    g.val.textContent = info.text;
+    g.unit.textContent = info.unit;
+    g.arrow.textContent = info.arrow;
+    g.status.textContent = info.trend && !info.stale ? `${info.label} · ${info.trend}` : info.label;
+
+    const now = Date.now();
+    const from = now - g.hours * 3600000;
+    const pts = this._glPoints.filter(([t]) => t >= from);
+    const vals = pts.map(([, v]) => v);
+    const lo = Math.min(info.low - (info.mmol ? 1 : 20), ...vals);
+    const hi = Math.max(info.high + (info.mmol ? 2 : 40), ...vals);
+    const y = (v) => 60 - ((v - lo) / (hi - lo)) * 56;
+    const x = (t) => ((t - from) / (now - from)) * 296 + 2;
+    g.band.setAttribute("y", y(info.high));
+    g.band.setAttribute("height", Math.max(0, y(info.low) - y(info.high)));
+    for (const [line, v] of [[g.lineLow, info.low], [g.lineHigh, info.high]]) {
+      line.setAttribute("y1", y(v));
+      line.setAttribute("y2", y(v));
+    }
+    g.path.setAttribute("points", pts.map(([t, v]) => `${x(t).toFixed(1)},${y(v).toFixed(1)}`).join(" "));
+    const end = pts[pts.length - 1];
+    g.dot.style.display = end ? "" : "none";
+    if (end) {
+      g.dot.setAttribute("cx", x(end[0]));
+      g.dot.setAttribute("cy", y(end[1]));
     }
   }
 
@@ -1000,6 +1178,7 @@ class HomeViewCard extends HTMLElement {
     this._trackEvents();
     this._renderLog();
     this._renderMedia();
+    this._renderGlucose();
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }
@@ -1117,6 +1296,12 @@ class HomeViewCard extends HTMLElement {
       return el;
     };
     const out = [];
+    const gl = this._glucoseInfo();
+    if (gl) {
+      const el = h("button", { class: `chip gl-chip ${gl.range}`, "data-entity": gl.entity, title: `${gl.name}: ${gl.text}` });
+      el.append(`${gl.text} ${gl.arrow}`.trim());
+      out.push(el);
+    }
     if (watched) {
       out.push(
         openNames.length

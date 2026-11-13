@@ -58,6 +58,8 @@ const states = {
   "binary_sensor.rack_01_rear_motion": st("off", { device_class: "motion" }),
   "sensor.temp_serverrack_humidity": st("29", { device_class: "humidity", unit_of_measurement: "%" }),
   "media_player.spotify": { state: "playing", last_changed: ago(3), attributes: { friendly_name: "Spotify", source: "Living Room Speaker", media_title: "Midnight City", media_artist: "M83", media_album_name: "Hurry Up, We're Dreaming", entity_picture: "album.svg", media_duration: 243, media_position: 61, media_position_updated_at: new Date().toISOString(), volume_level: 0.42 } },
+  "sensor.dexcom_glucose_value": { state: "142", last_changed: ago(2), last_updated: ago(2), attributes: { unit_of_measurement: "mg/dL", friendly_name: "Glucose" } },
+  "sensor.dexcom_glucose_trend": st("rising_slightly"),
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
@@ -69,6 +71,7 @@ async function callApi(method, path) {
   const ids = decodeURIComponent(path.split("filter_entity_id=")[1].split("&")[0]).split(",");
   const at = (min) => new Date(Date.now() - min * 60000).toISOString();
   const script = {
+    "sensor.dexcom_glucose_value": [[180, "118"], [175, "125"], [170, "132"], [165, "139"], [160, "145"], [155, "150"], [150, "155"], [145, "159"], [140, "161"], [135, "163"], [130, "164"], [125, "163"], [120, "162"], [115, "160"], [110, "157"], [105, "153"], [100, "148"], [95, "143"], [90, "138"], [85, "132"], [80, "127"], [75, "121"], [70, "117"], [65, "112"], [60, "108"], [55, "106"], [50, "103"], [45, "102"], [40, "102"], [35, "103"], [30, "106"], [25, "109"], [20, "113"], [15, "118"], [10, "123"], [5, "129"]],
     "binary_sensor.door_front_contact": [[300, "on"], [298, "off"], [95, "on"], [94, "off"]],
     "binary_sensor.door_office_contact": [[200, "on"], [190, "off"]],
     "binary_sensor.door_basement_contact": [[4, "on"]],
