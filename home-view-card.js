@@ -1,4 +1,4 @@
-const VERSION = "0.7.0";
+const VERSION = "0.7.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -51,7 +51,7 @@ const DEFAULT_CONFIG = {
     {name:"Closet",rect:[330,95,422,149]},
     {rect:[330,47,376,95]},
     {rect:[376,47,422,95]},
-    {name:"Hall",rect:[330,149,422,490],label_at:[376,420],motion:"binary_sensor.hallway1_motion"},
+    {name:"Hall",rect:[330,149,422,490],label_at:[376,420],motion:"binary_sensor.hallway1_motion",temperature:"sensor.living_room_temperature",humidity:"sensor.living_room_humidity"},
     {name:"Office",rect:[422,47,728,242],temperature:"sensor.temp_office_temperature",humidity:"sensor.temp_office_humidity"},
     {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,264]},
     {name:"Closet",rect:[422,428,508,497]},
@@ -84,7 +84,7 @@ const DEFAULT_CONFIG = {
     {name:"Basement Door",line:[1096,494,1200,494]},
   ],
   devices: [
-    {entity:"climate.thermostat",x:376,y:250},
+    {entity:"climate.living_room",name:"Thermostat",x:376,y:250},
     {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:376,y:-40,preview:true},
     {entity:"camera.westons_room_high_resolution_channel",name:"Weston's Room",detections:["binary_sensor.westons_room_baby_cry_detected","binary_sensor.westons_room_person_detected","binary_sensor.westons_room_animal_detected"],x:575,y:342,preview:true},
     {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:160,y:-38,preview:true},
@@ -422,7 +422,7 @@ svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
 }
 .room-label.vertical { writing-mode: vertical-rl; transform: translate(-50%, -50%) rotate(180deg); }
 .room-label .meta {
-  display: block; margin-top: 2px; color: var(--hv-text);
+  display: block; white-space: pre-line; margin-top: 2px; color: var(--hv-text);
   font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none;
 }
 .room-label .meta:empty { display: none; }
@@ -665,7 +665,7 @@ class HomeViewCard extends HTMLElement {
       const meta = h("span", { class: "meta" });
       const label = h("div", { class: `room-label${room.vertical ? " vertical" : ""}`, style: pos(lx, ly) }, room.name || "", meta);
       if (room.name || room.temperature || room.humidity) overlay.append(label);
-      return { cfg: room, poly, meta };
+      return { cfg: room, poly, meta, narrow: x2 - x1 < 130 };
     });
 
     for (const l of cfg.labels || []) overlay.append(h("div", { class: "floor-label", style: pos(l.x, l.y) }, l.text));
@@ -1364,7 +1364,7 @@ class HomeViewCard extends HTMLElement {
       if (!Number.isNaN(t)) bits.push(`${Math.round(t)}°`);
       const hum = parseFloat(hass.states[r.cfg.humidity]?.state);
       if (!Number.isNaN(hum)) bits.push(`${Math.round(hum)}%`);
-      r.meta.textContent = bits.join(" · ");
+      r.meta.textContent = bits.join(r.narrow ? "\n" : " · ");
     }
 
     const openNames = [];

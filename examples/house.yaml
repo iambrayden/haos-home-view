@@ -43,6 +43,8 @@ rooms:
     rect: [330, 149, 422, 490]
     label_at: [376, 420]
     motion: binary_sensor.hallway1_motion
+    temperature: sensor.living_room_temperature
+    humidity: sensor.living_room_humidity
   - name: Office
     rect: [422, 47, 728, 242]
     temperature: sensor.temp_office_temperature
@@ -148,7 +150,8 @@ openings:
     line: [1096, 494, 1200, 494]
 
 devices:
-  - entity: climate.thermostat
+  - entity: climate.living_room
+    name: Thermostat
     x: 376
     y: 250
   - entity: camera.hallway_high_resolution_channel
