@@ -1,4 +1,4 @@
-const VERSION = "0.4.0";
+const VERSION = "0.5.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -23,6 +23,12 @@ const ICON = {
   waterAlert: "M10 3.25C10 3.25 16 10 16 14C16 17.31 13.31 20 10 20S4 17.31 4 14C4 10 10 3.25 10 3.25M20 7V13H18V7H20M18 17H20V15H18V17Z",
   smoke: "M12,18A6,6 0 0,0 18,12C18,8.68 15.31,6 12,6C8.68,6 6,8.68 6,12A6,6 0 0,0 12,18M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19M8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12Z",
   speaker: "M12,12A3,3 0 0,0 9,15A3,3 0 0,0 12,18A3,3 0 0,0 15,15A3,3 0 0,0 12,12M12,20A5,5 0 0,1 7,15A5,5 0 0,1 12,10A5,5 0 0,1 17,15A5,5 0 0,1 12,20M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8C10.89,8 10,7.1 10,6C10,4.89 10.89,4 12,4M17,2H7C5.89,2 5,2.89 5,4V20A2,2 0 0,0 7,22H17A2,2 0 0,0 19,20V4C19,2.89 18.1,2 17,2Z",
+  play: "M8,5.14V19.14L19,12.14L8,5.14Z",
+  pause: "M14,19H18V5H14M6,19H10V5H6V19Z",
+  next: "M16,18H18V6H16M6,18L14.5,12L6,6V18Z",
+  prev: "M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z",
+  volume: "M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z",
+  music: "M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z",
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
 
@@ -158,8 +164,10 @@ ha-card {
 .chip.cool { color: var(--hv-cool); }
 .tabs {
   display: flex; gap: 2px; width: fit-content; max-width: 100%; box-sizing: border-box; overflow-x: auto; scrollbar-width: none;
-  margin: 0 auto 12px; padding: 3px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  margin: 0; padding: 3px; border-radius: 10px; background: rgba(255,255,255,0.05);
 }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+.toolbar .tabs.hidden + .chips { margin-left: 0; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   border: 0; background: none; color: var(--hv-muted); padding: 6px 12px; border-radius: 7px;
@@ -190,13 +198,47 @@ ha-card {
 .log .txt { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
 .log .when { flex: none; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
 .log .empty { padding: 8px; color: var(--hv-muted); font-size: 13px; }
+.side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.np {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 10px 12px; padding: 12px;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+}
+.np .art {
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 6px; cursor: pointer;
+  background: #000 center / cover no-repeat; color: var(--hv-muted);
+}
+.np .art svg { width: 24px; height: 24px; fill: currentColor; }
+.np .meta { min-width: 0; align-self: center; cursor: pointer; }
+.np .t, .np .a, .np .src { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.np .t { font-size: 14px; font-weight: 600; }
+.np .a { margin-top: 2px; color: var(--hv-muted); font-size: 12px; }
+.np .src { margin-top: 3px; color: #1db954; font-size: 11px; }
+.np .prog { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; color: var(--hv-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+.np .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; }
+.np .bar span { display: block; height: 100%; width: 0; background: var(--hv-text); transition: width 1s linear; }
+.np .ctrl { grid-column: 1 / -1; display: flex; align-items: center; gap: 4px; }
+.np .ctrl button {
+  display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%;
+  background: none; color: var(--hv-text); cursor: pointer;
+}
+.np .ctrl button:hover { background: rgba(255,255,255,0.08); }
+.np .ctrl svg { width: 22px; height: 22px; fill: currentColor; }
+.np .ctrl .pp { width: 40px; height: 40px; background: var(--hv-text); color: var(--hv-bg); }
+.np .ctrl .pp:hover { background: #fff; }
+.np .vol { display: flex; align-items: center; gap: 6px; margin-left: auto; color: var(--hv-muted); }
+.np .vol svg { width: 18px; height: 18px; fill: currentColor; }
+.np .vol input { width: 90px; accent-color: var(--hv-text); }
+.np.idle .prog, .np.missing .prog, .np.missing .ctrl { display: none; }
+.np.idle .ctrl button:not(.pp) { opacity: 0.4; }
+.np.missing { opacity: 0.6; border-style: dashed; }
 @container hv-card (min-width: 860px) {
   .body { flex-direction: row; align-items: flex-start; }
   .plan-wrap { flex: 1 1 auto; }
-  .log { flex: none; width: var(--hv-log-width, 290px); max-height: var(--hv-max-height, 78vh); }
+  .side { flex: none; width: var(--hv-log-width, 290px); max-height: var(--hv-max-height, 78vh); }
+  .side .log { flex: 1 1 auto; min-height: 0; max-height: none; }
 }
 .plan {
-  position: relative; margin: 0 auto;
+  position: relative; margin: 0;
   aspect-ratio: var(--ratio);
   width: min(100%, calc(var(--hv-max-height, 78vh) * var(--ratio)));
   container-type: inline-size;
@@ -356,6 +398,7 @@ class HomeViewCard extends HTMLElement {
 
   connectedCallback() {
     this._tick = setInterval(() => this._update(), 30000);
+    this._mediaTick = setInterval(() => this._renderProgress(), 1000);
     this._camTick = setInterval(() => this._refreshCameras(), (this._config?.camera_refresh || 10) * 1000);
     this._ro = new ResizeObserver(() => {
       if (this._built && this._config?.stack && this._isStacked() !== this._stacked) this._build();
@@ -373,6 +416,7 @@ class HomeViewCard extends HTMLElement {
   disconnectedCallback() {
     clearInterval(this._tick);
     clearInterval(this._camTick);
+    clearInterval(this._mediaTick);
     this._ro?.disconnect();
     if (this._onResize) removeEventListener("resize", this._onResize);
   }
@@ -432,11 +476,10 @@ class HomeViewCard extends HTMLElement {
       const chip = e.target.closest(".chip");
       if (chip) this._setLayer(chip.dataset.layer);
     });
-    head.append(this._chips);
-    card.append(head);
+    if (cfg.title) card.append(head);
 
     this._tabs = h("div", { class: "tabs" });
-    card.append(this._tabs);
+    card.append(h("div", { class: "toolbar" }, this._tabs, this._chips));
 
     const plan = h("div", { class: `plan${this._stacked ? " full" : ""}`, style: `--ratio:${W / H}` });
     const svg = s("svg", { class: "floor", viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" });
@@ -518,14 +561,18 @@ class HomeViewCard extends HTMLElement {
 
     plan.append(svg, overlay);
     const body = h("div", { class: "body" }, h("div", { class: "plan-wrap" }, plan));
+    const side = h("div", { class: "side" });
     this._watch = this._watchList();
     this._log = null;
+    this._media = cfg.media ? this._buildMedia(cfg.media) : null;
+    if (this._media) side.append(this._media.el);
     if (cfg.log !== false && this._watch.size) {
       this._logList = h("ul");
       this._log = h("aside", { class: "log" }, h("h3", {}, cfg.log_title || "Activity"), this._logList);
-      body.append(this._log);
+      side.append(this._log);
       this._logKey = "";
     }
+    if (side.childElementCount) body.append(side);
     card.append(body);
     root.append(card);
     this._built = true;
@@ -534,6 +581,91 @@ class HomeViewCard extends HTMLElement {
       this._update();
       this._refreshCameras();
     }
+  }
+
+  _buildMedia(entity) {
+    const art = h("div", { class: "art" });
+    const title = h("div", { class: "t" });
+    const artist = h("div", { class: "a" });
+    const src = h("div", { class: "src" });
+    const meta = h("div", { class: "meta" }, title, artist, src);
+    const fill = h("span");
+    const pos = h("span", { class: "pos" });
+    const dur = h("span", { class: "dur" });
+    const prog = h("div", { class: "prog" }, pos, h("div", { class: "bar" }, fill), dur);
+    const btn = (cls, icon, label) => {
+      const b = h("button", { class: cls, "aria-label": label, title: label });
+      b.innerHTML = iconSvg(icon);
+      return b;
+    };
+    const prev = btn("", ICON.prev, "Previous");
+    const pp = btn("pp", ICON.play, "Play/Pause");
+    const next = btn("", ICON.next, "Next");
+    const vol = h("input", { type: "range", min: 0, max: 100, step: 1, "aria-label": "Volume" });
+    const volIcon = h("span", { class: "vi" });
+    volIcon.innerHTML = iconSvg(ICON.volume);
+    const ctrl = h("div", { class: "ctrl" }, prev, pp, next, h("div", { class: "vol" }, volIcon, vol));
+    const el = h("section", { class: "np" }, art, meta, prog, ctrl);
+    const call = (service, data = {}) => {
+      this._fire("haptic", "light");
+      this._hass.callService("media_player", service, { entity_id: entity, ...data });
+    };
+    prev.addEventListener("click", () => call("media_previous_track"));
+    pp.addEventListener("click", () => call("media_play_pause"));
+    next.addEventListener("click", () => call("media_next_track"));
+    vol.addEventListener("change", () => call("volume_set", { volume_level: Number(vol.value) / 100 }));
+    art.addEventListener("click", () => this._moreInfo(entity));
+    meta.addEventListener("click", () => this._moreInfo(entity));
+    return { entity, el, art, title, artist, src, fill, pos, dur, pp, vol, pic: null };
+  }
+
+  _renderMedia() {
+    const m = this._media;
+    if (!m) return;
+    const st = this._hass.states[m.entity];
+    if (!st) {
+      m.el.className = "np missing";
+      m.title.textContent = "Media player not found";
+      m.artist.textContent = m.entity;
+      m.src.textContent = "";
+      return;
+    }
+    const a = st.attributes;
+    const active = st.state === "playing" || st.state === "paused";
+    m.el.className = `np ${active ? st.state : "idle"}`;
+    m.title.textContent = active ? a.media_title || "Unknown track" : "Nothing playing";
+    m.artist.textContent = active ? [a.media_artist, a.media_album_name].filter(Boolean).join(" · ") : "";
+    m.src.textContent = [a.friendly_name, a.source].filter(Boolean).join(" · ");
+    const pic = active && a.entity_picture ? (this._hass.hassUrl ? this._hass.hassUrl(a.entity_picture) : a.entity_picture) : null;
+    if (pic !== m.pic) {
+      m.pic = pic;
+      m.art.style.backgroundImage = pic ? `url("${pic}")` : "";
+      m.art.innerHTML = pic ? "" : iconSvg(ICON.music);
+    }
+    m.pp.innerHTML = iconSvg(st.state === "playing" ? ICON.pause : ICON.play);
+    if (this.shadowRoot.activeElement !== m.vol && a.volume_level != null) m.vol.value = Math.round(a.volume_level * 100);
+    this._renderProgress();
+  }
+
+  _renderProgress() {
+    const m = this._media;
+    const st = m && this._hass?.states[m.entity];
+    if (!st) return;
+    const a = st.attributes;
+    const total = a.media_duration;
+    if (!total || (st.state !== "playing" && st.state !== "paused")) {
+      m.fill.style.width = "0%";
+      m.pos.textContent = "";
+      m.dur.textContent = "";
+      return;
+    }
+    let p = a.media_position || 0;
+    if (st.state === "playing" && a.media_position_updated_at) p += (Date.now() - Date.parse(a.media_position_updated_at)) / 1000;
+    p = Math.min(Math.max(p, 0), total);
+    const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+    m.fill.style.width = `${(p / total) * 100}%`;
+    m.pos.textContent = fmt(p);
+    m.dur.textContent = fmt(total);
   }
 
   _watchList() {
@@ -549,12 +681,12 @@ class HomeViewCard extends HTMLElement {
       const domain = d.entity.split(".")[0];
       if (domain === "camera") {
         const name = d.name || this._hass?.states[d.entity]?.attributes.friendly_name || d.entity;
-        for (const e of [].concat(d.motion || [])) m.set(e, { type: "motion", name, where: "at", camera: d.entity });
+        for (const e of [].concat(d.motion || [])) m.set(e, { type: "motion", name, where: "in", camera: d.entity });
         for (const e of [].concat(d.detections || [])) m.set(e, { type: "detect", name, camera: d.entity });
       } else if (domain === "binary_sensor" && !m.has(d.entity)) {
         const dc = this._hass?.states[d.entity]?.attributes.device_class;
         if (OPENING_CLASSES.has(dc)) m.set(d.entity, { type: dc === "window" ? "window" : "door", name: d.name });
-        else if (MOTION_CLASSES.has(dc)) m.set(d.entity, { type: "motion", name: d.name, where: "at" });
+        else if (MOTION_CLASSES.has(dc)) m.set(d.entity, { type: "motion", name: d.name, where: "in" });
       }
     }
     return m;
@@ -571,10 +703,10 @@ class HomeViewCard extends HTMLElement {
       return on ? { text: `${name} opened`, tone: "open", icon: open } : { text: `${name} closed`, tone: "ok", icon: shut };
     }
     if (!on) return null;
-    if (w.type === "motion") return { text: `Motion ${w.where || "at"} ${name}`, tone: "cool", icon: ICON.motion, target: w.camera };
+    if (w.type === "motion") return { text: `Motion ${w.where || "in"} ${name}`, tone: "cool", icon: ICON.motion, target: w.camera };
     const m = id.match(/baby_cry|person|vehicle|animal|package|face|smoke|glass_break|motion/);
     const label = m ? DETECT_LABELS[m[0]] : this._hass.states[id]?.attributes.friendly_name || "Detection";
-    const text = m?.[0] === "baby_cry" ? `Baby crying in ${name}` : `${label} at ${name}`;
+    const text = m?.[0] === "baby_cry" ? `Baby crying in ${name}` : `${label} in ${name}`;
     return { text, tone: "alert", icon: m?.[0] === "baby_cry" ? ICON.speaker : ICON.cctv, target: w.camera };
   }
 
@@ -867,6 +999,7 @@ class HomeViewCard extends HTMLElement {
     this._renderChips({ openNames, watched, locks, unlocked, lightsOn, motion, climate });
     this._trackEvents();
     this._renderLog();
+    this._renderMedia();
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }

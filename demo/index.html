@@ -57,6 +57,7 @@ const states = {
   "binary_sensor.westons_room_animal_detected": st("off", { device_class: "occupancy" }),
   "binary_sensor.rack_01_rear_motion": st("off", { device_class: "motion" }),
   "sensor.temp_serverrack_humidity": st("29", { device_class: "humidity", unit_of_measurement: "%" }),
+  "media_player.spotify": { state: "playing", last_changed: ago(3), attributes: { friendly_name: "Spotify", source: "Living Room Speaker", media_title: "Midnight City", media_artist: "M83", media_album_name: "Hurry Up, We're Dreaming", entity_picture: "album.svg", media_duration: 243, media_position: 61, media_position_updated_at: new Date().toISOString(), volume_level: 0.42 } },
   "sensor.temp_livingrm_temperature": st("70.2", { device_class: "temperature", unit_of_measurement: "°F" }),
   "sensor.temp_livingrm_humidity": st("41", { device_class: "humidity", unit_of_measurement: "%" }),
 };
@@ -86,6 +87,20 @@ async function callApi(method, path) {
 function callService(domain, service, data) {
   const id = data.entity_id;
   const cur = states[id];
+  if (domain === "media_player" && cur) {
+    const a = { ...cur.attributes };
+    let state = cur.state;
+    if (service === "media_play_pause") {
+      if (state === "playing") a.media_position += (Date.now() - Date.parse(a.media_position_updated_at)) / 1000;
+      state = state === "playing" ? "paused" : "playing";
+      a.media_position_updated_at = new Date().toISOString();
+    }
+    if (service === "media_next_track" || service === "media_previous_track") { a.media_position = 0; a.media_position_updated_at = new Date().toISOString(); }
+    if (service === "volume_set") a.volume_level = data.volume_level;
+    states[id] = { ...cur, state, attributes: a };
+    push();
+    return;
+  }
   if (service === "toggle" && cur) {
     states[id] = { ...cur, state: cur.state === "on" ? "off" : "on", last_changed: new Date().toISOString() };
     push();

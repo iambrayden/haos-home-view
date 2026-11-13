@@ -14,6 +14,8 @@ labels:
     x: 1163
     y: 18
 
+media: media_player.spotify
+
 rooms:
   - name: Bedroom 1
     rect: [77, 47, 330, 352]
@@ -36,7 +38,7 @@ rooms:
     humidity: sensor.temp_office_humidity
   - name: Weston's Room
     rect: [422, 242, 728, 428]
-    label_at: [575, 256]
+    label_at: [575, 264]
   - name: Closet
     rect: [422, 428, 508, 497]
   - name: Stairs

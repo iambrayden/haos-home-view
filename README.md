@@ -56,6 +56,7 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `layers` | `true` | Filter tabs |
 | `grid` | `true` | Blueprint grid behind the plan |
 | `camera_refresh` | `10` | Seconds between camera preview refreshes |
+| `media` | | A `media_player` (e.g. Spotify) to show as a Now Playing panel with art, progress, previous/play/next and volume |
 | `log` | `true` | Activity feed of door, motion and camera events. Sits to the right of the plan on wide screens and below it on narrow ones. |
 | `log_title` | `Activity` | Heading for the feed |
 | `log_hours` | `24` | How far back to load history when the card opens |
