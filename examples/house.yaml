@@ -75,7 +75,7 @@ rooms:
     motion: binary_sensor.living_room_motion
   - name: Dining Room
     rect: [77, 650, 355, 787]
-    label_at: [216, 628]
+    label_at: [216, 718]
   - name: Server Room
     rect: [837, 47, 1490, 494]
     temperature: sensor.temp_serverrack_temperature

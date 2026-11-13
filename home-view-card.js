@@ -1,4 +1,4 @@
-const VERSION = "0.10.5";
+const VERSION = "0.10.6";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -64,7 +64,7 @@ const DEFAULT_CONFIG = {
     {name:"Stairs",rect:[508,428,728,497]},
     {name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},
     {name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590],temperature:"sensor.temp_livingrm_temperature",humidity:"sensor.temp_livingrm_humidity",motion:"binary_sensor.living_room_motion"},
-    {name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},
+    {name:"Dining Room",rect:[77,650,355,787],label_at:[216,718]},
     {name:"Server Room",rect:[837,47,1490,494],temperature:"sensor.temp_serverrack_temperature",humidity:"sensor.temp_serverrack_humidity"},
     {name:"Mancave",rect:[837,494,1490,787]},
   ],
