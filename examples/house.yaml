@@ -158,10 +158,6 @@ openings:
     line: [1096, 494, 1200, 494]
 
 devices:
-  - entity: climate.living_room
-    name: Thermostat
-    x: 376
-    y: 250
   - entity: camera.hallway_high_resolution_channel
     name: Hallway
     x: -62
