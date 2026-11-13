@@ -63,7 +63,8 @@ Everything is drawn in one coordinate space that you pick. The example uses the 
 | `grid` | `true` | Blueprint grid behind the plan |
 | `camera_refresh` | `10` | Seconds between camera preview refreshes |
 | `glucose` | | A CGM reading (e.g. Dexcom). Either the value sensor, or `{entity, trend, low, high, urgent_low, hours, stale_minutes}`. Shows the number, trend arrow, a range-colored status and a graph of the last few hours, plus a chip next to the tabs. |
-| `media` | | One or more `media_player`s (Spotify, a TV, ...) shown as Now Playing panels with art, progress, previous/play/next and volume. Players that can turn on and off get a power button. Use `{entity, name}` to rename one. |
+| `media` | | One or more `media_player`s (Spotify, a TV, ...) shown as Now Playing panels with art, progress, previous/play/next and volume. Players that can turn on and off get a power button. Use `{entity, name}` to rename one. Add `sources:` with Plex/Jellyfin/Emby players for that TV so the panel shows the show, episode and artwork, and the play buttons control that player. App logos show automatically for common streaming apps. |
+| `climate` | | One or more thermostats as a panel: current temperature and humidity, heating/cooling status, − / + target controls and mode buttons. Use `{entity, name, humidity}` to set a humidity sensor. |
 | `weather` | | A `weather` entity shown with current conditions and a daily forecast |
 | `forecast_days` | `5` | Days in the forecast row |
 | `log` | `true` | Activity feed of door, motion and camera events. Sits to the right of the plan on wide screens and below it on narrow ones. |

@@ -26,6 +26,13 @@ media:
   - media_player.spotify
   - entity: media_player.bedroom_tv_2
     name: Bedroom TV
+    sources:
+      - media_player.plex_bedroom_tv
+
+climate:
+  entity: climate.living_room
+  name: Thermostat
+  humidity: sensor.living_room_humidity
 
 rooms:
   - name: Bedroom 1

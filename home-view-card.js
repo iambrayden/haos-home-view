@@ -1,4 +1,4 @@
-const VERSION = "0.8.0";
+const VERSION = "0.9.0";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -29,6 +29,11 @@ const ICON = {
   prev: "M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z",
   volume: "M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z",
   tv: "M21,17H3V5H21M21,3H3A2,2 0 0,0 1,5V17A2,2 0 0,0 3,19H8V21H16V19H21A2,2 0 0,0 23,17V5A2,2 0 0,0 21,3Z",
+  minus: "M19,13H5V11H19V13Z",
+  plus: "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z",
+  thermoAuto: "M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22C12.4 22 12.7 22 13.1 21.9L15.4 15.3L14.8 14.7C15.5 14 16 13 16 11.9C16 11.2 15.8 10.5 15.4 9.9L17.6 7.7C18.5 9 19 10.4 19 12H20C20.3 12 20.6 12.1 20.8 12.2C20.8 12.2 20.9 12.2 20.9 12.3C21.3 12.5 21.7 12.9 21.9 13.4C22 12.9 22 12.5 22 12C22 6.5 17.5 2 12 2M14 8.6C13.4 8.2 12.7 8 12 8C9.8 8 8 9.8 8 12C8 13.1 8.4 14.1 9.2 14.8L7.1 16.9C5.8 15.7 5 13.9 5 12C5 8.1 8.1 5 12 5C13.6 5 15 5.5 16.2 6.4L14 8.6M20 14H18L14.8 23H16.7L17.4 21H20.6L21.3 23H23.2L20 14M17.8 19.7L19 16L20.2 19.7H17.8Z",
+  heatCool: "M12.92 1.58L11.18 2.58L12.39 4.67L11.8 6.85L9 7.6L7.38 6L7.42 3.59L5.43 3.59L5.43 5.42L3.59 5.42L3.6 7.42L6 7.42L7.65 9.03L6.9 11.82L4.68 12.4L2.59 11.2L1.59 12.93L3.17 13.84L2.26 15.42L4 16.42L5.19 14.33L7.42 13.75L7.92 14.26L9.32 12.86L8.78 12.32L9.53 9.54L12.32 8.78L12.85 9.32L14.26 7.91L13.73 7.37L14.32 5.19L16.41 4L15.41 2.25L13.83 3.16L12.92 1.58M20.72 4L4 20.72L5.27 22L10.16 17.11C10.63 17.43 11.15 17.68 11.71 17.83C14.38 18.55 17.12 16.96 17.83 14.29C18.22 12.86 17.93 11.36 17.11 10.16L22 5.27L20.72 4M18.74 9C19.18 9.63 19.53 10.38 19.75 11.19C19.97 12 20.03 12.81 19.96 13.61L22.65 10.41L18.74 9M19.32 15.95C19 16.67 18.5 17.35 17.93 17.94C17.34 18.53 16.66 19 15.96 19.34L20.05 20.06L19.32 15.95M9 18.71L10.41 22.66L13.59 19.95C12.81 20 12 19.97 11.19 19.76C10.36 19.54 9.62 19.17 9 18.71Z",
+  waterPct: "M12,3.25C12,3.25 6,10 6,14C6,17.32 8.69,20 12,20A6,6 0 0,0 18,14C18,10 12,3.25 12,3.25M14.47,9.97L15.53,11.03L9.53,17.03L8.47,15.97M9.75,10A1.25,1.25 0 0,1 11,11.25A1.25,1.25 0 0,1 9.75,12.5A1.25,1.25 0 0,1 8.5,11.25A1.25,1.25 0 0,1 9.75,10M14.25,14.5A1.25,1.25 0 0,1 15.5,15.75A1.25,1.25 0 0,1 14.25,17A1.25,1.25 0 0,1 13,15.75A1.25,1.25 0 0,1 14.25,14.5Z",
   music: "M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z",
   help: "M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z",
 };
@@ -43,7 +48,8 @@ const DEFAULT_CONFIG = {
   ],
   glucose: {entity:"sensor.dexcom_glucose_value",trend:"sensor.dexcom_glucose_trend",low:70,high:180},
   weather: "weather.forecast_home",
-  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV"}],
+  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:["media_player.plex_bedroom_tv"]}],
+  climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
     {name:"Closet",rect:[77,352,149,490],vertical:true},
@@ -139,6 +145,30 @@ const WEATHER_LABEL = {
   rainy: "Rain", snowy: "Snow", "snowy-rainy": "Sleet", sunny: "Sunny", windy: "Windy", "windy-variant": "Windy",
 };
 
+const APP_LOGOS = {
+  appletv: { bg: "#000000", fg: "#FFFFFF", path: "M20.57 17.735h-1.815l-3.34-9.203h1.633l2.02 5.987c.075.231.273.9.586 2.012l.297-.997.33-1.006 2.094-6.004H24zm-5.344-.066a5.76 5.76 0 0 1-1.55.207c-1.23 0-1.84-.693-1.84-2.087V9.646h-1.063V8.532h1.121V7.081l1.476-.602v2.062h1.707v1.113H13.38v5.805c0 .446.074.75.214.932.14.182.396.264.75.264.207 0 .495-.041.883-.115zm-7.29-5.343c.017 1.764 1.55 2.358 1.567 2.366-.017.042-.248.842-.808 1.658-.487.71-.99 1.418-1.79 1.435-.783.016-1.03-.462-1.93-.462-.89 0-1.17.445-1.913.478-.758.025-1.344-.775-1.838-1.484-.998-1.451-1.765-4.098-.734-5.88.51-.89 1.426-1.451 2.416-1.46.75-.016 1.468.512 1.93.512.461 0 1.327-.627 2.234-.536.38.016 1.452.157 2.136 1.154-.058.033-1.278.743-1.27 2.219M6.468 7.988c.404-.495.685-1.18.61-1.864-.585.025-1.294.388-1.723.883-.38.437-.71 1.138-.619 1.806.652.05 1.328-.338 1.732-.825Z" },
+  crunchyroll: { bg: "#1A1A1A", fg: "#F47521", path: "M2.933 13.467a10.55 10.55 0 1 1 21.067-.8V12c0-6.627-5.373-12-12-12S0 5.373 0 12s5.373 12 12 12h.8a10.617 10.617 0 0 1-9.867-10.533zM19.2 14a3.85 3.85 0 0 1-1.333-7.467A7.89 7.89 0 0 0 14 5.6a8.4 8.4 0 1 0 8.4 8.4 6.492 6.492 0 0 0-.133-1.6A3.415 3.415 0 0 1 19.2 14z" },
+  emby: { bg: "#52B54B", fg: "#FFFFFF", path: "M11.041 0c-.007 0-1.456 1.43-3.219 3.176L4.615 6.352l.512.513.512.512-2.819 2.791L0 12.961l1.83 1.848c1.006 1.016 2.438 2.46 3.182 3.209l1.351 1.359.508-.496c.28-.273.515-.498.524-.498.008 0 1.266 1.264 2.794 2.808L12.97 24l.187-.182c.23-.225 5.007-4.95 5.717-5.656l.52-.516-.502-.513c-.276-.282-.5-.52-.496-.53.003-.009 1.264-1.26 2.802-2.783 1.538-1.522 2.8-2.776 2.803-2.785.005-.012-3.617-3.684-6.107-6.193L17.65 4.6l-.505.505c-.279.278-.517.501-.53.497-.013-.005-1.27-1.267-2.793-2.805A449.655 449.655 0 0011.041 0zM9.223 7.367c.091.038 7.951 4.608 7.957 4.627.003.013-1.781 1.056-3.965 2.32a999.898 999.898 0 01-3.996 2.307c-.019.006-.026-1.266-.026-4.629 0-3.7.007-4.634.03-4.625Z" },
+  jellyfin: { bg: "#00A4DC", fg: "#FFFFFF", path: "M12 .002C8.826.002-1.398 18.537.16 21.666c1.56 3.129 22.14 3.094 23.682 0C25.384 18.573 15.177 0 12 0zm7.76 18.949c-1.008 2.028-14.493 2.05-15.514 0C3.224 16.9 9.92 4.755 12.003 4.755c2.081 0 8.77 12.166 7.759 14.196zM12 9.198c-1.054 0-4.446 6.15-3.93 7.189.518 1.04 7.348 1.027 7.86 0 .511-1.027-2.874-7.19-3.93-7.19z" },
+  kodi: { bg: "#17B2E7", fg: "#FFFFFF", path: "M12.03.047c-.226 0-.452.107-.669.324-.922.922-1.842 1.845-2.763 2.768-.233.233-.455.48-.703.695-.31.267-.405.583-.399.988.02 1.399.008 2.799.008 4.198 0 1.453-.002 2.907 0 4.36 0 .11.002.223.03.327.087.337.303.393.546.15 1.31-1.31 2.618-2.622 3.928-3.933l4.449-4.453c.43-.431.43-.905 0-1.336L12.697.37c-.216-.217-.442-.324-.668-.324zm7.224 7.23c-.223 0-.445.104-.65.309L14.82 11.37c-.428.429-.427.895 0 1.322l3.76 3.766c.44.44.908.44 1.346.002 1.215-1.216 2.427-2.433 3.644-3.647.182-.18.353-.364.43-.615v-.33c-.077-.251-.246-.436-.428-.617-1.224-1.22-2.443-2.445-3.666-3.668-.205-.205-.429-.307-.652-.307zM4.18 7.611c-.086.014-.145.094-.207.157L.209 11.572c-.28.284-.278.677.004.96l2.043 2.046c.59.59 1.177 1.182 1.767 1.772.169.168.33.139.416-.084.044-.114.062-.242.063-.364.004-1.283.004-2.567.004-3.851h-.002V8.184c0-.085-.01-.169-.022-.252-.019-.135-.072-.258-.207-.309a.186.186 0 0 0-.095-.012zm7.908 6.838c-.224 0-.447.106-.656.315L7.66 18.537c-.433.434-.433.899.002 1.334 1.215 1.216 2.43 2.43 3.643 3.649.18.18.361.354.611.433h.33c.244-.069.423-.226.598-.402 1.222-1.23 2.45-2.453 3.676-3.68.43-.43.427-.905-.004-1.338l-3.772-3.773c-.208-.208-.432-.311-.656-.31z" },
+  max: { bg: "#525252", fg: "#FFFFFF", path: "M1.769 0A1.77 1.77 0 0 0 0 1.769V22.23A1.77 1.77 0 0 0 1.769 24H22.23A1.77 1.77 0 0 0 24 22.231V1.77A1.77 1.77 0 0 0 22.231 0zm12.485 3.28a4.301 4.301 0 0 1 4.3 4.302 4.301 4.301 0 0 1-1.993 3.63 6.085 6.085 0 0 1 1.054 3.422 6.085 6.085 0 0 1-6.085 6.085 6.085 6.085 0 0 1-6.085-6.085 6.085 6.085 0 0 1 4.66-5.916 4.301 4.301 0 0 1-.152-1.136 4.301 4.301 0 0 1 4.301-4.301zm0 1.849a2.453 2.453 0 0 0-2.453 2.453 2.453 2.453 0 0 0 2.453 2.453 2.453 2.453 0 0 0 2.453-2.453 2.453 2.453 0 0 0-2.453-2.453zm-2.724 5.268a4.237 4.237 0 0 0-4.237 4.237 4.237 4.237 0 0 0 4.237 4.237 4.237 4.237 0 0 0 4.237-4.237 4.237 4.237 0 0 0-4.237-4.237zm.032 2.54a1.781 1.781 0 1 1 0 3.562 1.781 1.781 0 0 1 0-3.562Z" },
+  netflix: { bg: "#000000", fg: "#E50914", path: "M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596 2.344.058 4.85.398 4.854.398-2.8-7.924-5.923-16.747-8.487-24zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.913.002-22.95zM5.398 1.05V24c1.873-.225 2.81-.312 4.715-.398v-9.22z" },
+  paramountplus: { bg: "#0064FF", fg: "#FFFFFF", path: "M16.347 21.373c.057-.084.151-.314-.025-.74l-.53-1.428c-.073-.182.084-.293.19-.173 0 0 1.004 1.157 1.264 1.64l.495.822c.425.028 1.6.06 2.732.06a3.26 3.26 0 0 1-.316-.364c-1.93-2.392-3.154-3.724-3.166-3.737-.391-.426-.572-.508-.87-.643a4.82 4.82 0 0 1-.138-.065v.364c0 .047-.057.073-.086.022l-2.846-5.001a1.598 1.598 0 0 0-.508-.587l-.277-.194-1.354 3.123c.212 0 .354.216.27.409l-1.25 2.893h1.147c.443 0 .883.087 1.294.255l.302.125s-.913 1.878-.913 2.867c0 .181.028.362.075.534h2.104l-.096-.595s1.266.294 2.502.413M12 2.437c-6.627 0-12 5.373-12 12 0 2.669.873 5.133 2.346 7.126.503-.218.783-.542.983-.791l2.234-2.858a.467.467 0 0 1 .179-.138l.336-.146 3.674-4.659.534-.417 1.094-1.524a.482.482 0 0 1 .101-.102l.478-.347a.34.34 0 0 1 .398-.004l.578.407c.308.216.557.504.726.84l2.322 4.077c.051.09.09.129.182.174.454.227.732.268 1.33.913.277.304 1.495 1.666 3.203 3.784.236.318.538.588.963.783A11.948 11.948 0 0 0 24 14.437c0-6.627-5.373-12-12-12M3.236 15.1l-.778-.253-.48.662v-.818l-.778-.253.778-.253v-.818l.48.662.778-.253-.48.662Zm-.185 2.676-.252.778-.253-.778h-.818l.661-.481-.253-.777.663.48.66-.48-.252.777.662.481Zm.156-6.195.253.778-.661-.48-.663.48.253-.778-.66-.48h.817l.253-.778.252.777h.818Zm1.314-1.76L4.04 9.16l-.778.253.48-.661-.48-.663.778.254.48-.662v.818l.778.253-.777.252Zm2.045-2.862-.253.777-.252-.777h-.818l.662-.48-.253-.778.661.48.661-.48-.252.777.662.48Zm2.577-1.313-.48.661V5.49l-.779-.254.778-.253v-.817l.48.66.78-.253-.481.663.48.66zm3.265-.75.253.778-.661-.48-.662.48.252-.777-.66-.481h.818L12 3.637l.252.778h.818zm2.93.595v.816l-.481-.661-.777.252.48-.662-.48-.662.777.253.48-.66v.817l.779.252zm5.426 8.285.778.253.48-.662v.818l.778.253-.778.253v.818l-.48-.662-.778.253.48-.662zm-3.077-6.04-.253-.777h-.818l.662-.48-.253-.778.662.48.662-.48-.254.778.662.48h-.818zm1.792 2.086v-.818l-.777-.252.777-.253V7.68l.481.662.777-.254-.48.663.48.66-.777-.252zm1.469 1.278.253-.777.254.777h.816l-.66.481.252.778-.662-.48-.661.48.253-.778-.662-.48zm.506 6.676-.253.778-.253-.778h-.817l.662-.481-.253-.777.66.48.663-.48-.253.777.661.481zm-12.08-.615.76-1.588c.024-.048-.032-.108-.067-.067l-.664.668c-.313.329-.847 1.25-.95 1.421l-.808 1.335a.109.109 0 0 1 .1.162l-.739 1.238c-.18.309.145.523.189.452 1.157-1.868 1.832-1.719 1.832-1.719l.387-.897c.022-.047-.001-.1-.05-.12-.12-.05-.316-.27.01-.885z" },
+  plex: { bg: "#1F1F1F", fg: "#EBAF00", path: "M3.987 8.409c-.96 0-1.587.28-2.12.933v-.72H0v8.88s.038.018.127.037c.138.03.821.187 1.331-.249.441-.377.542-.814.542-1.318v-1.283c.533.573 1.147.813 2 .813 1.84 0 3.253-1.493 3.253-3.48 0-2.12-1.36-3.613-3.266-3.613Zm16.748 5.595.406.591c.391.614.894.906 1.492.908.621-.012 1.064-.562 1.226-.755 0 0-.307-.27-.686-.72-.517-.614-1.214-1.755-1.24-1.803l-1.198 1.779Zm-3.205-1.955c0-2.08-1.52-3.64-3.52-3.64s-3.467 1.587-3.467 3.573a3.48 3.48 0 0 0 3.507 3.52c1.413 0 2.626-.84 3.253-2.293h-2.04l-.093.093c-.427.4-.72.533-1.227.533-.787 0-1.373-.506-1.453-1.266h4.986c.04-.214.054-.307.054-.52Zm-7.671-.219c0 .769.11 1.701.868 2.722l.056.069c-.306.526-.742.88-1.248.88-.399 0-.814-.211-1.138-.579a2.177 2.177 0 0 1-.538-1.441V6.409H9.86l-.001 5.421Zm9.283 3.46h-2.39l2.247-3.332-2.247-3.335h2.39l2.248 3.335-2.248 3.332Zm1.593-1.286Zm-17.162-.342c-.933 0-1.68-.773-1.68-1.72s.76-1.666 1.68-1.666c.92 0 1.68.733 1.68 1.68 0 .946-.733 1.706-1.68 1.706Zm18.361-1.974L24 8.622h-2.391l-.87 1.293 1.195 1.773Zm-9.404-.466c.16-.706.72-1.133 1.493-1.133.773 0 1.373.467 1.507 1.133h-3Z" },
+  primevideo: { bg: "#1F2E3E", fg: "#FFFFFF", path: "M0 9.508c0-.043.01-.073.028-.09.018-.017.047-.025.086-.025h.329c.07 0 .112.034.127.101l.032.119c.091-.088.202-.159.33-.21a1.04 1.04 0 0 1 .396-.079c.294 0 .528.109.7.326.171.217.257.51.257.88 0 .254-.042.475-.127.665-.086.19-.201.335-.347.437a.85.85 0 0 1-.502.154c-.125 0-.243-.02-.355-.06a.857.857 0 0 1-.288-.164v1.003c0 .043-.008.073-.025.09-.017.016-.046.025-.09.025H.115c-.04 0-.068-.009-.086-.025-.019-.017-.028-.047-.028-.09zm1.113.32a.868.868 0 0 0-.447.124v1.206a.834.834 0 0 0 .447.124c.17 0 .296-.058.376-.174.081-.117.121-.3.121-.55 0-.254-.04-.439-.118-.555-.08-.116-.206-.174-.379-.174zm2.248-.087c.121-.134.236-.23.344-.286a.733.733 0 0 1 .345-.085h.063c.043 0 .073.009.092.025.018.017.027.047.027.09v.385c0 .04-.008.068-.025.087-.017.018-.046.027-.089.027a.923.923 0 0 1-.082-.004 1.369 1.369 0 0 0-.383.025c-.1.02-.186.045-.256.076v1.54c0 .04-.008.069-.025.087-.016.018-.046.028-.089.028h-.437c-.04 0-.069-.01-.087-.028-.018-.018-.028-.047-.028-.087V9.508c0-.043.01-.073.028-.09.018-.017.047-.025.087-.025h.328c.07 0 .112.034.128.1zm1.526-.71a.396.396 0 0 1-.278-.096.338.338 0 0 1-.105-.262c0-.11.035-.197.105-.26a.395.395 0 0 1 .278-.097c.116 0 .208.032.278.096.07.064.105.151.105.261a.34.34 0 0 1-.105.262.396.396 0 0 1-.278.096zm-.333.477c0-.043.01-.073.027-.09.019-.017.048-.025.087-.025h.438c.043 0 .072.008.089.025s.025.047.025.09v2.113c0 .04-.008.069-.025.087-.017.018-.046.028-.09.028h-.437c-.04 0-.068-.01-.087-.028-.018-.018-.027-.047-.027-.087zm1.837.11c.161-.107.306-.183.435-.227.13-.045.263-.067.4-.067.273 0 .466.098.579.294.155-.104.3-.18.438-.225.137-.046.278-.069.424-.069.213 0 .377.06.495.179.117.12.175.286.175.5v1.618c0 .04-.008.069-.025.087-.017.019-.046.027-.089.027h-.438c-.04 0-.068-.008-.086-.027-.018-.018-.028-.047-.028-.087V10.15c0-.208-.092-.312-.278-.312-.164 0-.33.04-.497.119v1.664c0 .04-.008.069-.025.087-.017.019-.046.027-.09.027h-.437c-.04 0-.068-.008-.086-.027-.019-.018-.028-.047-.028-.087V10.15c0-.208-.093-.312-.278-.312-.17 0-.337.04-.502.123v1.66c0 .04-.008.069-.025.087-.017.019-.046.027-.089.027h-.438c-.039 0-.068-.008-.086-.027-.018-.018-.027-.047-.027-.087V9.508c0-.043.009-.073.027-.09.018-.017.047-.025.086-.025h.329c.07 0 .112.034.128.101zm4.387 1.16a1.81 1.81 0 0 1-.451-.05c.018.204.08.35.185.44.105.088.263.132.476.132.085 0 .168-.005.249-.016a3.08 3.08 0 0 0 .362-.078.143.143 0 0 1 .023-.002c.052 0 .078.035.078.105v.211c0 .049-.007.083-.02.103a.169.169 0 0 1-.08.053 1.953 1.953 0 0 1-.708.128c-.377 0-.666-.103-.868-.312-.203-.207-.304-.505-.304-.893 0-.398.104-.71.31-.935.207-.227.494-.34.862-.34.283 0 .504.069.664.206a.69.69 0 0 1 .24.55c0 .23-.087.403-.258.52-.172.119-.425.177-.76.177zm.064-.99c-.292 0-.46.18-.506.54.122.025.257.037.406.037.155 0 .267-.024.337-.071.07-.047.105-.12.105-.218 0-.193-.114-.289-.342-.289zm2.948 1.946a.21.21 0 0 1-.075-.011.119.119 0 0 1-.05-.037.274.274 0 0 1-.038-.071l-.777-2.04a1.863 1.863 0 0 1-.023-.063.162.162 0 0 1-.009-.05c0-.047.03-.07.091-.07h.454c.049 0 .084.01.107.028.023.018.04.049.052.092l.468 1.622.477-1.622a.175.175 0 0 1 .052-.092c.023-.018.058-.027.107-.027h.44c.061 0 .091.022.091.068a.16.16 0 0 1-.009.05l-.022.065-.777 2.039a.274.274 0 0 1-.039.07.122.122 0 0 1-.047.038.207.207 0 0 1-.078.01zm2.02-2.703a.393.393 0 0 1-.277-.097.338.338 0 0 1-.105-.26c0-.11.035-.198.105-.262a.393.393 0 0 1 .277-.096c.115 0 .207.032.277.096.07.064.104.151.104.261 0 .11-.034.197-.104.261a.393.393 0 0 1-.277.097zm-.218 2.703c-.04 0-.068-.01-.086-.028-.019-.018-.028-.047-.028-.087V9.507c0-.043.01-.072.028-.09.018-.016.047-.024.086-.024h.436c.042 0 .072.008.089.025.016.017.024.046.024.09v2.111c0 .04-.008.07-.024.087-.017.019-.047.028-.09.028zm1.948.05a.869.869 0 0 1-.513-.153.97.97 0 0 1-.334-.426 1.6 1.6 0 0 1-.116-.63c0-.38.09-.682.268-.91a.856.856 0 0 1 .709-.341.98.98 0 0 1 .622.206V8.458c0-.043.01-.073.027-.09.018-.016.047-.025.087-.025h.436c.042 0 .071.009.088.025.017.017.025.047.025.09v3.161c0 .04-.008.07-.025.087-.017.019-.046.028-.088.028h-.364a.135.135 0 0 1-.084-.023.137.137 0 0 1-.043-.078l-.027-.105a.958.958 0 0 1-.668.256zm.218-.504a.762.762 0 0 0 .418-.128v-1.21a.872.872 0 0 0-.45-.114c-.16 0-.28.06-.358.18-.08.121-.118.304-.118.548 0 .245.041.426.124.546.084.119.212.178.384.178zm2.588-.51c-.169 0-.315-.016-.44-.05.018.201.078.345.18.432.103.087.257.13.465.13.083 0 .164-.005.242-.016a2.997 2.997 0 0 0 .354-.076.135.135 0 0 1 .022-.002c.05 0 .075.035.075.103v.207c0 .048-.007.082-.02.101a.165.165 0 0 1-.077.052 1.895 1.895 0 0 1-.69.126c-.367 0-.65-.102-.846-.306-.197-.204-.296-.496-.296-.876 0-.39.1-.695.302-.917.202-.222.482-.333.84-.333.276 0 .492.068.647.203a.678.678 0 0 1 .234.539c0 .225-.084.395-.251.51-.168.115-.415.173-.74.173zm.063-.97c-.285 0-.45.176-.494.53.119.024.25.036.396.036.15 0 .26-.024.329-.07.068-.046.102-.117.102-.213 0-.19-.111-.284-.333-.284zm2.442 2.003c-.36 0-.642-.11-.845-.328-.203-.218-.304-.523-.304-.914 0-.388.101-.691.304-.91.203-.218.485-.327.845-.327s.642.109.845.327c.203.219.304.522.304.91 0 .39-.101.696-.304.914-.203.218-.485.328-.845.328zm0-.514c.318 0 .477-.242.477-.728 0-.483-.16-.724-.477-.724-.318 0-.477.241-.477.724 0 .486.16.728.477.728zm-6.844 1.886c.405-.306.944-.408 1.39-.408.418 0 .756.09.828.185.15.2-.039 1.584-.775 2.244-.112.102-.22.047-.17-.087.166-.442.536-1.436.36-1.677-.175-.242-1.158-.115-1.6-.058-.068.008-.107-.02-.112-.061v-.023c.004-.036.03-.078.079-.115zm-10.184-.172a.105.105 0 0 1 .106-.091c.027 0 .057.009.089.028a11.778 11.778 0 0 0 6.194 1.772c1.52 0 3.19-.34 4.726-1.043.232-.105.426.164.2.346-1.371 1.09-3.359 1.67-5.07 1.67-2.397 0-4.557-.956-6.191-2.547a.173.173 0 0 1-.054-.097Z" },
+  spotify: { bg: "#121212", fg: "#1ED760", path: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" },
+  tubi: { bg: "#7408FF", fg: "#FFFFFF", path: "M16.696 15.272v-.752c.4.548 1.107.917 1.934.917 1.475 0 2.28-.956 2.28-2.865 0-1.714-.893-2.858-2.235-2.858-.851 0-1.55.347-1.979.908v-2.06h-2.674v6.71zm1.57-2.614c0 .827-.337 1.275-.827 1.275-.486 0-.837-.452-.837-1.275s.342-1.28.837-1.28c.495 0 .828.452.828 1.28zM6.94 9.988v3.6c0 1.236.754 1.841 1.955 1.841.959 0 1.625-.396 2.028-1.064v.91h2.597V9.989h-2.675v3.14c0 .493-.346.693-.666.693-.321 0-.568-.192-.568-.655V9.989Zm14.39 0H24v5.276h-2.67ZM6.553 11.136c0 .781-.635 1.415-1.42 1.415-.783 0-1.419-.634-1.419-1.415 0-.782.636-1.415 1.42-1.415.784 0 1.42.633 1.42 1.415zM3.49 9.702v2.668c.005.653.327.924.976.924.225 0 .526-.053.672-.166v1.931c-.49.243-.869.378-1.535.378 0 0-.069 0-.18-.006l-.003.006c-1.614 0-2.51-1.035-2.482-2.686v-.47H0V9.99h.92V8.563h2.569Z" },
+  twitch: { bg: "#9146FF", fg: "#FFFFFF", path: "M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" },
+  youtube: { bg: "#FF0000", fg: "#FFFFFF", path: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" },
+  youtubekids: { bg: "#FF0000", fg: "#FFFFFF", path: "m23.99 13.543-.007-.288c-.015-1.122-.645-6.495-.999-7.457-.41-1.111-.974-1.945-1.675-2.48-1.143-.873-2.115-1.063-3.313-1.087h-.03c-.51 0-3.848.415-6.642.801-2.797.387-6.303.915-7.14 1.227-1.153.432-2.07.997-2.796 1.728C.05 7.332-.113 8.731.054 10.553c.13 1.412.875 6.975 1.302 8.248.574 1.717 1.694 2.75 3.154 2.909.36.039.704.059 1.045.059 1.28 0 2.295-.278 3.47-.598 1.848-.505 4.147-1.13 8.893-1.13h.14c1.162 0 4.008-.263 5.303-2.687.693-1.297.652-2.87.629-3.811zm-7.719-1.67-.105.066c-.274.185-.547.373-.819.563l-4.298 2.975c-.27.21-.748.521-1.016.521a.236.236 0 0 1-.107-.024c-.226-.12-.303-.94-.356-1.34l-.011-.087c-.065-.478-.594-5.035-.654-5.535-.017-.142-.105-.663.055-.781.05-.037.12-.05.2-.05.195 0 .442.083.549.118.845.272 5.083 1.774 6.4 2.448.038.02.079.04.122.057.188.08.446.192.452.51.004.304-.225.446-.412.56z" },
+  youtubetv: { bg: "#FF0000", fg: "#FFFFFF", path: "M21.794 10.609h-.618v3.286h-.607v-3.286h-.617v-.504h1.842v.504zm.135-.504h.649l.202 1.703c.057.488.11.908.172 1.484h.026c.057-.576.114-.986.17-1.484l.208-1.703H24l-.623 3.784h-.82l-.628-3.784zm-15.758.38a.796.796 0 0 0-.555-.561c-.493-.13-2.465-.13-2.465-.13s-1.973 0-2.466.13a.787.787 0 0 0-.555.56C0 10.977 0 12 0 12s0 1.028.13 1.516a.794.794 0 0 0 .56.56c.488.13 2.46.13 2.46.13s1.973 0 2.466-.13a.806.806 0 0 0 .56-.555c.13-.493.13-1.516.13-1.516s-.005-1.028-.135-1.52zm-3.649 2.46v-1.89l1.64.945-1.64.945zm6.629.867a.652.652 0 0 1-.265-.395 2.703 2.703 0 0 1-.078-.706v-.4a2.383 2.383 0 0 1 .093-.716.724.724 0 0 1 .28-.394.943.943 0 0 1 .504-.125c.203 0 .369.042.493.125.13.098.229.233.27.394.062.234.094.472.083.716v.4c.005.239-.02.478-.083.711a.7.7 0 0 1-.27.395c-.124.083-.296.124-.508.124-.218-.005-.395-.046-.52-.13zm.7-.436c.037-.089.052-.24.052-.442v-.856a1.376 1.376 0 0 0-.052-.436.189.189 0 0 0-.181-.14.183.183 0 0 0-.177.14c-.041.14-.057.29-.052.436v.861c0 .203.016.353.052.442.02.083.094.14.182.135a.183.183 0 0 0 .176-.14zm8.88-.66v.14c0 .135.006.265.016.4a.373.373 0 0 0 .068.192.2.2 0 0 0 .156.062.2.2 0 0 0 .192-.109c.036-.072.052-.192.057-.363l.534.036a.56.56 0 0 1 .006.1c0 .253-.068.445-.208.57-.14.125-.337.187-.592.187-.306 0-.519-.099-.643-.29s-.187-.489-.187-.894v-.482c0-.416.062-.717.192-.909.13-.192.348-.285.654-.285.213 0 .379.041.493.12.12.088.207.217.244.363.052.223.078.456.067.685v.472l-1.048.005zm.079-1.162a.367.367 0 0 0-.063.192 5.48 5.48 0 0 0-.015.405v.197h.457v-.197c0-.135-.006-.27-.021-.405a.373.373 0 0 0-.068-.192.174.174 0 0 0-.145-.057.169.169 0 0 0-.145.057zm-11.175 1.11l-.706-2.559h.618l.249 1.158c.062.285.109.53.14.732h.02c.022-.146.068-.384.14-.727l.26-1.163h.618l-.716 2.56v1.23H7.64v-1.23h-.005zm4.905-1.536v2.767h-.488L12 13.557h-.016c-.13.255-.332.384-.596.384-.182 0-.317-.062-.405-.181-.089-.12-.13-.307-.13-.566v-2.066h.623v2.03a.659.659 0 0 0 .041.264.137.137 0 0 0 .135.078.28.28 0 0 0 .156-.052.281.281 0 0 0 .109-.124v-2.196h.623zm3.192 0v2.767h-.488l-.052-.338h-.016c-.13.255-.332.384-.596.384-.182 0-.317-.062-.405-.181-.089-.12-.13-.307-.13-.566v-2.066h.623v2.03a.659.659 0 0 0 .041.264.137.137 0 0 0 .135.078.28.28 0 0 0 .156-.052.281.281 0 0 0 .109-.124v-2.196h.623zm-1.5-.52h-.618v3.287h-.607v-3.286h-.618v-.504h1.843v.504zm3.56.961c-.036-.171-.098-.3-.181-.379a.508.508 0 0 0-.348-.12.56.56 0 0 0-.322.1.635.635 0 0 0-.228.254h-.005V9.965h-.597v3.93h.514l.062-.26h.015a.531.531 0 0 0 .218.223.69.69 0 0 0 .322.083.502.502 0 0 0 .467-.29c.099-.192.15-.499.15-.909v-.436a4.861 4.861 0 0 0-.067-.737zm-.57 1.127c0 .155-.006.316-.026.472a.508.508 0 0 1-.084.244.195.195 0 0 1-.155.072.257.257 0 0 1-.14-.036.3.3 0 0 1-.104-.109v-1.567a.425.425 0 0 1 .109-.187.224.224 0 0 1 .166-.073c.057 0 .114.026.145.073.042.078.068.16.073.249.015.166.02.332.02.498l-.005.364z" },
+  hulu: { bg: "#1CE783", fg: "#0B0C0E", text: "hulu" },
+  disneyplus: { bg: "#0E1A5E", fg: "#FFFFFF", text: "Disney+" },
+  peacock: { bg: "#000000", fg: "#FFFFFF", text: "peacock" },
+  plutotv: { bg: "#000000", fg: "#FFF200", text: "pluto" },
+  sling: { bg: "#0068FF", fg: "#FFFFFF", text: "sling" },
+};
+
 const APP_NAMES = {
   "com.plexapp.android": "Plex",
   "com.netflix.ninja": "Netflix",
@@ -170,6 +200,25 @@ function appName(v) {
   const skip = new Set(["com", "org", "tv", "net", "android", "app", "androidtv", "atv", "google", "apps"]);
   const part = v.split(".").find((p) => !skip.has(p.toLowerCase())) || v.split(".").pop();
   return part.charAt(0).toUpperCase() + part.slice(1);
+}
+
+function appKey(name) {
+  return (name || "").toLowerCase().replace(/\+/g, "plus").replace(/[^a-z0-9]/g, "");
+}
+
+function appTile(name, size) {
+  const logo = APP_LOGOS[appKey(name)];
+  if (logo?.path) {
+    return `<span class="logo" style="background:${logo.bg};color:${logo.fg}"><svg viewBox="0 0 24 24" style="width:${size}%;height:${size}%"><path d="${logo.path}"/></svg></span>`;
+  }
+  const bg = logo?.bg || "#2a2f36";
+  const fg = logo?.fg || "#e6edf2";
+  const text = logo?.text || name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  const span = document.createElement("span");
+  span.className = `logo text${logo?.text ? "" : " initials"}${text.length > 5 ? " long" : ""}`;
+  span.style.cssText = `background:${bg};color:${fg}`;
+  span.textContent = text;
+  return span.outerHTML;
 }
 
 const DETECT_LABELS = {
@@ -323,6 +372,42 @@ ha-card {
 .log .when { flex: none; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
 .log .empty { padding: 8px; color: var(--hv-muted); font-size: 13px; }
 .side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.th {
+  --th: var(--hv-text);
+  padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03);
+}
+.th.heating { --th: var(--hv-heat); }
+.th.cooling { --th: var(--hv-cool); }
+.th.off { --th: var(--hv-muted); }
+.th-top { display: flex; justify-content: space-between; align-items: center; }
+.th-name { color: var(--hv-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+.th-status { padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--th); font-size: 11px; font-weight: 600; }
+.th-row { display: flex; align-items: center; gap: 10px; margin: 8px 0 10px; }
+.th-now { display: flex; flex-direction: column; min-width: 0; }
+.th-cur { color: var(--th); font-size: 36px; font-weight: 700; line-height: 1; cursor: pointer; font-variant-numeric: tabular-nums; }
+.th-hum { margin-top: 4px; color: var(--hv-muted); font-size: 11px; white-space: nowrap; }
+.th-targets { display: flex; flex-direction: column; gap: 6px; margin-left: auto; }
+.th-target { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.th-label { color: var(--hv-muted); font-size: 11px; }
+.th-ctl { display: flex; align-items: center; gap: 4px; }
+.th-ctl button {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04); color: var(--hv-text); cursor: pointer;
+}
+.th-ctl button:hover { background: rgba(255,255,255,0.1); }
+.th-ctl svg { width: 18px; height: 18px; fill: currentColor; }
+.th-set { min-width: 44px; text-align: center; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.th-target.pending .th-set { color: var(--hv-accent); }
+.th-modes { display: flex; gap: 4px; padding: 3px; border-radius: 9px; background: rgba(255,255,255,0.04); }
+.th-modes button {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 4px; border: 0; border-radius: 7px;
+  background: none; color: var(--hv-muted); font: inherit; font-size: 12px; cursor: pointer;
+}
+.th-modes button svg { width: 15px; height: 15px; fill: currentColor; }
+.th-modes button.on { background: rgba(255,255,255,0.1); color: var(--hv-text); }
+.th-modes button.on[data-mode="heat"] { color: var(--hv-heat); }
+.th-modes button.on[data-mode="cool"] { color: var(--hv-cool); }
+.th.missing { opacity: 0.6; border-style: dashed; }
 .wx {
   --wx: var(--hv-muted);
   padding: 12px 14px; border-radius: 10px; cursor: pointer;
@@ -391,7 +476,19 @@ ha-card {
   display: grid; place-items: center; width: 56px; height: 56px; border-radius: 6px; cursor: pointer;
   background: #000 center / cover no-repeat; color: var(--hv-muted);
 }
-.np .art svg { width: 24px; height: 24px; fill: currentColor; }
+.np .art { position: relative; overflow: hidden; }
+.np .art > svg { width: 24px; height: 24px; fill: currentColor; }
+.np .art .logo { display: grid; place-items: center; width: 100%; height: 100%; }
+.np .art .logo svg { fill: currentColor; }
+.np .art .logo.text { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; text-transform: none; }
+.np .art .logo.initials { font-size: 20px; }
+.np .art .badge {
+  position: absolute; right: 3px; bottom: 3px; width: 20px; height: 20px; border-radius: 5px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+.np .art .badge .logo.text { font-size: 7px; }
+.np .art .logo.text.long { font-size: 11px; }
+.np .art .badge .logo.text.long { font-size: 5px; }
 .np .meta { min-width: 0; align-self: center; cursor: pointer; }
 .np .t, .np .a, .np .src { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .np .t { font-size: 14px; font-weight: 600; }
@@ -767,6 +864,8 @@ class HomeViewCard extends HTMLElement {
     if (this._weather) side.append(this._weather.el);
     this._medias = [].concat(cfg.media || []).map((m) => this._buildMedia(typeof m === "string" ? { entity: m } : m));
     for (const m of this._medias) side.append(m.el);
+    this._thermos = [].concat(cfg.climate || []).map((c) => this._buildThermo(typeof c === "string" ? { entity: c } : c));
+    for (const th of this._thermos) side.append(th.el);
     if (cfg.log !== false && this._watch.size) {
       this._logList = h("ul");
       this._log = h("aside", { class: "log" }, h("h3", {}, cfg.log_title || "Activity"), this._logList);
@@ -1025,6 +1124,127 @@ class HomeViewCard extends HTMLElement {
     w.days.classList.toggle("hidden", !fc.length);
   }
 
+  _buildThermo(cfg) {
+    const name = h("span", { class: "th-name" });
+    const status = h("span", { class: "th-status" });
+    const cur = h("span", { class: "th-cur" });
+    const hum = h("span", { class: "th-hum" });
+    const targets = h("div", { class: "th-targets" });
+    const modes = h("div", { class: "th-modes" });
+    const el = h("section", { class: "th" },
+      h("div", { class: "th-top" }, name, status),
+      h("div", { class: "th-row" }, h("div", { class: "th-now" }, cur, hum), targets),
+      modes);
+    name.addEventListener("click", () => this._moreInfo(cfg.entity));
+    cur.addEventListener("click", () => this._moreInfo(cfg.entity));
+    return { cfg, el, name, status, cur, hum, targets, modes, pending: null, timer: null, modeKey: "", targetKey: "" };
+  }
+
+  _thermoStep(th, a) {
+    const unit = this._hass.config?.unit_system?.temperature || "";
+    return a.target_temp_step || (/C/.test(unit) ? 0.5 : 1);
+  }
+
+  _thermoNudge(th, field, dir) {
+    const st = this._hass.states[th.cfg.entity];
+    if (!st) return;
+    const a = st.attributes;
+    const step = this._thermoStep(th, a);
+    const base = { temperature: a.temperature, target_temp_low: a.target_temp_low, target_temp_high: a.target_temp_high, ...(th.pending || {}) };
+    let v = (base[field] ?? a.current_temperature ?? 70) + dir * step;
+    if (a.min_temp != null) v = Math.max(a.min_temp, v);
+    if (a.max_temp != null) v = Math.min(a.max_temp, v);
+    th.pending = { ...(th.pending || {}), [field]: Math.round(v * 10) / 10 };
+    if (field === "target_temp_low" || field === "target_temp_high") {
+      th.pending.target_temp_low ??= a.target_temp_low;
+      th.pending.target_temp_high ??= a.target_temp_high;
+    }
+    this._fire("haptic", "light");
+    this._renderThermo(th);
+    clearTimeout(th.timer);
+    th.timer = setTimeout(() => {
+      const data = { entity_id: th.cfg.entity, ...th.pending };
+      this._hass.callService("climate", "set_temperature", data);
+      setTimeout(() => {
+        th.pending = null;
+        this._renderThermo(th);
+      }, 4000);
+    }, 900);
+  }
+
+  _renderThermo(th) {
+    const st = this._hass.states[th.cfg.entity];
+    if (!st) {
+      th.el.className = "th missing";
+      th.name.textContent = th.cfg.name || "Thermostat";
+      th.status.textContent = "";
+      th.cur.textContent = "--";
+      th.hum.textContent = `${th.cfg.entity} not found`;
+      return;
+    }
+    const a = st.attributes;
+    const action = a.hvac_action || (st.state === "off" ? "off" : "idle");
+    const tone = /heat/.test(action) ? "heating" : action === "cooling" ? "cooling" : st.state === "off" ? "off" : "idle";
+    th.el.className = `th ${tone}`;
+    th.name.textContent = th.cfg.name || a.friendly_name || "Thermostat";
+    th.status.textContent = { heating: "Heating", preheating: "Heating", cooling: "Cooling", drying: "Drying", fan: "Fan", idle: "Idle", off: "Off" }[action] || action;
+    th.cur.textContent = a.current_temperature != null ? `${Math.round(a.current_temperature)}°` : "--";
+    const h1 = th.cfg.humidity ? parseFloat(this._hass.states[th.cfg.humidity]?.state) : a.current_humidity;
+    th.hum.textContent = h1 != null && !Number.isNaN(h1) ? `${Math.round(h1)}% humidity` : "Inside";
+
+    const p = th.pending || {};
+    const fmt = (v) => (v == null ? "--" : `${Number.isInteger(v) ? v : v.toFixed(1)}°`);
+    const fields = st.state === "off"
+      ? []
+      : a.target_temp_low != null && a.target_temp_high != null && a.temperature == null
+        ? [["target_temp_low", "Heat to", p.target_temp_low ?? a.target_temp_low], ["target_temp_high", "Cool to", p.target_temp_high ?? a.target_temp_high]]
+        : a.temperature != null
+          ? [["temperature", st.state === "cool" ? "Cool to" : st.state === "heat" ? "Heat to" : "Set to", p.temperature ?? a.temperature]]
+          : [];
+    const targetKey = fields.map((f) => f[0] + f[1]).join("|");
+    if (targetKey !== th.targetKey) {
+      th.targetKey = targetKey;
+      th.targets.replaceChildren(...fields.map(([field, label]) => {
+        const minus = h("button", { "aria-label": `Lower ${label}` });
+        minus.innerHTML = iconSvg(ICON.minus);
+        const plus = h("button", { "aria-label": `Raise ${label}` });
+        plus.innerHTML = iconSvg(ICON.plus);
+        minus.addEventListener("click", () => this._thermoNudge(th, field, -1));
+        plus.addEventListener("click", () => this._thermoNudge(th, field, 1));
+        return h("div", { class: "th-target", "data-field": field },
+          h("span", { class: "th-label" }, label),
+          h("div", { class: "th-ctl" }, minus, h("span", { class: "th-set" }), plus));
+      }));
+      if (!fields.length) th.targets.append(h("span", { class: "th-label" }, st.state === "off" ? "System off" : ""));
+    }
+    for (const [field, , value] of fields) {
+      const box = th.targets.querySelector(`[data-field="${field}"]`);
+      box.querySelector(".th-set").textContent = fmt(value);
+      box.classList.toggle("pending", p[field] != null);
+    }
+
+    const MODES = {
+      off: ["Off", ICON.power], heat: ["Heat", ICON.fire], cool: ["Cool", ICON.snowflake],
+      heat_cool: ["Auto", ICON.heatCool], auto: ["Auto", ICON.thermoAuto], dry: ["Dry", ICON.waterPct], fan_only: ["Fan", ICON.fan],
+    };
+    const list = (a.hvac_modes || []).filter((m) => MODES[m]);
+    const modeKey = list.join(",");
+    if (modeKey !== th.modeKey) {
+      th.modeKey = modeKey;
+      th.modes.replaceChildren(...list.map((mode) => {
+        const b = h("button", { "data-mode": mode, title: MODES[mode][0] });
+        b.innerHTML = iconSvg(MODES[mode][1]);
+        b.append(MODES[mode][0]);
+        b.addEventListener("click", () => {
+          this._fire("haptic", "light");
+          this._hass.callService("climate", "set_hvac_mode", { entity_id: th.cfg.entity, hvac_mode: mode });
+        });
+        return b;
+      }));
+    }
+    for (const b of th.modes.children) b.classList.toggle("on", b.dataset.mode === st.state);
+  }
+
   _buildMedia(cfg) {
     const entity = cfg.entity;
     const art = h("div", { class: "art" });
@@ -1050,18 +1270,19 @@ class HomeViewCard extends HTMLElement {
     volIcon.innerHTML = iconSvg(ICON.volume);
     const ctrl = h("div", { class: "ctrl" }, power, prev, pp, next, h("div", { class: "vol" }, volIcon, vol));
     const el = h("section", { class: "np" }, art, meta, prog, ctrl);
-    const call = (service, data = {}) => {
+    const ref = {};
+    const call = (service, data = {}, toPlayer = false) => {
       this._fire("haptic", "light");
-      this._hass.callService("media_player", service, { entity_id: entity, ...data });
+      this._hass.callService("media_player", service, { entity_id: (toPlayer && ref.target) || entity, ...data });
     };
     power.addEventListener("click", () => call("toggle"));
-    prev.addEventListener("click", () => call("media_previous_track"));
-    pp.addEventListener("click", () => call("media_play_pause"));
-    next.addEventListener("click", () => call("media_next_track"));
+    prev.addEventListener("click", () => call("media_previous_track", {}, true));
+    pp.addEventListener("click", () => call("media_play_pause", {}, true));
+    next.addEventListener("click", () => call("media_next_track", {}, true));
     vol.addEventListener("change", () => call("volume_set", { volume_level: Number(vol.value) / 100 }));
-    art.addEventListener("click", () => this._moreInfo(entity));
-    meta.addEventListener("click", () => this._moreInfo(entity));
-    return { cfg, entity, el, art, title, artist, src, fill, pos, dur, pp, power, vol, pic: undefined };
+    art.addEventListener("click", () => this._moreInfo(ref.target || entity));
+    meta.addEventListener("click", () => this._moreInfo(ref.target || entity));
+    return Object.assign(ref, { cfg, entity, el, art, title, artist, src, fill, pos, dur, pp, power, vol, pic: undefined, target: null });
   }
 
   _renderMedia() {
@@ -1078,35 +1299,50 @@ class HomeViewCard extends HTMLElement {
       return;
     }
     const a = st.attributes;
-    const active = st.state === "playing" || st.state === "paused";
-    const off = st.state === "off" || st.state === "standby" || DEAD_STATES.has(st.state);
+    const linked = [].concat(m.cfg.sources || [])
+      .map((id) => [id, this._hass.states[id]])
+      .find(([, s]) => s && (s.state === "playing" || s.state === "paused"));
+    m.target = linked ? linked[0] : null;
+    const play = linked ? linked[1] : st;
+    const pa = play.attributes;
+    const active = play.state === "playing" || play.state === "paused";
+    const off = !linked && (st.state === "off" || st.state === "standby" || DEAD_STATES.has(st.state));
     const canPower = ((a.supported_features || 0) & (128 | 256)) !== 0;
     const spotify = /spotify/i.test(m.entity) || /spotify/i.test(a.source || "");
-    m.el.className = `np ${active ? st.state : off ? "off" : "idle"}${spotify ? " spotify" : ""}${canPower ? " power" : ""}`;
+    m.el.className = `np ${active ? play.state : off ? "off" : "idle"}${spotify ? " spotify" : ""}${canPower ? " power" : ""}`;
     const name = m.cfg.name || a.friendly_name;
     const app = appName(a.app_name);
     const source = appName(a.source);
+    const looksLikeApp = (v) => v && (APP_LOGOS[appKey(appName(v))] || /^[a-z0-9_]+(\.[a-z0-9_]+)+$/i.test(v));
+    const linkedBrand = linked && (/plex/i.test(linked[0]) ? "Plex" : /jellyfin/i.test(linked[0]) ? "Jellyfin" : /emby/i.test(linked[0]) ? "Emby" : null);
+    const brand = spotify ? "Spotify" : linkedBrand || app || (looksLikeApp(a.source) ? source : null);
+    const episode = pa.media_series_title
+      ? [pa.media_season != null ? `S${pa.media_season}` : null, pa.media_episode != null ? `E${pa.media_episode}` : null, pa.media_title].filter(Boolean).join(" · ")
+      : null;
     m.title.textContent = off
       ? "Off"
       : active
-        ? a.media_title || app || source || "Playing"
+        ? pa.media_series_title || pa.media_title || app || source || "Playing"
         : app || (canPower ? "On" : "Nothing playing");
-    m.artist.textContent = active ? [a.media_series_title || a.media_artist, a.media_album_name].filter(Boolean).join(" · ") : "";
-    const via = !off && (source || app);
+    m.artist.textContent = active ? episode || [pa.media_artist, pa.media_album_name].filter(Boolean).join(" · ") : "";
+    const via = !off && (linkedBrand || source || app);
     m.src.textContent = [name, via && via !== m.title.textContent ? via : null].filter(Boolean).join(" · ");
-    const pic = active && a.entity_picture ? (this._hass.hassUrl ? this._hass.hassUrl(a.entity_picture) : a.entity_picture) : null;
-    if (pic !== m.pic) {
-      m.pic = pic;
+    const pic = active && pa.entity_picture ? (this._hass.hassUrl ? this._hass.hassUrl(pa.entity_picture) : pa.entity_picture) : null;
+    const artKey = `${pic}|${off ? "" : brand}`;
+    if (artKey !== m.pic) {
+      m.pic = artKey;
       m.art.style.backgroundImage = pic ? `url("${pic}")` : "";
-      m.art.innerHTML = pic ? "" : iconSvg(spotify || !canPower ? ICON.music : ICON.tv);
+      if (pic) m.art.innerHTML = brand && !spotify ? `<span class="badge">${appTile(brand, 62)}</span>` : "";
+      else if (brand && !off) m.art.innerHTML = appTile(brand, 58);
+      else m.art.innerHTML = iconSvg(spotify || !canPower ? ICON.music : ICON.tv);
     }
-    m.pp.innerHTML = iconSvg(st.state === "playing" ? ICON.pause : ICON.play);
+    m.pp.innerHTML = iconSvg(play.state === "playing" ? ICON.pause : ICON.play);
     if (this.shadowRoot.activeElement !== m.vol && a.volume_level != null) m.vol.value = Math.round(a.volume_level * 100);
     this._renderProgress(m);
   }
 
   _renderProgress(m) {
-    const st = m && this._hass?.states[m.entity];
+    const st = m && this._hass?.states[m.target || m.entity];
     if (!st) return;
     const a = st.attributes;
     const total = a.media_duration;
@@ -1459,6 +1695,7 @@ class HomeViewCard extends HTMLElement {
     this._renderMedia();
     this._renderGlucose();
     this._renderWeather();
+    for (const th of this._thermos || []) this._renderThermo(th);
     if (!this._tabs.childElementCount) this._renderTabs();
     this._applyLayer();
   }
