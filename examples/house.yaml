@@ -27,7 +27,7 @@ media:
   - entity: media_player.bedroom_tv_2
     name: Bedroom TV
     sources:
-      - media_player.plex_bedroom_tv
+      - media_player.bedroom_tv_3
 
 climate:
   entity: climate.living_room

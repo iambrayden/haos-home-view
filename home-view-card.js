@@ -48,7 +48,7 @@ const DEFAULT_CONFIG = {
   ],
   glucose: {entity:"sensor.dexcom_glucose_value",trend:"sensor.dexcom_glucose_trend",low:70,high:180},
   weather: "weather.forecast_home",
-  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:["media_player.plex_bedroom_tv"]}],
+  media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:["media_player.bedroom_tv_3"]}],
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
@@ -1314,7 +1314,8 @@ class HomeViewCard extends HTMLElement {
     const app = appName(a.app_name);
     const source = appName(a.source);
     const looksLikeApp = (v) => v && (APP_LOGOS[appKey(appName(v))] || /^[a-z0-9_]+(\.[a-z0-9_]+)+$/i.test(v));
-    const linkedBrand = linked && (/plex/i.test(linked[0]) ? "Plex" : /jellyfin/i.test(linked[0]) ? "Jellyfin" : /emby/i.test(linked[0]) ? "Emby" : null);
+    const hay = linked ? [linked[0], linked[1].attributes.friendly_name, linked[1].attributes.app_name, linked[1].attributes.source].join(" ") : "";
+    const linkedBrand = linked && (/plex/i.test(hay) ? "Plex" : /jellyfin/i.test(hay) ? "Jellyfin" : /emby/i.test(hay) ? "Emby" : null);
     const brand = spotify ? "Spotify" : linkedBrand || app || (looksLikeApp(a.source) ? source : null);
     const episode = pa.media_series_title
       ? [pa.media_season != null ? `S${pa.media_season}` : null, pa.media_episode != null ? `E${pa.media_episode}` : null, pa.media_title].filter(Boolean).join(" · ")
