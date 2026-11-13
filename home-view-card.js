@@ -1,4 +1,4 @@
-const VERSION = "0.11.0";
+const VERSION = "0.11.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -50,7 +50,13 @@ const DEFAULT_CONFIG = {
   weather: "weather.forecast_home",
   media: ["media_player.spotify",{entity:"media_player.bedroom_tv_2",name:"Bedroom TV",sources:[{entity:"media_player.bedroom_tv_3",app:"Jellyfin"}]}],
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
-  server: {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage"},
+  server: [
+    {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage"},
+    {name:"Jellyfin",cpu:"sensor.jellyfin_cpu_usage",memory:"sensor.jellyfin_memory_usage"},
+    {name:"Sonarr",cpu:"sensor.tv_herrell_us_cpu_usage",memory:"sensor.tv_herrell_us_memory_usage"},
+    {name:"Radarr",cpu:"sensor.movies_herrell_us_cpu_usage",memory:"sensor.movies_herrell_us_memory_usage"},
+    {name:"Immich",cpu:"sensor.photos_herrell_us_cpu_usage",memory:"sensor.photos_herrell_us_memory_usage",disk:"sensor.photos_herrell_us_disk_usage"},
+  ],
   network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}],clients:"sensor.udm_pro_clients",temperature:"sensor.udm_pro_temperature",temperature_name:"UDM Pro"},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
@@ -363,8 +369,19 @@ ha-card {
 .sys-h { color: var(--hv-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 .sys-sub { margin: 10px 0 4px; color: var(--hv-text); font-size: 12px; font-weight: 600; }
 .sys-row { --lv: var(--hv-closed); display: grid; grid-template-columns: 56px 1fr 40px; align-items: center; gap: 8px; margin: 5px 0; font-size: 12px; cursor: pointer; }
-.sys-row.warn, .sys-tile.warn { --lv: #ffb547; }
-.sys-row.bad, .sys-tile.bad { --lv: var(--hv-open); }
+.sys-row.warn, .sys-tile.warn, .sys-cell.warn { --lv: #ffb547; }
+.sys-row.bad, .sys-tile.bad, .sys-cell.bad { --lv: var(--hv-open); }
+.sys-tbl { display: grid; gap: 7px 8px; align-items: center; }
+.sys-th { color: var(--hv-muted); font-size: 10px; text-align: right; }
+.sys-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; }
+.sys-cell {
+  --lv: var(--hv-closed);
+  display: flex; flex-direction: column; gap: 3px; padding: 0; border: 0; background: none;
+  color: inherit; font: inherit; cursor: pointer;
+}
+.sys-cell .sys-val { font-size: 12px; }
+.sys-cell .sys-bar { height: 4px; }
+.sys-cell.dead { --lv: var(--hv-muted); opacity: 0.6; }
 .sys-row.dead { --lv: var(--hv-muted); opacity: 0.6; }
 .sys-k { color: var(--hv-muted); }
 .sys-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -1197,17 +1214,27 @@ class HomeViewCard extends HTMLElement {
     const el = h("section", { class: "sys" }, h("div", { class: "sys-h" }, cfg.system_title || "Server & Network"));
     const rows = [];
     const tiles = [];
-    for (const srv of [].concat(cfg.server || [])) {
-      el.append(h("div", { class: "sys-sub" }, srv.name || "Server"));
-      for (const [key, label] of [["cpu", "CPU"], ["memory", "Memory"], ["disk", "Disk"], ["temperature", "Temp"]]) {
-        if (!srv[key]) continue;
-        const fill = h("span");
-        const val = h("span", { class: "sys-val" });
-        const row = h("div", { class: "sys-row" }, h("span", { class: "sys-k" }, label), h("div", { class: "sys-bar" }, fill), val);
-        row.addEventListener("click", () => this._moreInfo(srv[key]));
-        el.append(row);
-        rows.push({ entity: srv[key], key, row, fill, val });
+    const servers = [].concat(cfg.server || []);
+    if (servers.length) {
+      const cols = [["cpu", "CPU"], ["memory", "Mem"], ["disk", "Disk"], ["temperature", "Temp"]].filter(([k]) => servers.some((s) => s[k]));
+      const table = h("div", { class: "sys-tbl", style: `grid-template-columns: minmax(0, 1fr) repeat(${cols.length}, 46px)` });
+      table.append(h("span", { class: "sys-th" }), ...cols.map(([, l]) => h("span", { class: "sys-th" }, l)));
+      for (const srv of servers) {
+        table.append(h("span", { class: "sys-name", title: srv.name || "" }, srv.name || "Server"));
+        for (const [key] of cols) {
+          if (!srv[key]) {
+            table.append(h("span"));
+            continue;
+          }
+          const fill = h("span");
+          const val = h("span", { class: "sys-val" });
+          const cell = h("button", { class: "sys-cell" }, val, h("span", { class: "sys-bar" }, fill));
+          cell.addEventListener("click", () => this._moreInfo(srv[key]));
+          table.append(cell);
+          rows.push({ entity: srv[key], key, row: cell, fill, val });
+        }
       }
+      el.append(h("div", { class: "sys-sub" }, cfg.servers_title || "Servers"), table);
     }
     const net = cfg.network;
     if (net) {
@@ -1245,14 +1272,14 @@ class HomeViewCard extends HTMLElement {
       if (Number.isNaN(v)) {
         r.val.textContent = st ? "--" : "?";
         r.fill.style.width = "0%";
-        r.row.className = "sys-row dead";
+        r.row.className = "sys-cell dead";
         r.row.title = st ? `${r.entity}: ${st.state}` : `${r.entity} not found`;
         continue;
       }
       const isTemp = r.key === "temperature";
       const pct = isTemp ? Math.min(100, (v / 90) * 100) : Math.min(100, v);
       const level = isTemp ? (v >= 80 ? "bad" : v >= 70 ? "warn" : "ok") : v >= 85 ? "bad" : v >= 60 ? "warn" : "ok";
-      r.row.className = `sys-row ${level}`;
+      r.row.className = `sys-cell ${level}`;
       r.fill.style.width = `${pct}%`;
       r.val.textContent = isTemp ? `${Math.round(v)}°` : `${Math.round(v)}%`;
       r.row.title = `${st.attributes.friendly_name || r.entity}: ${st.state}${st.attributes.unit_of_measurement || ""}`;
