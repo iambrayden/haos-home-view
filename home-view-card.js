@@ -1,4 +1,4 @@
-const VERSION = "0.10.7";
+const VERSION = "0.10.8";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -526,8 +526,11 @@ ha-card {
 }
 @container hv-card (min-width: 1240px) {
   .body { grid-template-columns: minmax(0, 1fr) var(--hv-log-width, 300px) var(--hv-side-width, 300px); grid-template-areas: "main log side"; grid-template-rows: auto; }
-  .body > .log, .body > .side { max-height: var(--hv-fit-height, calc(100vh - 96px)); }
+  .body > .log, .body > .side { height: var(--hv-fit-height, calc(100vh - 96px)); max-height: none; box-sizing: border-box; }
   .body > .side { overflow-y: auto; scrollbar-width: thin; padding-right: 2px; }
+  .body > .side > * { flex: 1 0 auto; }
+  .body > .side > .gl, .body > .side > .wx, .body > .side > .th { display: flex; flex-direction: column; justify-content: center; }
+  .body > .side > .np { align-content: center; }
   .plan { width: min(100%, calc(var(--hv-max-height, calc(100vh - 150px)) * var(--ratio))); }
   .side { gap: 10px; }
   .gl, .wx, .th { padding: 10px 12px; }
