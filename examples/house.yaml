@@ -42,12 +42,15 @@ server:
   - name: Jellyfin
     cpu: sensor.jellyfin_cpu_usage
     memory: sensor.jellyfin_memory_usage
+    disk: sensor.jellyfin_disk_usage
   - name: Sonarr
     cpu: sensor.tv_herrell_us_cpu_usage
     memory: sensor.tv_herrell_us_memory_usage
+    disk: sensor.tv_herrell_us_disk_usage
   - name: Radarr
     cpu: sensor.movies_herrell_us_cpu_usage
     memory: sensor.movies_herrell_us_memory_usage
+    disk: sensor.movies_herrell_us_disk_usage
   - name: Immich
     cpu: sensor.photos_herrell_us_cpu_usage
     memory: sensor.photos_herrell_us_memory_usage

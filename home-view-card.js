@@ -1,4 +1,4 @@
-const VERSION = "0.11.4";
+const VERSION = "0.11.5";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -52,9 +52,9 @@ const DEFAULT_CONFIG = {
   climate: {entity:"climate.living_room",name:"Thermostat",humidity:"sensor.living_room_humidity"},
   server: [
     {name:"SRV01",cpu:"sensor.srv01_cpu_usage",memory:"sensor.srv01_memory_usage"},
-    {name:"Jellyfin",cpu:"sensor.jellyfin_cpu_usage",memory:"sensor.jellyfin_memory_usage"},
-    {name:"Sonarr",cpu:"sensor.tv_herrell_us_cpu_usage",memory:"sensor.tv_herrell_us_memory_usage"},
-    {name:"Radarr",cpu:"sensor.movies_herrell_us_cpu_usage",memory:"sensor.movies_herrell_us_memory_usage"},
+    {name:"Jellyfin",cpu:"sensor.jellyfin_cpu_usage",memory:"sensor.jellyfin_memory_usage",disk:"sensor.jellyfin_disk_usage"},
+    {name:"Sonarr",cpu:"sensor.tv_herrell_us_cpu_usage",memory:"sensor.tv_herrell_us_memory_usage",disk:"sensor.tv_herrell_us_disk_usage"},
+    {name:"Radarr",cpu:"sensor.movies_herrell_us_cpu_usage",memory:"sensor.movies_herrell_us_memory_usage",disk:"sensor.movies_herrell_us_disk_usage"},
     {name:"Immich",cpu:"sensor.photos_herrell_us_cpu_usage",memory:"sensor.photos_herrell_us_memory_usage",disk:"sensor.photos_herrell_us_disk_usage"},
   ],
   stats: [
@@ -1305,8 +1305,17 @@ class HomeViewCard extends HTMLElement {
       r.row.className = `sys-cell ${level}`;
       r.fill.style.width = `${pct ?? 0}%`;
       r.fill.parentElement.style.visibility = pct == null ? "hidden" : "";
-      const amount = v >= 100 ? Math.round(v) : Math.round(v * 10) / 10;
-      r.val.textContent = isTemp ? `${Math.round(v)}°` : isPct ? `${Math.round(v)}%` : `${amount}${unit.replace(/^i?B$/, "B")}`;
+      const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+      let size = v;
+      let u = unit.replace(/iB$/, "B").toUpperCase();
+      let idx = units.indexOf(u);
+      while (idx >= 0 && idx < units.length - 1 && size >= 1000) {
+        size /= 1000;
+        idx++;
+      }
+      if (idx >= 0) u = units[idx];
+      const amount = size >= 100 ? Math.round(size) : Math.round(size * 10) / 10;
+      r.val.textContent = isTemp ? `${Math.round(v)}°` : isPct ? `${Math.round(v)}%` : `${amount}${u}`;
       r.row.title = `${st.attributes.friendly_name || r.entity}: ${st.state}${st.attributes.unit_of_measurement || ""}`;
     }
     for (const t of s.tiles) {
