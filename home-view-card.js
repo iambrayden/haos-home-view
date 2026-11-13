@@ -1,4 +1,4 @@
-const VERSION = "0.10.2";
+const VERSION = "0.10.3";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -40,8 +40,8 @@ const ICON = {
 
 const DEFAULT_CONFIG = {
   title: "Home",
-  view_box: [-170,0,1680,805],
-  stack: {split_x:780,move:[-760,830],below:700},
+  view_box: [55,-115,1460,1060],
+  stack: {split_x:780,move:[-760,920],below:700},
   labels: [
     {text:"Main Floor",x:575,y:18},
     {text:"Basement",x:1163,y:18},
@@ -90,11 +90,11 @@ const DEFAULT_CONFIG = {
     {name:"Basement Door",line:[1096,494,1200,494]},
   ],
   devices: [
-    {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:-62,y:400,preview:true},
+    {entity:"camera.hallway_high_resolution_channel",name:"Hallway",x:376,y:-40,preview:true},
     {entity:"camera.westons_room_high_resolution_channel",name:"Weston's Room",detections:["binary_sensor.westons_room_baby_cry_detected","binary_sensor.westons_room_person_detected","binary_sensor.westons_room_animal_detected"],x:575,y:342,preview:true},
-    {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:-62,y:120,preview:true},
+    {entity:"camera.backyard_high_resolution_channel",name:"Back Yard",motion:"binary_sensor.backyard_motion",detections:["binary_sensor.backyard_person_detected","binary_sensor.backyard_vehicle_detected","binary_sensor.backyard_animal_detected"],x:160,y:-38,preview:true},
     {entity:"camera.living_room_high_resolution_channel",name:"Living Room",x:630,y:710,preview:true},
-    {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:-62,y:680,preview:true},
+    {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:160,y:874,preview:true},
     {entity:"camera.rack_01_front_mainstream",name:"Server Rack",motion:"binary_sensor.rack_01_rear_motion",x:1390,y:210,preview:true},
   ],
 };
