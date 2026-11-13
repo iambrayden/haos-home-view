@@ -1,4 +1,4 @@
-const VERSION = "0.10.0";
+const VERSION = "0.10.1";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -854,7 +854,8 @@ class HomeViewCard extends HTMLElement {
       return { cfg: o, g, title, tag };
     });
 
-    this._devices = (cfg.devices || []).map((d) => {
+    const roomMotion = new Set((cfg.rooms || []).flatMap((r) => [].concat(r.motion || [])));
+    this._devices = (cfg.devices || []).filter((d) => !roomMotion.has(d.entity) || d.marker === true).map((d) => {
       const el = h("button", { class: "dev", style: pos(d.x, d.y), "aria-label": d.name || d.entity });
       const ico = h("span", { class: "ico" });
       const val = h("span", { class: "val" });
