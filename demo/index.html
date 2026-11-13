@@ -114,13 +114,14 @@ async function callApi(method, path) {
   ]);
 }
 
-function callService(domain, service, data) {
+function callService(domain, service, data, target) {
+  data = { ...data, ...(target || {}) };
   const id = data.entity_id;
   const cur = states[id];
   if (domain === "climate" && cur) {
     const a = { ...cur.attributes };
     let state = cur.state;
-    if (service === "set_temperature") Object.assign(a, data);
+    if (service === "set_temperature") { const { entity_id, ...f } = data; Object.assign(a, f); }
     if (service === "set_hvac_mode") { state = data.hvac_mode; a.hvac_action = state === "off" ? "off" : state === "cool" ? "cooling" : "heating"; }
     states[id] = { ...cur, state, attributes: a };
     push();
@@ -150,6 +151,7 @@ function callService(domain, service, data) {
 card.setConfig(config);
 push();
 
+window.addEventListener("hass-notification", (e) => console.log("TOAST:", e.detail.message));
 window.addEventListener("hass-more-info", (e) => {
   const id = e.detail.entityId;
   const s = states[id];

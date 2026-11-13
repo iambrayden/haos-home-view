@@ -1,4 +1,4 @@
-const VERSION = "0.11.1";
+const VERSION = "0.11.2";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -1347,11 +1347,13 @@ class HomeViewCard extends HTMLElement {
     clearTimeout(th.timer);
     th.timer = setTimeout(() => {
       const data = { entity_id: th.cfg.entity, ...th.pending };
-      this._hass.callService("climate", "set_temperature", data);
-      setTimeout(() => {
-        th.pending = null;
-        this._renderThermo(th);
-      }, 4000);
+      const { entity_id, ...fields } = data;
+      this._call("climate", "set_temperature", fields, entity_id, `${th.cfg.name || "Thermostat"}: couldn't set temperature`).finally(() => {
+        setTimeout(() => {
+          th.pending = null;
+          this._renderThermo(th);
+        }, 8000);
+      });
     }, 900);
   }
 
@@ -1420,7 +1422,7 @@ class HomeViewCard extends HTMLElement {
         b.append(MODES[mode][0]);
         b.addEventListener("click", () => {
           this._fire("haptic", "light");
-          this._hass.callService("climate", "set_hvac_mode", { entity_id: th.cfg.entity, hvac_mode: mode });
+          this._call("climate", "set_hvac_mode", { hvac_mode: mode }, th.cfg.entity, `${th.cfg.name || "Thermostat"}: couldn't change mode`);
         });
         return b;
       }));
@@ -1456,7 +1458,7 @@ class HomeViewCard extends HTMLElement {
     const ref = {};
     const call = (service, data = {}, toPlayer = false) => {
       this._fire("haptic", "light");
-      this._hass.callService("media_player", service, { entity_id: (toPlayer && ref.target) || entity, ...data });
+      this._call("media_player", service, data, (toPlayer && ref.target) || entity);
     };
     power.addEventListener("click", () => call("toggle"));
     prev.addEventListener("click", () => call("media_previous_track", {}, true));
@@ -1748,7 +1750,7 @@ class HomeViewCard extends HTMLElement {
         return;
       case "toggle":
         this._fire("haptic", "light");
-        this._hass.callService("homeassistant", "toggle", { entity_id: a.entity || entity });
+        this._call("homeassistant", "toggle", {}, a.entity || entity);
         return;
       case "navigate":
         history.pushState(null, "", a.navigation_path);
@@ -1763,6 +1765,20 @@ class HomeViewCard extends HTMLElement {
       default:
         this._moreInfo(a.entity || entity);
     }
+  }
+
+  _call(domain, service, data, entityId, failText) {
+    let p;
+    try {
+      p = Promise.resolve(this._hass.callService(domain, service, data, entityId ? { entity_id: entityId } : undefined));
+    } catch (err) {
+      p = Promise.reject(err);
+    }
+    return p.catch((err) => {
+      const msg = err?.message || err?.error?.message || err?.code || String(err);
+      console.error(`home-view-card: ${domain}.${service} failed for ${entityId}`, err);
+      this._fire("hass-notification", { message: `${failText || `${domain}.${service} failed`}: ${msg}`, duration: 8000 });
+    });
   }
 
   _moreInfo(entityId) {
