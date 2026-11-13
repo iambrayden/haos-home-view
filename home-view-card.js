@@ -1,4 +1,4 @@
-const VERSION = "0.11.3";
+const VERSION = "0.11.4";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -60,7 +60,7 @@ const DEFAULT_CONFIG = {
   stats: [
     {name:"Overseerr",tiles:[{entity:"sensor.seerr_pending_requests",name:"Pending",warn_above:0},{entity:"sensor.seerr_processing_requests",name:"Active"},{entity:"sensor.seerr_open_issues",name:"Issues",bad_above:0}]},
   ],
-  network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}],clients:"sensor.udm_pro_clients",temperature:"sensor.udm_pro_temperature",temperature_name:"UDM Pro"},
+  network: {latency:[{entity:"sensor.udm_pro_cloudflare_wan_latency",name:"Cloudflare"},{entity:"sensor.udm_pro_google_wan_latency",name:"Google"},{entity:"sensor.udm_pro_microsoft_wan_latency",name:"Microsoft"}]},
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
     {name:"Closet",rect:[77,352,149,490],vertical:true},
@@ -385,6 +385,7 @@ ha-card {
 .sys-cell .sys-val { font-size: 12px; }
 .sys-cell .sys-bar { height: 4px; }
 .sys-cell.dead { --lv: var(--hv-muted); opacity: 0.6; }
+.sys-cell.plain { --lv: var(--hv-text); }
 .sys-row.dead { --lv: var(--hv-muted); opacity: 0.6; }
 .sys-k { color: var(--hv-muted); }
 .sys-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -1220,7 +1221,7 @@ class HomeViewCard extends HTMLElement {
     const servers = [].concat(cfg.server || []);
     if (servers.length) {
       const cols = [["cpu", "CPU"], ["memory", "Mem"], ["disk", "Disk"], ["temperature", "Temp"]].filter(([k]) => servers.some((s) => s[k]));
-      const table = h("div", { class: "sys-tbl", style: `grid-template-columns: minmax(0, 1fr) repeat(${cols.length}, 46px)` });
+      const table = h("div", { class: "sys-tbl", style: `grid-template-columns: minmax(58px, 1fr) repeat(${cols.length}, minmax(38px, auto))` });
       table.append(h("span", { class: "sys-th" }), ...cols.map(([, l]) => h("span", { class: "sys-th" }, l)));
       for (const srv of servers) {
         table.append(h("span", { class: "sys-name", title: srv.name || "" }, srv.name || "Server"));
@@ -1234,7 +1235,7 @@ class HomeViewCard extends HTMLElement {
           const cell = h("button", { class: "sys-cell" }, val, h("span", { class: "sys-bar" }, fill));
           cell.addEventListener("click", () => this._moreInfo(srv[key]));
           table.append(cell);
-          rows.push({ entity: srv[key], key, row: cell, fill, val });
+          rows.push({ entity: srv[key], key, row: cell, fill, val, max: srv[`${key}_max`] });
         }
       }
       el.append(h("div", { class: "sys-sub" }, cfg.servers_title || "Servers"), table);
@@ -1294,11 +1295,18 @@ class HomeViewCard extends HTMLElement {
         continue;
       }
       const isTemp = r.key === "temperature";
-      const pct = isTemp ? Math.min(100, (v / 90) * 100) : Math.min(100, v);
-      const level = isTemp ? (v >= 80 ? "bad" : v >= 70 ? "warn" : "ok") : v >= 85 ? "bad" : v >= 60 ? "warn" : "ok";
+      const unit = (st.attributes.unit_of_measurement || "").trim();
+      const isPct = !isTemp && (unit === "%" || unit === "");
+      let pct = null;
+      if (isTemp) pct = Math.min(100, (v / 90) * 100);
+      else if (isPct) pct = Math.min(100, v);
+      else if (r.max) pct = Math.min(100, (v / r.max) * 100);
+      const level = pct == null ? "plain" : isTemp ? (v >= 80 ? "bad" : v >= 70 ? "warn" : "ok") : pct >= 85 ? "bad" : pct >= 60 ? "warn" : "ok";
       r.row.className = `sys-cell ${level}`;
-      r.fill.style.width = `${pct}%`;
-      r.val.textContent = isTemp ? `${Math.round(v)}°` : `${Math.round(v)}%`;
+      r.fill.style.width = `${pct ?? 0}%`;
+      r.fill.parentElement.style.visibility = pct == null ? "hidden" : "";
+      const amount = v >= 100 ? Math.round(v) : Math.round(v * 10) / 10;
+      r.val.textContent = isTemp ? `${Math.round(v)}°` : isPct ? `${Math.round(v)}%` : `${amount}${unit.replace(/^i?B$/, "B")}`;
       r.row.title = `${st.attributes.friendly_name || r.entity}: ${st.state}${st.attributes.unit_of_measurement || ""}`;
     }
     for (const t of s.tiles) {

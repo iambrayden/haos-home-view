@@ -73,9 +73,6 @@ network:
       name: Google
     - entity: sensor.udm_pro_microsoft_wan_latency
       name: Microsoft
-  clients: sensor.udm_pro_clients
-  temperature: sensor.udm_pro_temperature
-  temperature_name: UDM Pro
 
 rooms:
   - name: Bedroom 1
