@@ -1,4 +1,4 @@
-const VERSION = "0.10.3";
+const VERSION = "0.10.5";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -53,20 +53,20 @@ const DEFAULT_CONFIG = {
   rooms: [
     {name:"Bedroom 1",rect:[77,47,330,352]},
     {name:"Closet",rect:[77,352,149,490],vertical:true},
-    {name:"Bath",rect:[149,352,330,490]},
+    {name:"Bathroom",rect:[149,352,330,490]},
     {name:"Closet",rect:[330,95,422,149]},
     {rect:[330,47,376,95]},
     {rect:[376,47,422,95]},
     {name:"Hall",rect:[330,149,422,490],label_at:[376,420],motion:"binary_sensor.hallway1_motion",temperature:"sensor.living_room_temperature",humidity:"sensor.living_room_humidity"},
     {name:"Office",rect:[422,47,728,242],temperature:"sensor.temp_office_temperature",humidity:"sensor.temp_office_humidity"},
-    {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,254]},
+    {name:"Weston's Room",rect:[422,242,728,428],label_at:[575,262]},
     {name:"Closet",rect:[422,428,508,497]},
     {name:"Stairs",rect:[508,428,728,497]},
     {name:"Kitchen",rect:[77,490,355,650],label_at:[216,530]},
     {name:"Living Room",points:[[355,490],[422,490],[422,497],[728,497],[728,787],[355,787]],label_at:[620,590],temperature:"sensor.temp_livingrm_temperature",humidity:"sensor.temp_livingrm_humidity",motion:"binary_sensor.living_room_motion"},
     {name:"Dining Room",rect:[77,650,355,787],label_at:[216,628]},
     {name:"Server Room",rect:[837,47,1490,494],temperature:"sensor.temp_serverrack_temperature",humidity:"sensor.temp_serverrack_humidity"},
-    {name:"Basement",rect:[837,494,1490,787]},
+    {name:"Mancave",rect:[837,494,1490,787]},
   ],
   walls: [[77,47,728,47],[728,47,728,787],[728,787,77,787],[77,787,77,47],[330,47,330,490],[77,352,330,352],[422,47,422,497],[422,242,728,242],[422,428,728,428],[422,497,728,497],[355,557,355,650],[77,490,330,490],[508,428,508,497],[149,352,149,490],[330,149,422,149],[330,95,422,95],[376,47,376,95],[837,47,1490,47],[1490,47,1490,787],[1490,787,837,787],[837,787,837,47],[837,494,1490,494]],
   half_walls: [],
@@ -81,7 +81,7 @@ const DEFAULT_CONFIG = {
     {name:"Bedroom 1 Closet Door",line:[330,55,330,87]},
     {name:"Office Closet Door",line:[422,55,422,87]},
     {name:"Bedroom 1 Closet Door",line:[90,352,136,352]},
-    {name:"Bath Door",line:[330,372,330,430]},
+    {name:"Bathroom Door",line:[330,372,330,430]},
     {name:"Office Door",type:"door",line:[422,164,422,221],entity:"binary_sensor.door_office_contact"},
     {name:"Weston's Room Door",line:[422,263,422,320]},
     {name:"Weston's Room Window",type:"window",line:[728,263,728,320]},

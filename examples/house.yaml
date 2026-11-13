@@ -41,7 +41,7 @@ rooms:
   - name: Closet
     rect: [77, 352, 149, 490]
     vertical: true
-  - name: Bath
+  - name: Bathroom
     rect: [149, 352, 330, 490]
   - name: Closet
     rect: [330, 95, 422, 149]
@@ -59,7 +59,7 @@ rooms:
     humidity: sensor.temp_office_humidity
   - name: Weston's Room
     rect: [422, 242, 728, 428]
-    label_at: [575, 254]
+    label_at: [575, 262]
   - name: Closet
     rect: [422, 428, 508, 497]
   - name: Stairs
@@ -80,7 +80,7 @@ rooms:
     rect: [837, 47, 1490, 494]
     temperature: sensor.temp_serverrack_temperature
     humidity: sensor.temp_serverrack_humidity
-  - name: Basement
+  - name: Mancave
     rect: [837, 494, 1490, 787]
 
 walls:
@@ -137,7 +137,7 @@ openings:
     line: [422, 55, 422, 87]
   - name: Bedroom 1 Closet Door
     line: [90, 352, 136, 352]
-  - name: Bath Door
+  - name: Bathroom Door
     line: [330, 372, 330, 430]
   - name: Office Door
     type: door
