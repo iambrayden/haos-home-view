@@ -207,9 +207,3 @@ devices:
     x: 1390
     y: 210
     preview: true
-  - entity: binary_sensor.hallway1_motion
-    x: 376
-    y: 330
-  - entity: binary_sensor.living_room_motion
-    x: 610
-    y: 535

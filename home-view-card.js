@@ -1,4 +1,4 @@
-const VERSION = "0.9.1";
+const VERSION = "0.9.2";
 
 const ICON = {
   door: "M8,3C6.89,3 6,3.89 6,5V21H18V5C18,3.89 17.11,3 16,3H8M8,5H16V19H8V5M13,11V13H15V11H13Z",
@@ -97,8 +97,6 @@ const DEFAULT_CONFIG = {
     {entity:"camera.living_room_high_resolution_channel",name:"Living Room",x:630,y:710,preview:true},
     {entity:"camera.driveway_high_resolution_channel_2",name:"Front Yard",motion:"binary_sensor.driveway_motion_2",detections:["binary_sensor.driveway_person_detected","binary_sensor.driveway_vehicle_detected","binary_sensor.driveway_animal_detected"],x:160,y:874,preview:true},
     {entity:"camera.rack_01_front_mainstream",name:"Server Rack",motion:"binary_sensor.rack_01_rear_motion",x:1390,y:210,preview:true},
-    {entity:"binary_sensor.hallway1_motion",x:376,y:330},
-    {entity:"binary_sensor.living_room_motion",x:610,y:535},
   ],
 };
 
@@ -535,7 +533,8 @@ ha-card {
 svg.floor { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 svg.floor line, svg.floor polygon { vector-effect: non-scaling-stroke; }
 .room { fill: transparent; transition: fill 0.4s; }
-.room.motion { fill: rgba(90,180,255,0.08); }
+.room.motion { fill: rgba(90,180,255,0.16); animation: roompulse 2.4s ease-in-out infinite; }
+@keyframes roompulse { 50% { fill: rgba(90,180,255,0.07); } }
 .room.lit { fill: rgba(255,195,90,0.10); }
 .room.click { cursor: pointer; }
 .room.click:hover { fill: rgba(255,255,255,0.04); }
